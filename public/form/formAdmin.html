@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Gerenciar Formulário</title>
+        <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./css/mainForm.css" />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="../src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+        />
+        <!-- icones import -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        />
+        <script src="./js/manterQuestaoAlternativa.js" defer></script>
+    </head>
+    <body>
+
+        <!-- Cabeçalho de navegação -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <a class="navbar-brand" href="/home">
+                <img
+                    src="../src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+                    width="30"
+                    height="30"
+                    class="d-inline-block align-top"
+                    alt="Logo"
+                />
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" id="logout-conta" href="#">Sair</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            href="#"
+                            data-toggle="modal"
+                            data-target="#perfilModal"
+                            >Perfil</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link active"
+                            id="gerenciarUsers"
+                            href="/managerUsers"
+                            >Usuários</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Head da pagina -->
+        <div class="container mt-5">
+            <div class="jumbotron">
+                <h1 id="form-title">Titulo Formulário</h1>
+                <p id="form-description">descrição:</p>
+                <button
+                    id="btnEditarTituloDescricao"
+                    class="editFormInfo btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#editarTitulosModal"
+                >
+                    Editar Título ou Descrição
+                </button>
+            </div>
+        </div>
+
+        <!-- Conteudo Principal -->
+        <div class="container mt-8 mb-5 d-flex flex-column">
+            <form id="formulario" class="flex-grow-1">
+                <!-- perguntas vão ser gerados aqui! -->
+                <div id="questions-container"></div>
+
+                <div class="d-flex justify-content-end">
+                    <button id="btnSalvarForm" type="submit" class="btn btn-success mr-2">
+                        Salvar
+                    </button>
+                    <button id="btnAddQuestionForm" type="button" class="btn btn-primary addQuestion mr-2">
+                        Adicionar Questão
+                    </button>
+                    <button id="btnRecicleQuestionForm" type="button" class="btn btn-secondary searchAndAddQuestion" data-toggle="modal" data-target="#pesquisarQuestaoModal">
+                        <i class="fas fa-search"></i> <i class="fas fa-plus"></i> Questão
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Modal de Perfil -->
+        <div
+            class="modal fade"
+            id="perfilModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="perfilModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="perfilModalLabel">
+                            <i class="fas fa-user-circle mr-2"></i>Perfil do Usuário
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Informações do Perfil -->
+                        <div class="row">
+                            <div class="col-md-4 d-flex justify-content-center align-items-center">
+                                <i class="fas fa-user fa-5x"></i>
+                            </div>
+                            <div class="col-md-8">
+                                <p>
+                                    <strong>Nome:</strong>
+                                    <span id="modal-name"></span>
+                                </p>
+                                <p>
+                                    <strong>CPF:</strong>
+                                    <span id="modal-cpf"></span>
+                                </p>
+                                <p>
+                                    <strong>Email:</strong>
+                                    <span id="modal-email"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Botões para Alterar Senha e Informações -->
+                        <div class="text-center mt-3">
+                            <button
+                                type="button"
+                                class="btn btn-primary ml-2"
+                                data-toggle="modal"
+                                data-target="#editarPerfilModal"
+                                onclick="window.location.href='/managerUsers'"
+                            >
+                                Editar Informações
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Alterar Titulo e descrição -->
+        <div
+            class="modal fade"
+            id="editarTitulosModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="editarModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editarModalLabel">
+                            Editar Título ou Descrição
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="titulo">Título</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="titulo"
+                                    placeholder="Insira o título"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="descricao">Descrição</label>
+                                <textarea
+                                    class="form-control"
+                                    id="descricao"
+                                    placeholder="Insira a descrição"
+                                ></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                        <button type="button" class="saveFormInfoChanges btn btn-primary">
+                            Salvar Alterações
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Pesquisar e Adicionar Questão -->
+        <div
+            class="modal fade"
+            id="pesquisarQuestaoModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="pesquisarQuestaoModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pesquisarQuestaoModalLabel">
+                            Pesquisar Questões já Cadastradas
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="search-question">Pesquisar Questão</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="search-question"
+                                placeholder="Digite a questão para pesquisar"
+                                aria-describedby="search-question-help"
+                            />
+                            <small id="search-question-help" class="form-text text-muted">
+                                Comece a digitar para filtrar as questões disponíveis.
+                            </small>
+                        </div>
+                        <div id="search-results" class="overflow-auto" style="max-height: 150px;">
+                            <!-- Resultados da pesquisa serão exibidos aqui -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="btn-select-question"
+                            data-dismiss="modal"
+                        >
+                            Adicionar Questão
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- botão temas -->
+        <div class="fixed-bottom-right fixed">
+            <button class="btn btn-secondary" id="themeToggle" role="button">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+
+        <!-- Rodapé -->
+        <footer class="bg-light text-center py-4">
+            <div class="container">
+                <p>Uma parceria entre</p>
+                <div
+                    class="row justify-content-center align-items-center d-flex justify-content-center align-items-center"
+                >
+                    <img
+                        src="../src/logo-fatec-ferraz.png"
+                        alt="Logo da Fatec Ferraz de Vasconcelos"
+                        class="img-fluid"
+                        style="max-width: 100px; padding: 15px"
+                    />
+                    <img
+                        src="../src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+                        alt="Logo da Prefeitura de Ferraz de Vasconcelos"
+                        class="img-fluid"
+                        style="max-width: 50px; margin-bottom: 15px"
+                    />
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="mb-0 mt-3">
+                            Desenvolvido por: Fatec Ferraz de Vasconcelos.<br />
+                            &copy; 2024 POP Prefeitura Municipal de Ferraz de
+                            Vasconcelos, Todos os direitos reservados.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <div id="loadingScreen">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Carregando...</span>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script type="module" src="./js/manterFormulario.js" defer></script>
+        <script src="./indexForm.js" type="module"></script>
+    </body>
+</html>

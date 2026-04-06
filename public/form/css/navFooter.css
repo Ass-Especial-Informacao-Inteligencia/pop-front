@@ -1,0 +1,22 @@
+/* conf default */
+  .container {
+    flex: 1;
+  }
+    
+  .footer {
+    background-color: #f5f5f5;
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  .fixed-bottom-right {
+    position: fixed;
+    bottom: 20px; /* Distância do fundo */
+    right: 20px; /* Distância da direita */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  

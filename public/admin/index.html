@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Home | Administrador</title>
+        <!-- imagem para icone de aba -->
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="./src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+        />
+        <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="../user/css/mainUser.css" />
+        <link rel="stylesheet" href="./css/main.css" />
+        <!-- Import do jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <!-- icones import -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        />
+    </head>
+    <body>
+        
+        <!-- Marca D´agua de fundo -->
+        <img
+            src="./src/SloganFerraz.png"
+            class="watermark"
+            alt="Marca d'água"
+        />
+
+        <!-- Cabeçalho de navegação -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <a class="navbar-brand" href="">
+                <img
+                    src="./src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+                    width="30"
+                    height="30"
+                    class="d-inline-block align-top"
+                    alt="Logo"
+                />
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" id="logout-conta" href="#">Sair</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            href="#"
+                            data-toggle="modal"
+                            data-target="#perfilModal"
+                            >Perfil</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            id="gerenciarUsers"
+                            href="/managerUsers"
+                            >Usuários</a
+                        >
+                    </li>
+                </ul>
+                <!-- barra de pesquisa -->
+                <form class="form-inline my-2 my-lg-0">
+                    <div class="input-group">
+                        <input
+                            class="form-control mr-sm-2 ui-autocomplete-input"
+                            type="search"
+                            id="searchInput"
+                            placeholder="Pesquisar Formulário"
+                            aria-label="Search"
+                        />
+                    </div>
+                </form>
+            </div>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <div class="container mt-5">
+            <div class="jumbotron home-jumbotron">
+                <h1 class="display-5 display-md-3 display-lg-1">Bem-vindo(a) ao POP</h1>
+                <p class="lead">
+                    Pesquisa de Opinião Personalizada da Prefeitura Municipal de
+                    Ferraz de Vasconcelos.
+                </p>
+            </div>
+        </div>
+
+
+        <!-- Tabs de navegação -->
+        <div class="container mt-6 mb-5">
+            <!-- Botões de navegação -->
+            <ul class="nav nav-tabs bg-white justify-content-center rounded-lg" id="myTabs">
+                <li class="nav-item">
+                    <a class="nav-link active text-dark" id="ativos-tab" data-toggle="tab" href="#ativos" role="tab" aria-controls="ativos" aria-selected="true">
+                        <i class="fas fa-inbox fa-sm"style="padding-right: 5px;"></i> 
+                        <span class="d-none d-sm-inline"> Ativos</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" id="desativados-tab" data-toggle="tab" href="#desativados" role="tab" aria-controls="desativados" aria-selected="false">
+                        <i class="fas fa-archive fa-sm" style="padding-right: 5px;"></i>
+                        <span class="d-none d-sm-inline"> Arquivados</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" id="Agendados-tab" data-toggle="tab" href="#Agendados" role="tab" aria-controls="Agendados" aria-selected="false">
+                        <i class="fas fa-calendar-check fa-sm" style="padding-right: 5px;"></i>
+                        <span class="d-none d-sm-inline"> Agendados</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" id="Finalizados-tab" data-toggle="tab" href="#Finalizados" role="tab" aria-controls="Finalizados" aria-selected="false">
+                        <i class="fas fa-check-circle fa-sm" style="padding-right: 5px;"></i>
+                        <span class="d-none d-sm-inline"> Finalizados</span>
+                    </a>
+                </li>
+            </ul>
+            <!-- Conteúdo de navegação -->
+            <div class="tab-content" id="myTabContent">
+                <!-- TAB ATIVOS -->
+                <div class="tab-pane fade show active" id="ativos" role="tabpanel" aria-labelledby="ativos-tab">
+                    <!-- Conteúdo da aba de ativos -->
+                    <div id="cardContainer" class="container mt-6 mb-5"></div>
+                </div>
+
+                <!-- TAB DESATIVADOS -->
+                <div class="tab-pane fade" id="desativados" role="tabpanel" aria-labelledby="desativados-tab">
+                    <div id="cardDesativadosContainer" class="container mt-6 mb-5"></div>
+                </div>
+
+                <!-- TAB AGENDADOS -->
+                <div class="tab-pane fade" id="Agendados" role="tabpanel" aria-labelledby="Agendados-tab">
+                    <div id="cardAgendadosContainer" class="container mt-6 mb-5"></div>
+                </div>
+
+                <!-- TAB FINALIZADOS -->
+                <div class="tab-pane fade" id="Finalizados" role="tabpanel" aria-labelledby="Finalizados-tab">
+                    <div id="cardFinalizadosContainer" class="container mt-6 mb-5"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- botão temas -->
+        <div class="fixed-bottom-right fixed">
+            <button class="btn btn-secondary" id="themeToggle" role="button">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+
+        <!-- MODALS -->
+        <!-- Modal para criar o formulário -->
+        <div
+            class="modal fade"
+            id="criarFormularioModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="criarFormularioModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="criarFormularioModalLabel">
+                            Criar Formulário
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Formulário para criar o formulário -->
+                        <form id="createForm">
+                            <div class="form-group">
+                                <label for="title">Título:</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="title"
+                                    name="title"
+                                    placeholder="Insira o Titulo."
+                                    required
+                                />
+                                <!-- Span para mostrar mensagem de erro -->
+                                <span id="titleError" style="color: red"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Descrição:</label>
+                                <textarea
+                                    class="form-control"
+                                    id="description"
+                                    name="description"
+                                    placeholder="Insira uma descrição."
+                                    required
+                                ></textarea>
+                            </div>
+                            <div class="col-md-16">
+                                <div class="form-group">
+                                    <label for="editarFuncao"
+                                        >Tipo de Pesquisa</label
+                                    >
+                                    <select
+                                        class="form-control"
+                                        id="editarFuncao"
+                                        required
+                                    >
+                                        <option value="">Selecione...</option>
+                                        <option value="Eleitoral">
+                                            Eleitoral
+                                        </option>
+                                        <option value="Política">
+                                            Política
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                id="showAgendamento"
+                            >
+                                Planejar Agendamento
+                            </button>
+                            <!-- Div para os campos de agendamento (inicialmente hidden) -->
+                            <div class="agendamento mt-3" style="display: none">
+                                <!-- Campo para agendar liberação -->
+                                <div class="form-group">
+                                    <label for="releaseDate"
+                                        >Agendar Liberação:</label
+                                    >
+                                    <input
+                                        type="datetime-local"
+                                        class="form-control"
+                                        id="releaseDate"
+                                        name="releaseDate"
+                                    />
+                                </div>
+                                <!-- Campo para agendar fechamento -->
+                                <div class="form-group">
+                                    <label for="closeDate"
+                                        >Agendar Fechamento:</label
+                                    >
+                                    <input
+                                        type="datetime-local"
+                                        class="form-control"
+                                        id="closeDate"
+                                        name="closeDate"
+                                    />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Botões para cancelar e criar -->
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary createForm"
+                            form="createForm"
+                        >
+                            Criar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Perfil -->
+        <div
+            class="modal fade"
+            id="perfilModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="perfilModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="perfilModalLabel">
+                            <i class="fas fa-user-circle mr-2"></i>Perfil do Usuário
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Informações do Perfil -->
+                        <div class="row">
+                            <div class="col-md-4 d-flex justify-content-center align-items-center">
+                                <i class="fas fa-user fa-5x"></i>
+                            </div>
+                            <div class="col-md-8">
+                                <p>
+                                    <strong>Nome:</strong>
+                                    <span id="modal-name"></span>
+                                </p>
+                                <p>
+                                    <strong>CPF:</strong>
+                                    <span id="modal-cpf"></span>
+                                </p>
+                                <p>
+                                    <strong>Email:</strong>
+                                    <span id="modal-email"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Botões para Alterar Senha e Informações -->
+                        <div class="text-center mt-3">
+                            <button
+                                type="button"
+                                class="btn btn-primary ml-2"
+                                data-toggle="modal"
+                                data-target="#editarPerfilModal"
+                                onclick="window.location.href='/managerUsers'"
+                            >
+                                Editar Informações
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal para gerenciar acesso de usuários aos formulários -->
+        <div
+            class="modal fade"
+            id="accessModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="accessModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="accessModalLabel">
+                            Gerenciar Acesso
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="cotainer-formulario-nome">
+                            <h5 class="nome-formulario">nome Formulario</h5>
+                        </div>
+                        <h6>Usuários com Acesso:</h6>
+                        <div class="overflow-auto" style="max-height: 100px">
+                            <ul id="usersWithAccess" class="list-group">
+                                <!-- Aqui fica listado os usuarios com acesso -->
+                            </ul>
+                        </div>
+                        <hr />
+
+                        <!-- Formulário para adicionar usuário -->
+                        <form id="addUserForm">
+                            <div class="form-group">
+                                <label for="username">Adicionar Usuário:</label>
+                                <input
+                                    type="search"
+                                    class="form-control"
+                                    id="search-user-no-alow"
+                                    placeholder="Pesquiser pelo nome, CPF ou email do usuário"
+                                />
+                            </div>
+                        </form>
+
+                        <div
+                            class="overflow-auto mt-6"
+                            style="max-height: 100px"
+                        >
+                            <ul id="usersWithNotAccess" class="list-group">
+                                <!-- Aqui fica listado os usuários sem acesso -->
+                            </ul>
+                        </div>
+                    </div>
+                    <div
+                        class="modal-footer justify-content-start d-flex align-items-center"
+                    >
+                        <button
+                            type="button"
+                            class="btn btn-primary delegar-usuarios"
+                        >
+                            Salvar
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                        <a
+                            class="nav-link"
+                            id="gerenciarUsers"
+                            href="/managerUsers"
+                            style="text-decoration: none;color: inherit;"
+                            ><i class="fas fa-user-plus"></i></a
+                        >
+                        <div class="form-check ml-auto">
+                            <!-- Checkbox para liberar acesso para todos -->
+                            <input
+                                type="checkbox"
+                                class="form-check-input"
+                                id="liberarAcessoParaTodos"
+                            />
+                            <label
+                                class="form-check-label"
+                                for="liberarAcessoParaTodos"
+                                >Liberar acesso para todos</label
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de confirmação de arquivar o formulario -->
+        <div
+            class="modal fade"
+            id="arquivarFormularioModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="arquivarFormularioModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="excluirUsuarioModalLabel">
+                            Confirmar
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>
+                            Titulo:
+                            <span
+                                class="tituloFormArquivarModal"
+                                data-active=""
+                            ></span>
+                        </h5>
+                        <p>
+                            Tem certeza de que deseja arquivar/desarquivar este
+                            formulário?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-danger"
+                            id="confirmarArquivarFormulario"
+                            data-dismiss="modal"
+                        >
+                            Confirmar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para agendar o período de disponibilidade do formulário -->
+        <div
+            class="modal fade"
+            id="agendarModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="agendarModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="agendarModalLabel">
+                            Configurar Disponibilidade
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-name">
+                            <h5 id="card-title"></h5>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="start-date">Data de Liberação:</label>
+                            <input
+                                type="datetime-local"
+                                class="form-control"
+                                id="start-date"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="end-date">Data de Fechamento:</label>
+                            <input
+                                type="datetime-local"
+                                class="form-control"
+                                id="end-date"
+                            />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="save-schedule"
+                        >
+                            Definir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rodapé -->
+        <footer class="bg-light text-center py-4">
+            <div class="container">
+                <p>Uma parceria entre</p>
+                <div
+                    class="row justify-content-center align-items-center d-flex justify-content-center"
+                >
+                    <img
+                        src="./src/logo-fatec-ferraz.png"
+                        alt="Logo da Fatec Ferraz de Vasconcelos"
+                        class="img-fluid"
+                        style="max-width: 100px; padding: 15px"
+                    />
+                    <img
+                        src="./src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+                        alt="Logo da Prefeitura de Ferraz de Vasconcelos"
+                        class="img-fluid"
+                        style="max-width: 50px; margin-bottom: 15px"
+                    />
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="mb-0 mt-3">
+                            Desenvolvido por: Fatec Ferraz de Vasconcelos.<br />
+                            &copy; 2024 POP Prefeitura Municipal de Ferraz de
+                            Vasconcelos, Todos os direitos reservados.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Tela de Loading -->
+        <div id="loadingScreen">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Carregando...</span>
+            </div>
+        </div>
+        
+        <!-- Banner de Cookie -->
+        <div id="cookie-banner">
+            <p>Este site utiliza cookies para melhorar a sua experiência e analisar o tráfego. Ao continuar navegando, você concorda com o uso de cookies conforme descrito em nossa potiica de cookies:</p>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#cookiesModal">
+                Política de Cookies
+            </button>
+            <button class="btn btn-success" onclick="acceptCookies()">Aceitar Todos</button>
+            <button class="btn  btn-danger" onclick="declineCookies()">Recusar</button>
+        </div>
+    <script>
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function acceptCookies() {
+            document.getElementById('cookie-banner').style.display = 'none';
+            setCookie('cookiesAccepted', 'true', 365); // Salva a aceitação por 365 dias
+        }
+
+        function declineCookies() {
+            document.getElementById('cookie-banner').style.display = 'none';
+            setCookie('cookiesAccepted', 'false', 365); // Salva a recusa por 365 dias
+        }
+
+        window.onload = function() {
+    var cookiesAccepted = getCookie('cookiesAccepted');
+    if (cookiesAccepted === 'false') {
+        // Se o usuário recusou cookies, exibe o banner novamente
+        document.getElementById('cookie-banner').style.display = 'block';
+    } else if (cookiesAccepted !== 'true') {
+        // Se o cookie não existe ou não é 'true', exibe o banner
+        document.getElementById('cookie-banner').style.display = 'block';
+    } else {
+        // Se o cookie é 'true', oculta o banner
+        document.getElementById('cookie-banner').style.display = 'none';
+    }
+};
+    </script>
+
+        <!-- Modal de politica de privacidade -->
+        <div class="modal fade" id="cookiesModal" tabindex="-1" role="dialog" aria-labelledby="cookiesModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cookiesModalLabel">Política de Cookies</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h2>Introdução</h2>
+                        <p>Bem-vindo à nossa Política de Cookies. Esta página tem como objetivo informar você sobre como utilizamos cookies e outras tecnologias semelhantes para garantir o funcionamento adequado do nosso sistema, bem como para fornecer uma experiência de usuário segura e eficiente. Nosso compromisso é com a transparência e a conformidade com a Lei Geral de Proteção de Dados (LGPD).</p>
+
+                        <h2>O que são Cookies?</h2>
+                        <p>Cookies são pequenos arquivos de texto armazenados no seu dispositivo (computador, smartphone ou tablet) quando você visita um site. Eles permitem que o site reconheça seu dispositivo e armazene certas informações sobre suas preferências ou ações, facilitando a sua navegação e a funcionalidade do sistema.</p>
+
+                        <h2>Como Utilizamos Cookies</h2>
+                        <p>Em nosso sistema, utilizamos cookies exclusivamente para os seguintes propósitos:</p>
+                        <ul>
+                            <li><strong>Autenticação e Segurança</strong>: Para armazenar chaves de login e autenticação, garantindo que você possa acessar sua conta e usar o sistema de forma segura.</li>
+                            <li><strong>Preferências do Usuário</strong>: Para lembrar suas preferências e configurações durante as sessões de uso do sistema, proporcionando uma experiência personalizada.</li>
+                            <li><strong>Funcionalidade do Sistema</strong>: Para garantir o bom funcionamento do sistema e melhorar a performance, incluindo o gerenciamento de sessões e a manutenção da integridade do sistema.</li>
+                        </ul>
+
+                        <h2>Tipos de Cookies Utilizados</h2>
+                        <p>Os tipos de cookies que utilizamos incluem:</p>
+                        <ul>
+                            <li><strong>Cookies de Sessão</strong>: São temporários e desaparecem quando você fecha o navegador. Eles são usados para gerenciar a autenticação e a funcionalidade durante sua sessão.</li>
+                            <li><strong>Cookies Persistentes</strong>: Permanecem no seu dispositivo por um período definido e são usados para lembrar suas preferências e configurações para visitas futuras.</li>
+                        </ul>
+
+                        <h2>Como Gerenciar Cookies</h2>
+                        <p>Você pode gerenciar suas preferências de cookies através das configurações do seu navegador. A maioria dos navegadores permite que você bloqueie cookies ou exclua cookies já armazenados. No entanto, se você optar por desativar os cookies, isso pode afetar a funcionalidade do nosso sistema e a sua experiência de uso.</p>
+
+                        <h2>Seus Direitos</h2>
+                        <p>De acordo com a LGPD, você tem o direito de acessar, corrigir, excluir e bloquear seus dados pessoais. Se você tiver alguma dúvida ou preocupação sobre o uso de cookies e suas informações pessoais, entre em contato conosco através das informações fornecidas na seção de Contato.</p>
+
+                        <h2>Alterações na Política de Cookies</h2>
+                        <p>Podemos atualizar esta Política de Cookies periodicamente para refletir mudanças nas nossas práticas e nas regulamentações aplicáveis. Recomendamos que você revise esta política regularmente para estar ciente de qualquer alteração.</p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JQUERY -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <!-- BOOTSTRAP -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- IMPORTS JS -->
+        <script type="module" src="./index.js"></script>
+        <script src="./js/barraPesquisa.js"></script>
+    </body>
+</html>

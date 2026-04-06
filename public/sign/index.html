@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+            integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+            crossorigin="anonymous"
+        />
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+         <!-- icones import -->
+   <link
+   rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+        <!-- imagem para icone de aba -->
+         
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="./src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+        />
+        <link rel="stylesheet" href="./styles.css" />
+        <title>Login | POP</title>
+        <script src="./js/index.js" type="module"></script>
+    </head>
+    <body>
+
+        <!-- background do body -->
+        <img src="./src/ferraz-predio-imagem.jpeg" id="imagem-fundo-login" class="img-fluid" alt="Imagem de fundo">
+
+        <div class="container" id="container">
+
+            <div class="form-container sign-in-container">
+                <form id="sign-in-form">
+                    <h1>Login</h1>
+                    <span>use seu login</span>
+                    <input
+                        required
+                        type="text"
+                        placeholder="CPF ou Email"
+                        id="sign-in-cpf-email"
+                    />
+                    <input
+                        required
+                        type="password"
+                        placeholder="Senha"
+                        id="sign-in-password"
+                    />
+                    <span style="color: red" id="errorMessage"></span><br>
+                   
+                    <button type="submit" id="signInButton">Login</button><br>
+                    <span>Esqueceu sua senha? Procure um Administrador.</span>
+                    
+                </form>
+            </div>
+            <div class="overlay-container">
+                <div class="overlay"> 
+                    <div class="overlay-panel overlay-right">
+                        <img src="./src/BRASAO-PREFEITURA-DE-FERRAZ.png" width="80px"><br>
+                        <h1>Bem vindo(a)</h1>
+                        <p>
+                           ao POP a pesquisa de opinião popular da Prefeitura Municipal de Ferraz de Vasconcelos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+           
+        <!-- JQUERY -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <!-- BOOTSTRAP -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+
+</html>

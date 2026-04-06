@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respostas por Mês</title>
+    <link rel="stylesheet" href="./css/getTodayAnswers.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Respostas por Mês</h1>
+        <div class="filter-section">
+            <div class="filter-inputs">
+                <label for="month">Selecione o Mês:</label>
+                <input type="month" id="month-filter" />
+                
+                <label for="pagination">Respostas por página:</label>
+                <input type="number" id="pagination" value="240" min="1" max="240" />
+            
+                <button id="filter-btn" class="btn-primary">Filtrar</button>
+            </div>
+
+            <!-- Botões de navegação -->
+            <div class="pagination-buttons">
+                <button id="prev-page" class="btn-secondary">Página Anterior</button>
+                <button id="next-page" class="btn-secondary">Próxima Página</button>
+            </div>
+        </div>
+
+        <div id="answers-container" class="answers-container">
+            <!-- As respostas serão inseridas aqui dinamicamente -->
+        </div>
+    </div>
+
+    <script src="./js/getTodayAnswers.js"></script>
+</body>
+</html>

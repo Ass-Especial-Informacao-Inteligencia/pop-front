@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Gerenciar Usuarios | Administrador</title>
+        <!-- imagem para icone de aba -->
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="./src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+        />
+        <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="../user/css/mainUser.css" />
+        <link rel="stylesheet" href="./css/main.css" />
+        <!-- Import do jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <!-- icones import -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        />
+    </head>
+    <body>
+        
+        <!-- Marca D´agua de fundo -->
+        <img src="./src/BRASAO-PREFEITURA-DE-FERRAZ.png" class="watermark" alt="Marca d'água">
+        
+        <!-- Cabeçalho de navegação -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <a class="navbar-brand" href="/home">
+                <img
+                    src="./src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+                    width="30"
+                    height="30"
+                    class="d-inline-block align-top"
+                    alt="Logo"
+                />
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" id="logout-conta" href="#"
+                            >Sair</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home"
+                            >Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            href="#"
+                            data-toggle="modal"
+                            data-target="#perfilModal"
+                            >Perfil</a
+                        >
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link active" id="gerenciarUsers" href="/managerUsers"
+                            >Usuários <span class="sr-only">(current)</span></a
+                        >
+                    </li>
+                </ul>
+                <!--  barra de pesquisa -->
+                <form class="form-inline my-2 my-lg-0">
+                    <div class="input-group">
+                        <input
+                            class="form-control mr-sm-2 ui-autocomplete-input"
+                            type="search"
+                            id="searchInput"
+                            placeholder="Pesquisar Usuários"
+                            aria-label="Search"
+                        />
+                        
+                </form>
+            </div>
+        </nav>
+
+        <!-- Topo introdução -->
+        <div class="container mt-5">
+            <div class="jumbotron home-jumbotron">
+                <h1 class="display-4 display-lg-1">Gerenciar Usuários</h1>
+                <p class="lead">
+                   Você poderá visualizar todos os usuários cadastrados e administra-los.
+                </p>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#criarNovoUsuario">Criar Novo Usuário</button>
+            </div>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="container">
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;background-color: white;margin: 10px;">
+                <table class="table table-striped">
+                    <thead class="thead-light sticky-top">
+                        <tr>
+                            <th scope="col" id="ordenar-nome">Nome</th>
+                            <th scope="col">CPF</th>
+                            <th scope="col" id="ordenar-funcao">Função</th>
+                            <th scope="col">E-mail</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white text-dark">
+                        <!-- precisa dessa vazia para dar certo -->
+                        <tr><td></td><td><td></td></td><td></td><td></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div> 
+
+       <!-- Modal Criar Novo Usuário -->
+        <div class="modal fade" id="criarNovoUsuario" tabindex="-1" role="dialog" aria-labelledby="criarNovoUsuarioLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="criarNovoUsuarioLabel">Cadastrar Novo Usuário</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <div class="alert alert-danger d-none" role="alert" id="alertCamposObrigatorios">
+                            Por favor, preencha todos os campos corretamente.
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="nome">Nome</label>
+                                    <input type="text" class="form-control" id="nome" placeholder="Digite o Nome" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email">E-mail</label>
+                                    <input type="email" class="form-control" id="email" placeholder="Digite o E-mail" required>
+                                    <span id="emailErrorMessage"></span>
+
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="cpf">CPF</label>
+                                    <input type="text" class="form-control" id="cpf" placeholder="Digite o CPF sem pontuação." required>
+                                    <span id="cpfErrorMessage"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="senha">Senha</label>
+                                    <input type="password" class="form-control" id="senha" placeholder="Digite a Senha" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="funcao">Função</label>
+                                    <select class="form-control" id="funcao" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="admin">Administrador</option>
+                                        <option value="user">Entrevistador</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <span id="message"></span>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" id="btnSalvarNovoUsuario">Cadastrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+       <!-- Modal de Edição de Usuário -->
+        <div class="modal fade" id="editarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="editarUsuarioModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editarUsuarioModalLabel">Editar Usuário</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Alerta de campos obrigatórios -->
+                        <div class="alert alert-danger d-none" role="alert" id="alertCamposObrigatoriosEditar">
+                            Por favor, preencha todos os campos corretamente.
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="editarNome">Nome</label>
+                                    <input type="text" class="form-control" id="editarNome" placeholder="Digite o Nome" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="editarEmail">E-mail</label>
+                                    <input type="email" class="form-control" id="editarEmail" placeholder="Digite o E-mail" required>
+                                    <span style="color: red;" id="editModalEmailMessage"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="editarCPF">CPF</label>
+                                    <input type="text" class="form-control" id="editarCPF" placeholder="Digite o CPF sem pontuação." required>
+                                    <span style="color: red;" id="editModalCpfMessage"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="editarSenha">Nova Senha</label>
+                                    <input type="password" class="form-control" id="editarSenha" placeholder="Digite a Nova Senha">
+                                </div>
+                            </div>
+                        
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="editarFuncao">Função</label>
+                                    <select class="form-control" id="editarFuncao" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="admin">Administrador</option>
+                                        <option value="user">Entrevistador</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <span style="color: red;" id="editModalAdminMessage"></span>
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" id="btnSalvarEdicao">Atualizar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de confirmação de exclusão -->
+        <div class="modal fade" id="excluirUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="excluirUsuarioModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="excluirUsuarioModalLabel">Confirmar Desativação</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Nome: <span class="nomeUserDeleteModal" ></span></h5>
+                        Tem certeza de que deseja desativar este usuário? 
+                        este usuário não poderá logar enquando estiver desativado!
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="confirmarExclusao" data-dismiss="modal">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Perfil -->
+        <div
+            class="modal fade"
+            id="perfilModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="perfilModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="perfilModalLabel">
+                            <i class="fas fa-user-circle mr-2"></i>Perfil do Usuário
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Informações do Perfil -->
+                        <div class="row">
+                            <div class="col-md-4 d-flex justify-content-center align-items-center">
+                                <i class="fas fa-user fa-5x"></i>
+                            </div>
+                            <div class="col-md-8">
+                                <p>
+                                    <strong>Nome:</strong>
+                                    <span id="modal-name"></span>
+                                </p>
+                                <p>
+                                    <strong>CPF:</strong>
+                                    <span id="modal-cpf"></span>
+                                </p>
+                                <p>
+                                    <strong>Email:</strong>
+                                    <span id="modal-email"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Botões para Alterar Senha e Informações -->
+                        <div class="text-center mt-3">
+                            <button
+                                type="button"
+                                class="btn btn-primary ml-2"
+                                data-toggle="modal"
+                                data-target="#editarPerfilModal"
+                                onclick="window.location.href='/managerUsers'"
+                            >
+                                Editar Informações
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- botão temas -->
+        <div class="fixed-bottom-right fixed">
+            <button class="btn btn-secondary" id="themeToggle" role="button">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+
+        <!-- Rodapé -->
+        <footer class="bg-light text-center py-4">
+            <div class="container">
+                <p>Uma parceria entre</p>
+                <div
+                    class="row justify-content-center align-items-center d-flex justify-content-center"
+                >
+                    <img
+                        src="./src/logo-fatec-ferraz.png"
+                        alt="Logo da Fatec Ferraz de Vasconcelos"
+                        class="img-fluid"
+                        style="max-width: 100px; padding: 15px"
+                    />
+                    <img
+                        src="./src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+                        alt="Logo da Prefeitura de Ferraz de Vasconcelos"
+                        class="img-fluid"
+                        style="max-width: 50px; margin-bottom: 15px"
+                    />
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="mb-0 mt-3">
+                            Desenvolvido por: Fatec Ferraz de Vasconcelos.<br />
+                            &copy; 2024 POP Prefeitura Municipal de Ferraz de
+                            Vasconcelos, Todos os direitos reservados.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <div id="loadingScreen">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Carregando...</span>
+            </div>
+        </div>
+
+        <!-- JQUERY -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <!-- BOOTSTRAP -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- IMPORTS JS -->
+        <script type="module" src="./indexManterUsers.js"></script>
+
+    </body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Home | Entrevistador</title>
+        <!-- imagem para icone de aba -->
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="./src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+        />
+        <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./css/mainUser.css" />
+        <!-- Import do jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <!-- icones import -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        />
+    </head>
+    <body>
+        <!-- Marca D´agua de fundo -->
+        <img src="./src/SloganFerraz.png" class="watermark" alt="Marca d'água">
+
+        <!-- Cabeçalho de navegação -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <a class="navbar-brand" href="#">
+                <img
+                    src="./src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+                    width="30"
+                    height="30"
+                    class="d-inline-block align-top"
+                    alt="Logo"
+                />
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" id="logout-conta" href="#">Sair</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#"
+                            >Home <span class="sr-only">(current)</span></a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            href="#"
+                            data-toggle="modal"
+                            data-target="#perfilModal"
+                            >Perfil</a
+                        >
+                    </li>
+                </ul>
+                <!-- barra de pesquisa -->
+                <form class="form-inline my-2 my-lg-0">
+                    <div class="input-group">
+                        <input
+                            class="form-control mr-sm-2 ui-autocomplete-input"
+                            type="search"
+                            id="searchInput"
+                            placeholder="Pesquisar Formulário"
+                            aria-label="Search"
+                        />
+                    </div>
+                </form>
+            </div>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <div class="container mt-5">
+            <div class="jumbotron">
+                <h1 class="display-5">Bem-vindo ao POP</h1>
+                <p class="lead">
+                    Pesquisa de Opinião Personalizada da Prefeitura Muncipal de Ferraz de
+                    Vasconcelos.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Seção de Cards | gerada no arquivo js geraCardsForm -->
+        <div id="cardContainer" class="container mt-6 mb-5"></div>
+
+        <!-- botão temas -->
+        <div class="fixed-bottom-right fixed">
+            <button class="btn btn-secondary" id="themeToggle" role="button">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+
+        <!-- Modal de Perfil -->
+        <div
+            class="modal fade"
+            id="perfilModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="perfilModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="perfilModalLabel">
+                            <i class="fas fa-user-circle mr-2"></i>Perfil do Usuário
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Informações do Perfil -->
+                        <div class="row">
+                            <div class="col-md-4 d-flex justify-content-center align-items-center">
+                                <i class="fas fa-user fa-5x"></i>
+                            </div>
+                            <div class="col-md-8">
+                                <p>
+                                    <strong>Nome:</strong>
+                                    <span id="modal-name"></span>
+                                </p>
+                                <p>
+                                    <strong>CPF:</strong>
+                                    <span id="modal-cpf"></span>
+                                </p>
+                                <p>
+                                    <strong>Email:</strong>
+                                    <span id="modal-email"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <p>Para atualizar suas informações, solicite para um administrador.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rodapé -->
+        <footer class="bg-light text-center py-4">
+            <div class="container">
+                <p>Uma parceria entre</p>
+                <div
+                    class="row justify-content-center align-items-center d-flex justify-content-center align-items-center"
+                >
+                    <img
+                        src="./src/logo-fatec-ferraz.png"
+                        alt="Logo da Fatec Ferraz de Vasconcelos"
+                        class="img-fluid"
+                        style="max-width: 100px; padding: 15px"
+                    />
+                    <img
+                        src="./src/BRASAO-PREFEITURA-DE-FERRAZ.png"
+                        alt="Logo da Prefeitura de Ferraz de Vasconcelos"
+                        class="img-fluid"
+                        style="max-width: 50px; margin-bottom: 15px"
+                    />
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="mb-0 mt-3">
+                            Desenvolvido por: Fatec Ferraz de Vasconcelos.<br />
+                            &copy; 2024 POP Prefeitura Muncipal de Ferraz de
+                            Vasconcelos, Todos os direitos reservados.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Loading Screen -->
+        <div id="loadingScreen">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Carregando...</span>
+            </div>
+        </div>
+        
+        <!-- JQUERY -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <!-- BOOTSTRAP -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- IMPORTS JS -->
+        <script type="module" src="./indexUser.js"></script>
+        <script src="./js/barraPesquisa.js"></script>
+    </body>
+</html>
