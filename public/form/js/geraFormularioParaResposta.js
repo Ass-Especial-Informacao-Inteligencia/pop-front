@@ -11,7 +11,7 @@ function criarAutocompleteInput(bairros, index, liberaAcesso) {
     input.setAttribute('type', 'text');
     input.setAttribute('id', `pergunta${index + 1}`);
     input.classList.add('form-control');
-    input.setAttribute('placeholder', 'Digite o nome do bairro');
+    // input.setAttribute('placeholder', 'Digite o nome do bairro');
     input.setAttribute('autocomplete', 'off');
     input.setAttribute('required', true);
     input.disabled = !liberaAcesso;
