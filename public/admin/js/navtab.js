@@ -1,4 +1,4 @@
-import { userData } from './getUserData.js';
+import { getUserData } from '../../js/api.js';
 
 export function navtabModificador() {
     $(document).ready(function () {
@@ -16,7 +16,7 @@ export function navtabModificador() {
 }
 
 export async function updatetabsPerUser() {
-    const user = await userData;
+    const user = await getUserData();
 
     const isAdmin = user.role === 'admin';
 
@@ -27,8 +27,8 @@ export async function updatetabsPerUser() {
     } else {
         // Se o usuário não for um administrador, ocultar a aba de arquivados e seu conteúdo
         $('#desativados-tab').parent().hide(); // Oculta o tab de arquivados
-        $('#Agendados-tab').parent().hide(); // Oculta o tab de arquivados
-        $('#Finalizados-tab').parent().hide(); // Oculta o tab de arquivados
+        $('#Agendados-tab').parent().hide(); // Oculta o tab de agendados
+        $('#Finalizados-tab').parent().hide(); // Oculta o tab de finalizados
         $('.tab-pane').hide(); // Oculta todas as abas
         $('#ativos').show(); // Mostra apenas a aba de ativos
     }

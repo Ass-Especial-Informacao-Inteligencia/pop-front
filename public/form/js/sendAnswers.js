@@ -1,4 +1,4 @@
-import { getCookie } from './getCookie.js';
+import { getCookie } from '../../js/api.js';
 import { mostrarMensagem } from './geraNotificacao.js';
 
 export function capturarRespostas(ev) {

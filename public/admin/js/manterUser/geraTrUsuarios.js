@@ -1,11 +1,11 @@
-import { userData } from '../getUserData.js';
+import { getUserData } from '../../../js/api.js';
 import { deleteButton, restoreButton, handleEditarClick } from './editUser.js';
 import { getUsersFetch } from './getUsers.js';
 
 export async function addUsersForList() {
     const tabela = document.querySelector('.table tbody');
 
-    const user = await userData;
+    const user = await getUserData();
     const listaUsuarios = await getUsersFetch();
 
     tabela.innerHTML = '';

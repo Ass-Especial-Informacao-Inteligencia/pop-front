@@ -1,22 +1,22 @@
 import { themeToggle } from './js/temas.js';
 import { addQuestion, fetchFormQuestions } from './js/manterFormulario.js';
 import { captureAndSendQuestions } from './js/sendQuestions.js';
-import { userData } from './js/getUserData.js';
-import { logout } from './js/logout.js';
+import { getUserData } from '../js/api.js';
+import { logout } from '../js/api.js';
 import { deleteAlternatives } from './js/deleteAlternatives.js';
 import { deleteQuestion } from './js/deleteQuestion.js';
 import { fillUpModalsInfo } from './js/modals.js';
 import { changeTittleAndDexcription } from './js/changeTitleAndDescription.js';
-import { getCookie } from './js/getCookie.js';
+import { getCookie } from '../js/api.js';
 import { getQuestions, HandlerRecicleEvents } from './js/recicleQuestions.js';
 import { loadingScreen } from './js/loadingScreen.js';
 
-// gerencia temas da pagina
+// gerencia temas da página
 themeToggle();
 
 fillUpModalsInfo();
 
-const user = await userData;
+const user = await getUserData();
 export const questionsRecicle = user.role === 'admin' ? await getQuestions(): []; // questões para copiar de outros formulários
 
 if (user.role === 'admin') {

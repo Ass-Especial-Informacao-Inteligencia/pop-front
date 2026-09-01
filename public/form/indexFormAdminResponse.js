@@ -1,9 +1,9 @@
 import { themeToggle } from './js/temas.js';
-import { logout } from './js/logout.js';
+import { logout } from '../js/api.js';
 import { fillUpModalsInfo } from './js/modals.js';
 import { loadingScreen } from './js/loadingScreen.js';
 
-// gerencia temas da pagina
+// gerencia temas da página
 themeToggle();
 
 fillUpModalsInfo();

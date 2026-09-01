@@ -1,5 +1,5 @@
-import { userData } from './getUserData.js';
-const userLogged = await userData;
+import { getUserData } from '../../js/api.js';
+const userLogged = await getUserData();
 
 export function adicionarUsersComAcesso(users) {
     const usersWithAccessList = document.getElementById('usersWithAccess');

@@ -1,6 +1,5 @@
-// formRedirect.js
-import { userData } from './getUserData.js';
-const user = await userData;
+import { getUserData } from '../../js/api.js';
+const user = await getUserData();
 
 export function setupFormRedirect() {
     const links = document.querySelectorAll('.redirect-btn');

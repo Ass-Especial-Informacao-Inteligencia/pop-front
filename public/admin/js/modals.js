@@ -1,9 +1,9 @@
 import { adicionarUsersComAcesso } from './accessFormDelegation.js';
 import { handleRemoveButtonClick } from './fetchDelegationForm.js';
-import { userData } from './getUserData.js';
+import { getUserData } from '../../js/api.js';
 import { getUsersWithAccess } from './searchUsers.js';
 
-const user = await userData;
+const user = await getUserData();
 
 export function fillUpModalsInfo() {
     const name = document.getElementById('modal-name');

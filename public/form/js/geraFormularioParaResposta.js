@@ -1,6 +1,6 @@
 import { mostrarMensagem } from '../js/geraNotificacao.js';
 import { capturarRespostas } from './sendAnswers.js';
-import { getCookie } from './getCookie.js';
+import { getCookie } from '../../js/api.js';
 
 // Função para criar um input com autocomplete
 function criarAutocompleteInput(bairros, index, liberaAcesso) {

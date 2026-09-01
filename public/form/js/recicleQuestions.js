@@ -1,5 +1,5 @@
 import { questionsRecicle } from '../indexForm.js';
-import { getCookie } from './getCookie.js';
+import { getCookie } from '../../js/api.js';
 import { mostrarMensagem } from './geraNotificacao.js';
 
 // Função para pegar todas as questões

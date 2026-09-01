@@ -1,5 +1,5 @@
 import { mostrarMensagem } from '../geraNotificacao.js';
-import { getCookie } from '../getCookie.js';
+import { getCookie } from '../../../js/api.js';
 import { addUsersForList } from './geraTrUsuarios.js';
 
 // Função para capturar os valores dos atributos data das células da linha

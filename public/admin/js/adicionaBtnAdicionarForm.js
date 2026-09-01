@@ -1,7 +1,7 @@
-import { userData } from './getUserData.js';
+import { getUserData } from '../../js/api.js';
 
 export async function adicionaBtnAdicionarForm() {
-    const user = await userData;
+    const user = await getUserData();
 
     const isAdmin = user.role === 'admin';
 

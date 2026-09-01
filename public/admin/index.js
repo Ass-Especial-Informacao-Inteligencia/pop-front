@@ -8,14 +8,14 @@ import { fetchAcessDelegation } from './js/fetchAcessDelegationUsers.js';
 import { handleSalvarButtonClick } from './js/fetchDelegationForm.js';
 import { setupFormRedirect } from './js/formRedirect.js';
 import { displayForms, displayFormsAgendados, displayFormsDesativados, displayFormsFinalizados } from './js/getFormularios.js';
-import { userData } from './js/getUserData.js';
+import { getUserData } from '../js/api.js';
 import { loadingScreen } from './js/loadingScreen.js';
-import { logout } from './js/logout.js';
+import { logout } from '../js/api.js';
 import { fillAccessModal, fillUpModalsInfo, showModalAgendamentoInputs } from './js/modals.js';
 import { navtabModificador, updatetabsPerUser } from './js/navtab.js';
 import { themeToggle } from './js/themeToggle.js';
 
-const user = await userData; // Capturando informações de usuario
+const user = await getUserData(); // Capturando informações do usuário
 
 // Faz logout
 const logoutAnchor = document.getElementById('logout-conta');
@@ -24,13 +24,13 @@ logoutAnchor.addEventListener('click', logout);
 // Mudança de tema light|dark
 themeToggle();
 
-// muda barra de navegação de acordo com usuario
+// muda barra de navegação de acordo com o usuário
 adicionaBtnAdicionarForm();
 
-// limita o acesso de tabs por usuario
+// limita o acesso de tabs por usuário
 updatetabsPerUser();
 
-// Mostra Forms na tela e depois adiciona função de redirecionamento nos botoes dos cards
+// Mostra forms na tela e depois adiciona função de redirecionamento nos botões dos cards
 
 displayForms()
     .then((req, res, next) =>
@@ -47,15 +47,15 @@ displayForms()
     .then(() => setupDashboardRedirect())
     .then(() => setupResponseAdminRedirect());
 
-// responsavel por gerenciar a navegação dentro de tabs
+// responsável por gerenciar a navegação dentro de tabs
 navtabModificador();
 
-// Responsavel pela criação de forms atraves do modal
+// Responsável pela criação de forms através do modal
 createForm();
 
 fillUpModalsInfo();
 
-// gerenciar acesso de formulario
+// gerenciar acesso do formulário
 fetchAcessDelegation();
 handleSalvarButtonClick();
 
@@ -71,4 +71,4 @@ loadingScreen();
             window.location.reload();
         }
     };
-})();
+})();

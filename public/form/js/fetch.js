@@ -1,4 +1,4 @@
-import { getCookie } from './getCookie.js';
+import { getCookie } from '../../js/api.js';
 
 export async function fetchDeleteAlternatives(alternativeGroup) {
     try {

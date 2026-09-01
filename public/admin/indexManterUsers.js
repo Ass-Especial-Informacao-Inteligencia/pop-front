@@ -1,5 +1,5 @@
 import { loadingScreen } from './js/loadingScreen.js';
-import { logout } from './js/logout.js';
+import { logout } from '../js/api.js';
 import { addUsersForList } from './js/manterUser/geraTrUsuarios.js';
 import {
     limparFiltrosListUser,
@@ -21,18 +21,18 @@ themeToggle();
 
 fillUpModalsInfo();
 
-// listando todos os usuarios
+// listando todos os usuários
 addUsersForList();
 
-// validação de formulario front-end
+// validação de formulário front-end
 validaFormUser();
 
-// listar usuarios funções
+// listar usuários funções
 orderPerNameUsers();
 orderPerRoleUsers();
 limparFiltrosListUser();
 
-// barra de pesquisa para usuarios
+// barra de pesquisa para usuários
 pesquisarNaListaUsuarios();
 
 submit();
