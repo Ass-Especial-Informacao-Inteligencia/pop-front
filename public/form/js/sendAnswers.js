@@ -1,7 +1,7 @@
 import { getCookie } from '../../js/api.js';
 import { mostrarMensagem } from './geraNotificacao.js';
 
-export function capturarRespostas(ev) {
+export async function capturarRespostas(ev) {
     ev.preventDefault();
     const answersData = [];
     let numCaseRemoveCountForForm = 3;
