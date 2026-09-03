@@ -1,15 +1,13 @@
-import { themeToggle } from './js/temas.js';
+import { themeToggle } from '../js/temas.js';
 import { addQuestion, fetchFormQuestions } from './js/manterFormulario.js';
 import { captureAndSendQuestions } from './js/sendQuestions.js';
-import { getUserData } from '../js/api.js';
-import { logout } from '../js/api.js';
+import { getUserData, logout, getCookie } from '../js/api.js';
 import { deleteAlternatives } from './js/deleteAlternatives.js';
 import { deleteQuestion } from './js/deleteQuestion.js';
-import { fillUpModalsInfo } from './js/modals.js';
+import { fillUpModalsInfo } from '../js/userInfo.js';
 import { changeTittleAndDexcription } from './js/changeTitleAndDescription.js';
-import { getCookie } from '../js/api.js';
 import { getQuestions, HandlerRecicleEvents } from './js/recicleQuestions.js';
-import { loadingScreen } from './js/loadingScreen.js';
+import { loadingScreen } from '../js/loadingScreen.js';
 
 // gerencia temas da página
 themeToggle();

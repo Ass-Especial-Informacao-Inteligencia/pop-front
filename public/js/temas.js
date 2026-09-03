@@ -2,7 +2,6 @@ export function themeToggle() {
     const themeToggleButton = document.getElementById('themeToggle');
     const themeToggleIcon = themeToggleButton.firstElementChild;
 
-    // Função para aplicar o tema
     function applyTheme(theme) {
         if (theme === 'dark') {
             document.body.classList.add('dark-mode');
@@ -27,20 +26,18 @@ export function themeToggle() {
         }
     }
 
-    // Event listener para alternar o tema
+    function getSystemTheme() {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
     themeToggleButton.addEventListener('click', () => {
-        // Verifica o tema atual e alterna
         const isDarkMode = document.body.classList.contains('dark-mode');
         const newTheme = isDarkMode ? 'light' : 'dark';
-
-        // Aplica o novo tema
         applyTheme(newTheme);
-
-        // Salva o tema no localStorage
         localStorage.setItem('theme', newTheme);
     });
 
-    // Verifica e aplica o tema salvo no localStorage ao carregar a página
-    const savedTheme = localStorage.getItem('theme') || 'light'; // Padrão é 'light' se nada estiver salvo
-    applyTheme(savedTheme);
+    const savedTheme = localStorage.getItem('theme');
+    const initialTheme = savedTheme || getSystemTheme();
+    applyTheme(initialTheme);
 }

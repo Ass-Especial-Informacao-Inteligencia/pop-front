@@ -1,11 +1,10 @@
-import { fillUpModalsInfo } from './js/modals.js';
-import { themeToggle } from './js/temas.js';
-import { logout } from "../js/api.js";
-import { fetchResponsesForFormGraphics } from "./js/fetchAnswersForForm.js";
-import { getCookie } from "../js/api.js";
-import { MainEditGraphicsAndTables } from "./js/handlerDashboardActions.js";
-import { mostrarMensagem } from "./js/geraNotificacao.js";
-import { loadingScreen } from './js/loadingScreen.js';
+import { fillUpModalsInfo } from '../js/userInfo.js';
+import { themeToggle } from '../js/temas.js';
+import { logout, getCookie } from '../js/api.js';
+import { fetchResponsesForFormGraphics } from './js/fetchAnswersForForm.js';
+import { MainEditGraphicsAndTables } from './js/handlerDashboardActions.js';
+import { mostrarMensagem } from './js/geraNotificacao.js';
+import { loadingScreen } from '../js/loadingScreen.js';
 
 
 function hasValidFormData(formData) {
