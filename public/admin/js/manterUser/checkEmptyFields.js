@@ -12,19 +12,3 @@ export function checkEmptyFields(values, considerWhitespaceEmpty = false) {
 	}
 	return false; // Returns false if no field is empty
 }
-
-function validateCpfOrEmail(inputValue) {
-	// Expressão regular para validar um CPF
-	const cpfRegex = /^\d{11}$/;
-
-	// Expressão regular para validar um e-mail
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-	if (cpfRegex.test(inputValue)) {
-		return 'CPF';
-	} else if (emailRegex.test(inputValue)) {
-		return 'Email';
-	} else {
-		return 'Invalid';
-	}
-}
