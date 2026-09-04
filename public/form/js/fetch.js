@@ -6,9 +6,7 @@ export async function fetchDeleteAlternatives(alternativeGroup) {
         const response = await api.delete(`/deleteAlternative/${title}`, { alternativeGroup });
 
         if (!response.ok) {
-            console.log(response);
-        } else {
-            console.log(response);
+            throw new Error('Erro ao deletar alternativas');
         }
     } catch (error) {
         console.error('Error Deleting Alternative:', error);

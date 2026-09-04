@@ -11,7 +11,6 @@ export async function getQuestions() {
             throw new Error('Network response was not ok');
         }
         const questions = await response.json();
-        console.log(questions);
         
         return questions;
     } catch (error) {

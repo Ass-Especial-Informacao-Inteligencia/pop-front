@@ -62,7 +62,6 @@ export function handleSalvarButtonClick() {
             adicionarUsersComAcesso(users);
 
             mostrarMensagem("Sucesso ao Liberar acesso ao Formulário.","success",5);
-            console.log('Dados enviados com sucesso:', data);
         } catch (error) {
             mostrarMensagem("Falha na tentativa de Liberar Formulário.","danger",5);
             console.error('Erro ao delegar acesso:', error.message);
@@ -86,7 +85,6 @@ export function handleRemoveButtonClick() {
                 // Trate a resposta do servidor conforme necessário
                 const data = await response.json();
                 mostrarMensagem("Sucesso ao remover acesso.","success",5);
-                console.log(data);
             } catch (error) {
                 console.error('Erro:', error.message);
             }

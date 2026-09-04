@@ -83,8 +83,6 @@ export async function capturarRespostas(ev) {
         btnSubmitForOpenModal.dataset.target = "#confirmacaoModal";
     }
 
-    console.log(answersData);
-
     const title = getCookie('form');
 
     // Envia respostas do formulário via api centralizada

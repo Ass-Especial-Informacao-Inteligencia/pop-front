@@ -68,7 +68,6 @@ function deleteUser(valores) {
                 } else {
                     addUsersForList();
                     mostrarMensagem('Usuário desativado com sucesso.', 'success',5);
-                    console.log('Usuario desativado com sucesso');
                 }
             } catch (error) {
                 console.error('Erro ao desativar usuário:', error);
@@ -121,7 +120,6 @@ function editUser() {
             document.cookie = `editCPF=${cpf}; SameSite=None; Secure`;
             addUsersForList();
             mostrarMensagem('Usuário editado com sucesso.', 'success', 5);
-            console.log('Usuario editado com sucesso');
         } catch (error) {
             console.error('Erro ao criar Usuário:', error);
             throw error; // Re-lança o erro para manipulação em outro lugar, se necessário

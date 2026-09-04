@@ -29,7 +29,6 @@ themeToggle();
 
 // pega as respostas baseado no formulário para análise de dados
 export const formData = await fetchResponsesForFormGraphics(getCookie('form'));
-console.log(formData);
 
 hasValidFormData(formData) ? MainEditGraphicsAndTables() : mostrarMensagem("Nenhuma Resposta Cadastrada!", "danger", 10); // criação de manipulação de gráficos e tabelas
 

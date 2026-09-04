@@ -10,7 +10,6 @@ export async function captureAndSendQuestions() {
         const questionBody = questionCard.querySelector('.question-body')?.value.trim().replace(/[`"\'´‘’“”‛›«»]/g, '');
         let questionType = questionCard.querySelector('.question-type-select')?.value.trim();
         const position = questionCard.dataset.position;
-        console.log(questionId);
         //Condicional para alterar o tipo de quesitonType para Unica Escolha
         if (questionType ==='Unica Escolha-Bairro' || questionType === 'Unica Escolha-Ubs' || questionType === 'Unica Escolha-Setor') {
             questionType = 'Unica Escolha'
@@ -41,7 +40,6 @@ export async function captureAndSendQuestions() {
             position,
         };
         questionsData.push(questionData);
-        console.log(questionData);
     });
 
     const title = getCookie('form');

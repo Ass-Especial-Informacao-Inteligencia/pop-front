@@ -382,10 +382,8 @@ function addAlternative(questionId, questionType) {
         `;
         alternativesContainer.appendChild(alternativeContainer);
     } else if (questionType === 'Unica Escolha-Bairro') {
-        alternativesContainer.innerHTML = ''; // Limpa alternativas existentes
-        console.log(questionType)
+        alternativesContainer.innerHTML = '';
         questionType = 'Unica Escolha'
-        console.log(questionType)
 
         Object.entries(bairrosFerrazDeVasconcelos).forEach(([bairro, value], index) => {
             const alternativeId = `${questionId}-alt-${Date.now()}`;

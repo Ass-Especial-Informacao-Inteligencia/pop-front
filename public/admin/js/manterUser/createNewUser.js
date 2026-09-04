@@ -53,7 +53,6 @@ export async function signUp() {
             // If successful, update user list
             addUsersForList();
             mostrarMensagem('Usuário criado com sucesso.', 'success',5);
-            console.log('Usuário criado com sucesso');
         }
     } catch (error) {
         console.error('Erro ao criar Usuário:', error);
