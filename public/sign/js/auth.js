@@ -1,5 +1,6 @@
 import { mostrarMensagem } from './geraNotificacao.js';
 import { checkEmptyFields } from './checkEmptyFields.js';
+import { api } from '../../js/api.js'; // cliente API centralizado
 
 export { signIn };
 
@@ -15,11 +16,8 @@ async function signIn(ev) {
     }
 
     try {
-        const response = await fetch('/signin', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ account, password }),
-        });
+        // Envia credenciais via api centralizada (POST /signin)
+        const response = await api.post('/signin', { account, password });
 
         if (!response.ok) {
             const errorData = await response.json();

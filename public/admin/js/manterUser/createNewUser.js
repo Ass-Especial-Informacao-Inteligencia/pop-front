@@ -1,6 +1,7 @@
 import { mostrarMensagem } from '../geraNotificacao.js';
 import { checkEmptyFields } from './checkEmptyFields.js';
 import { addUsersForList } from './geraTrUsuarios.js';
+import { api } from '../../../../js/api.js'; // cliente API centralizado
 
 export async function signUp() {
     // Retrieving form data
@@ -24,14 +25,7 @@ export async function signUp() {
         const formData = { cpf, name, email, password, role };
 
         // Sending a POST request to /signup endpoint
-        const response = await fetch('/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                // Add other headers if needed
-            },
-            body: JSON.stringify(formData),
-        });
+        const response = await api.post('/signup', formData);
 
         const error = await response.json();
         const spanCpfMessage = document.getElementById('cpfErrorMessage');

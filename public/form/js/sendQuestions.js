@@ -1,4 +1,4 @@
-import { getCookie } from '../../js/api.js';
+import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
 
 export async function captureAndSendQuestions() {
     const questionsData = [];
@@ -51,11 +51,7 @@ export async function captureAndSendQuestions() {
     }
 
     try {
-        const response = await fetch(`/forms/link/${title}/questions`, {
-            method: 'POST',
-            body: JSON.stringify({ allQuestionsData: questionsData }),
-            headers: { 'Content-Type': 'application/json' },
-        });
+        const response = await api.post(`/forms/link/${title}/questions`, { allQuestionsData: questionsData });
 
         if (!response.ok) {
             throw new Error(`Falha ao enviar as questões: ${response.statusText}`);

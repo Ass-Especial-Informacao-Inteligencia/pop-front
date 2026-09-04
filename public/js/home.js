@@ -1,6 +1,8 @@
+import { api } from './api.js'; // cliente API centralizado
+
 async function redirectToHome() {
     try {
-        const response = await fetch('/userData');
+        const response = await api.get('/userData');
 
         if (!response.ok) {
             window.location.href = '/sign/index.html';

@@ -1,9 +1,10 @@
 import { clearError, displayError } from './errorHandler.js';
 import { mostrarMensagem } from './geraNotificacao.js';
+import { api } from '../../../js/api.js'; // cliente API centralizado
 
 export async function fetchActiveForms() {
     try {
-        const response = await fetch('/forms/active');
+        const response = await api.get('/forms/active');
         if (!response.ok) {
             throw new Error('Failed to fetch forms');
         }
@@ -11,43 +12,32 @@ export async function fetchActiveForms() {
         return forms;
     } catch (error) {
         console.error('Error fetching forms:', error);
-        throw error; // Re-throw the error to handle it elsewhere if needed
+        throw error;
     }
 }
 
 export async function fetchCreateForm(formData, errorElement) {
     try {
-        const response = await fetch('/forms/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                // outros cabeçalhos, se necessário
-            },
-            body: JSON.stringify(formData),
-        });
+        const response = await api.post('/forms/create', formData);
 
         if (!response.ok) {
             const error = await response.json();
-            displayError(error.message, errorElement); // Exibe o erro no elemento fornecido
+            displayError(error.message, errorElement);
             throw new Error(error.message);
         } else {
-            clearError(errorElement); // Limpa o erro do elemento fornecido
+            clearError(errorElement);
         }
 
         return response.json();
     } catch (error) {
         console.error('Erro ao criar formulário:', error);
-        throw error; // Re-lança o erro para manipulação em outro lugar, se necessário
+        throw error;
     }
 }
 
 export async function fetchDeactivatedForms() {
     try {
-        const response = await fetch('/forms/deactivated', {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+        const response = await api.get('/forms/deactivated');
         if (!response.ok) {
             throw new Error('Failed to fetch deactivated forms');
         }
@@ -61,7 +51,7 @@ export async function fetchDeactivatedForms() {
 
 export async function fetchFormsAgendados() {
     try {
-        const response = await fetch('/forms/agendados');
+        const response = await api.get('/forms/agendados');
         if (!response.ok) {
             throw new Error('Failed to fetch forms');
         }
@@ -69,13 +59,13 @@ export async function fetchFormsAgendados() {
         return forms;
     } catch (error) {
         console.error('Error fetching forms:', error);
-        throw error; // Re-throw the error to handle it elsewhere if needed
+        throw error;
     }
 }
 
 export async function fetchFormsFinalzados() {
     try {
-        const response = await fetch('/forms/finalizados');
+        const response = await api.get('/forms/finalizados');
         if (!response.ok) {
             throw new Error('Failed to fetch forms');
         }
@@ -83,17 +73,13 @@ export async function fetchFormsFinalzados() {
         return forms;
     } catch (error) {
         console.error('Error fetching forms:', error);
-        throw error; // Re-throw the error to handle it elsewhere if needed
+        throw error;
     }
 }
 
 export async function getOneForm(title) {
     try {
-        const response = await fetch(`/${title}/get`, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+        const response = await api.get(`/${title}/get`);
         if (!response.ok) {
             throw new Error('Failed to fetch deactivated forms');
         }
@@ -107,14 +93,7 @@ export async function getOneForm(title) {
 
 export async function fetchFormUpdate(params) {
     try {
-        // console.log(params);
-        const response = await fetch('/forms/update', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify( params ),
-        });
+        const response = await api.put('/forms/update', params);
         const data = await response.json();
         return data;
     } catch (error) {

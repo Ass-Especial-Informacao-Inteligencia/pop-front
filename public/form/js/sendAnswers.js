@@ -1,4 +1,4 @@
-import { getCookie } from '../../js/api.js';
+import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
 import { mostrarMensagem } from './geraNotificacao.js';
 
 export async function capturarRespostas(ev) {
@@ -87,26 +87,15 @@ export async function capturarRespostas(ev) {
 
     const title = getCookie('form');
 
-    // Enviar as respostas capturadas para o servidor
-    fetch(`/form/${title}/saveAnswers`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ answersData }),
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Erro ao salvar respostas');
-            }
-            return response.json();
-        })
-        .then((data) => {
-            console.log('Respostas salvas com sucesso:', data.message);
-            // Aqui você pode adicionar qualquer lógica adicional após o salvamento das respostas, se necessário
-        })
-        .catch((error) => {
-            console.error('Erro ao salvar respostas:', error);
-            // Tratar erros de salvamento, se necessário
-        });
+    // Envia respostas do formulário via api centralizada
+    try {
+        const response = await api.post(`/form/${title}/saveAnswers`, { answersData });
+        if (!response.ok) {
+            throw new Error('Erro ao salvar respostas');
+        }
+        const data = await response.json();
+        console.log('Respostas salvas com sucesso:', data.message);
+    } catch (error) {
+        console.error('Erro ao salvar respostas:', error);
+    }
 }

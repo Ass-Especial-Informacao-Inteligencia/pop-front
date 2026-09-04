@@ -1,6 +1,6 @@
 import { mostrarMensagem } from '../js/geraNotificacao.js';
 import { capturarRespostas } from './sendAnswers.js';
-import { getCookie } from '../../js/api.js';
+import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
 
 // Função para criar um input com autocomplete
 function criarAutocompleteInput(bairros, index, liberaAcesso) {
@@ -197,7 +197,7 @@ async function fetchFullForm() {
     try {
         const formName = getCookie('form');
 
-        const response = await fetch(`/getFullForm/${formName}`);
+        const response = await api.get(`/getFullForm/${formName}`);
         if (!response.ok) {
             throw new Error('Failed to fetch forms');
         }

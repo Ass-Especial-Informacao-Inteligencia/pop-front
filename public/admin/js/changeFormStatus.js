@@ -10,6 +10,7 @@ import {
     displayFormsFinalizados,
 } from './getFormularios.js';
 import { fillAccessModal } from './modals.js';
+import { api } from '../../../js/api.js'; // cliente API centralizado
 
 export function changeStatus(ev) {
     const disableButton = document.querySelector(
@@ -27,11 +28,8 @@ export function changeStatus(ev) {
             
             let active = status === 'true' ? false : true;
         
-            fetch('/forms/update', {
-                method: 'PUT',
-                body: JSON.stringify({ title, active }),
-                headers: { 'Content-Type': 'application/json' },
-            })
+            // Atualiza status do formulário via api centralizada
+            api.put('/forms/update', { title, active })
                 .then((response) => {
                     if (response.ok) {
                         mostrarMensagem("Formulário Arquivado/Desarquivado com Sucesso","success",5);

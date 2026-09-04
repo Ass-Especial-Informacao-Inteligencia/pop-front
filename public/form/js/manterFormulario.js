@@ -1,4 +1,5 @@
 import { mostrarMensagem } from "../js/geraNotificacao.js";
+import { api } from '../../js/api.js'; // cliente API centralizado
 let isRequestInProgress = false; // Variável de controle
 export function addQuestion() {
   if (isRequestInProgress) return; // Impede múltiplos cliques
@@ -86,7 +87,7 @@ function displayFormQuestionsFromFetch(questions) {
         questionsContainer.appendChild(questionCard);
   
         // Se a pergunta for de múltipla escolha ou única escolha, exiba as opções
-        if (question.type === 'Multipla Escolha' || question.type === 'Unica Escolha' || question.type === 'Unica Escolha-Bairro' || question.type === 'Unica Escolha-Ubs' || 'Unica Escolha-Setor') {
+        if (question.type === 'Multipla Escolha' || question.type === 'Unica Escolha' || question.type === 'Unica Escolha-Bairro' || question.type === 'Unica Escolha-Ubs' || question.type === 'Unica Escolha-Setor') {
             const addAlternativeButton = document.createElement('button');
             addAlternativeButton.type = 'button';
             addAlternativeButton.classList.add('btn', 'btn-secondary', 'mt-2', 'mb-2');
@@ -116,7 +117,7 @@ function displayFormQuestionsFromFetch(questions) {
 // carrega perguntas ja cadastradas
 export async function fetchFormQuestions(formName) {
     try {
-        const response = await fetch(`/getFullForm/${formName}`);
+        const response = await api.get(`/getFullForm/${formName}`);
         if (!response.ok) {
             throw new Error('Failed to fetch form questions');
         }

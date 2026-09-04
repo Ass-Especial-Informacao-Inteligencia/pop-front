@@ -1,15 +1,9 @@
-import { getCookie } from '../../js/api.js';
+import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
 
 export async function fetchDeleteAlternatives(alternativeGroup) {
     try {
         const title = getCookie('form');
-        const response = await fetch(`/deleteAlternative/${title}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ alternativeGroup }),
-        });
+        const response = await api.delete(`/deleteAlternative/${title}`, { alternativeGroup });
 
         if (!response.ok) {
             console.log(response);
@@ -18,39 +12,27 @@ export async function fetchDeleteAlternatives(alternativeGroup) {
         }
     } catch (error) {
         console.error('Error Deleting Alternative:', error);
-        throw error; // Re-throw the error to handle it elsewhere if needed
+        throw error;
     }
 }
 
-export async function fetchDeleteQuestion(body,questionId) {
+export async function fetchDeleteQuestion(body, questionId) {
     try {
         const title = getCookie('form');
-        const response = await fetch(`/form/${title}/question`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ body,questionId }),
-        });
+        const response = await api.delete(`/form/${title}/question`, { body, questionId });
 
         if (!response.ok) {
             console.error('Error:', response.statusText);
-        } 
+        }
     } catch (error) {
         console.error('Error Deleting Question:', error);
-        throw error; // Re-throw the error to handle it elsewhere if needed
+        throw error;
     }
 }
 
 export async function fetchFormUpdate(params) {
     try {
-        const response = await fetch('/forms/update', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(params),
-        });
+        const response = await api.put('/forms/update', params);
         const data = await response.json();
         return data;
     } catch (error) {

@@ -1,6 +1,7 @@
 import { adicionarUsersComAcesso } from './accessFormDelegation.js';
 import { mostrarMensagem } from './geraNotificacao.js';
 import { getUsersWithAccess } from './searchUsers.js';
+import { api } from '../../../js/api.js'; // cliente API centralizado
 
 // Função para listar os usuários com acesso em formato JSON
 export function listarUsuariosComAcesso() {
@@ -46,13 +47,7 @@ export function handleSalvarButtonClick() {
 
         // Faz um fetch para enviar os dados JSON para o servidor
         try {
-            const response = await fetch('/access/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ selectedUsers, title, openToAll }),
-            });
+            const response = await api.post('/access/users', { selectedUsers, title, openToAll });
 
             if (!response.ok) {
                 mostrarMensagem("Falha na tentativa de Liberar Formulário.","danger");
@@ -84,13 +79,7 @@ export function handleRemoveButtonClick() {
             const cpf = button.parentNode.querySelector('.CPF').dataset.cpf;
             // Faz um fetch para enviar os dados JSON para o servidor
             try {
-                const response = await fetch('/delete/access/users', {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ cpf, title }),
-                });
+                const response = await api.delete('/delete/access/users', { cpf, title });
                 if (!response.ok) {
                     throw new Error('Erro ao apagar os dados para o servidor');
                 }

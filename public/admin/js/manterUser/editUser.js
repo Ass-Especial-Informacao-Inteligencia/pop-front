@@ -1,5 +1,5 @@
 import { mostrarMensagem } from '../geraNotificacao.js';
-import { getCookie } from '../../../js/api.js';
+import { getCookie, api } from '../../../js/api.js'; // cliente API centralizado
 import { addUsersForList } from './geraTrUsuarios.js';
 
 // Função para capturar os valores dos atributos data das células da linha
@@ -60,14 +60,7 @@ function deleteUser(valores) {
         .addEventListener('click', async () => {
             const cpf = valores.cpf;
             try {
-                const response = await fetch('/delete/user', {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        // outros cabeçalhos, se necessário
-                    },
-                    body: JSON.stringify({ cpf }),
-                });
+                const response = await api.delete('/delete/user', { cpf });
 
                 if (!response.ok) {
                     const error = await response.json();
@@ -102,14 +95,7 @@ function editUser() {
 
         try {
             const newUserInfo = { cpf, name, email, password, role };
-            const response = await fetch('/edit/user', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // outros cabeçalhos, se necessário
-                },
-                body: JSON.stringify({ newUserInfo, oldCPF }),
-            });
+            const response = await api.put('/edit/user', { newUserInfo, oldCPF });
 
             if (!response.ok) {
                 const message = await response.json();
@@ -150,25 +136,17 @@ export function restoreButton(event) {
 }
 
 
-function restoreUser(userId) {
-    fetch('/restore/user', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: userId }),
-    })
-    .then(async response => {
+async function restoreUser(userId) {
+    try {
+        const response = await api.put('/restore/user', { id: userId });
         if (!response.ok) {
             const error = await response.json();
             throw new Error(error.message);
         } else {
-            await addUsersForList(); // Atualiza a lista de usuários após a restauração
+            await addUsersForList();
             mostrarMensagem('Usuário restaurado com sucesso.', 'success', 5);
-            console.log('Usuário restaurado com sucesso');
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('Erro ao restaurar usuário:', error);
-    });
+    }
 }

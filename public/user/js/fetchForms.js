@@ -1,6 +1,8 @@
+import { api } from '../../js/api.js'; // cliente API centralizado
+
 export async function fetchActiveForms() {
     try {
-        const response = await fetch('/forms/active');
+        const response = await api.get('/forms/active');
         if (!response.ok) {
             throw new Error('Failed to fetch forms');
         }
@@ -8,6 +10,6 @@ export async function fetchActiveForms() {
         return forms;
     } catch (error) {
         console.error('Error fetching forms:', error);
-        throw error; // Re-throw the error to handle it elsewhere if needed
+        throw error;
     }
 }

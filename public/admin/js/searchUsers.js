@@ -1,3 +1,5 @@
+import { api } from '../../../js/api.js'; // cliente API centralizado
+
 export async function searchUsers(searchTerm, selectedUsers) {
     try {
         const searchData = {
@@ -5,13 +7,7 @@ export async function searchUsers(searchTerm, selectedUsers) {
             selectedUsers: selectedUsers,
         };
 
-        const response = await fetch('/search/users', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(searchData),
-        });
+        const response = await api.post('/search/users', searchData);
 
         if (!response.ok) {
             throw new Error('Erro ao buscar usuários');
@@ -27,7 +23,7 @@ export async function searchUsers(searchTerm, selectedUsers) {
 
 export async function getUsersWithAccess(title) {
     try {
-        const response = await fetch(`/form/usersWithAccess/${title}`);
+        const response = await api.get(`/form/usersWithAccess/${title}`);
 
         if (!response.ok) {
             throw new Error('Erro ao buscar usuários');

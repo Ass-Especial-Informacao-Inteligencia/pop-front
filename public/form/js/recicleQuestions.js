@@ -1,12 +1,12 @@
 import { questionsRecicle } from '../indexForm.js';
-import { getCookie } from '../../js/api.js';
+import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
 import { mostrarMensagem } from './geraNotificacao.js';
 
 // Função para pegar todas as questões
 export async function getQuestions() {
     const title = getCookie('form');
     try {
-        const response = await fetch(`/questions/${title}/all`);
+        const response = await api.get(`/questions/${title}/all`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

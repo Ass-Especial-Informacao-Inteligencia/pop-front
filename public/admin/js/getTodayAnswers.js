@@ -1,3 +1,5 @@
+import { api } from '../../../js/api.js'; // cliente API centralizado
+
 document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
     let totalAnswers = [];
@@ -46,7 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchAnswers() {
         try {
-            const response = await fetch('/allAnswers');
+            // Busca todas as respostas via api centralizada
+            const response = await api.get('/allAnswers');
 
             if (!response.ok) {
                 throw new Error(`Erro: ${response.status}`);
@@ -153,13 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch(`/updateAnswer/${interviewedId}/${questionId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ answer: inputElement.value }),
-            });
+            // Atualiza resposta individual via api centralizada
+            const response = await api.put(`/updateAnswer/${interviewedId}/${questionId}`, { answer: inputElement.value });
 
             if (response.ok) {
                 alert('Resposta atualizada com sucesso!');
