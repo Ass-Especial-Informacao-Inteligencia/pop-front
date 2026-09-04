@@ -1,12 +1,13 @@
 import { fetchActiveForms } from './fetchForms.js';
 import { createCardLayout } from './geraCardsForm.js';
+import { getUserData } from '../../js/api.js';
 
 export async function displayForms() {
     try {
+        const user = await getUserData();
         const forms = await fetchActiveForms();
-        createCardLayout(forms);
+        createCardLayout('cardContainer', forms, user);
     } catch (error) {
-        // Handle error here, e.g., display an error message to the user
         console.error('Error displaying forms:', error);
     }
 }
