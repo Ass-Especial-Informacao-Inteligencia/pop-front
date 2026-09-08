@@ -17,8 +17,11 @@ export function getCookie(name) {
 }
 
 // ── CSRF token ──
+// O cookie contém "token|hash"; o header X-CSRF-Token espera só o token.
 function getCsrfToken() {
-    return getCookie('csrfToken');
+    const cookie = getCookie('csrfToken');
+    if (!cookie) return null;
+    return cookie.split('|')[0];
 }
 
 // ── Request wrapper ──
