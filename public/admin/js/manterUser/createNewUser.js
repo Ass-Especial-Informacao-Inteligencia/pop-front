@@ -33,6 +33,7 @@ export async function signUp() {
 
         if (!response.ok) {
             const error = await response.json();
+            console.error('Signup error:', error);
             // Handling specific error cases
             if (error.cpfMessage) {
                 spanCpfMessage.textContent = error.cpfMessage;

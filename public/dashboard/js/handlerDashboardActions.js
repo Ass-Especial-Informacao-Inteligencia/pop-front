@@ -40,7 +40,7 @@ function populateSelectOptions(selectElement, options, position) {
 }
 
 function updateOptions(questionId, position, isAlteration) {
-    const question = formData.Questions.Questions.find(
+    const question = formData.Questions.find(
         (q) => q.id === questionId
     );
     if (question) {
@@ -58,7 +58,7 @@ function updateOptions(questionId, position, isAlteration) {
 }
 
 function toggleAlternatives(questionId, position, button) {
-    const question = formData.Questions.Questions.find(
+    const question = formData.Questions.find(
         (q) => parseInt(q.id) === parseInt(questionId)
     );
     if (question) {
@@ -111,8 +111,8 @@ function populationHandlerEventListeners() {
     
     const dataOption = document.getElementById('dataOption');
 
-    populateSelectOptions(selectX, formData.Questions.Questions, 'X');
-    populateSelectOptions(selectY, formData.Questions.Questions, 'Y');
+    populateSelectOptions(selectX, formData.Questions, 'X');
+    populateSelectOptions(selectY, formData.Questions, 'Y');
 
     selectX.addEventListener('change', () => {
         const xField = selectX.value;
@@ -154,7 +154,7 @@ function populationHandlerEventListeners() {
 }
 
 function populationSingleQuestionAndListeners() {
-    formData.Questions.Questions.forEach((question) => {
+    formData.Questions.forEach((question) => {
         if (question.type === 'Multipla Escolha' || question.type === 'Unica Escolha') {
             const optionElement = document.createElement('option');
             optionElement.textContent = question.body;
@@ -188,7 +188,7 @@ function populateAlternativesAndListeners() {
 
     selectX.addEventListener('change', () => {
         const selectedQuestionIdX = selectX.value;
-        const selectedQuestion = formData.Questions.Questions.find(
+        const selectedQuestion = formData.Questions.find(
             (question) => question.id === parseInt(selectedQuestionIdX)
         );
 
@@ -201,7 +201,7 @@ function populateAlternativesAndListeners() {
 
     selectY.addEventListener('change', () => {
         const selectedQuestionIdY = selectY.value;
-        const selectedQuestion = formData.Questions.Questions.find(
+        const selectedQuestion = formData.Questions.find(
             (question) => question.id === parseInt(selectedQuestionIdY)
         );
 

@@ -7,7 +7,7 @@ export function generateColorPickers(formData, yField) {
     if (yField && yField.value !== '') {
         const colorPickersContainer = document.getElementById('color-pickers');
         colorPickersContainer.innerHTML = '';
-        const yOptions = formData.Questions.Questions.find(
+        const yOptions = formData.Questions.find(
             (q) => `${q.id}` === `${yField}`
         ).Options.map((obj) => obj.text);
 
@@ -305,7 +305,7 @@ export function updateVisualizations() {
 
 // Função para obter as opções de um campo
 export function getOptions(formData, fieldId) {
-    const question = formData.Questions.Questions.find((q) => `${q.id}` === `${fieldId}`);
+    const question = formData.Questions.find((q) => `${q.id}` === `${fieldId}`);
 
     if (!question) return [];
 
@@ -342,5 +342,5 @@ function countAnswers(formData, xField, xOption, yField, yOption) {
 }
 // Função para obter o rótulo de uma pergunta
 function getQuestionLabel(formData, fieldId) {
-    return formData.Questions.Questions.find((q) => `${q.id}` === `${fieldId}`).body;
+    return formData.Questions.find((q) => `${q.id}` === `${fieldId}`).body;
 }

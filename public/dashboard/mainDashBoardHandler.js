@@ -9,11 +9,11 @@ import { loadingScreen } from '../js/loadingScreen.js';
 
 function hasValidFormData(formData) {
   if (!formData || typeof formData !== 'object') return false;
-  if (!formData.Answers || !formData.Questions || !formData.Questions.Questions) return false;
+  if (!formData.Answers || !formData.Questions) return false;
   return (
     Object.keys(formData).length >= 1 &&
     Object.keys(formData.Answers).length >= 1 &&
-    Object.keys(formData.Questions.Questions).length >= 1
+    (Array.isArray(formData.Questions) ? formData.Questions.length >= 1 : Object.keys(formData.Questions).length >= 1)
   );
 }
 
