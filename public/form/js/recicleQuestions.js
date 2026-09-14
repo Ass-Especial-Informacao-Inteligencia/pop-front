@@ -56,7 +56,8 @@ function addQuestionFromModal(question) {
     let alternativesHtml = '';
 
     if (question.type === 'Multipla Escolha' || question.type === 'Unica Escolha' || question.type === 'Unica Escolha-Bairro' || question.type === 'Unica Escolha-Ubs' || question.type === 'Unica Escolha-Setor') {
-        alternativesHtml = question.Options.map((option, index) => {
+        const options = question.Options || [];
+        alternativesHtml = options.map((option, index) => {
             const alternativeId = `${questionId}-alt-${index}`;
             return `
                 <div class="input-group mb-2">
@@ -85,11 +86,14 @@ function addQuestionFromModal(question) {
             </div>
             <div class="form-group">
                 <label for="${questionId}-type">Tipo de Questão</label>
-                <select class="form-control question-type-select" id="${questionId}-type" onchange="changeQuestionType('${questionId}')">
-                    <option value="Resposta Curta" ${question.type === 'Resposta Curta' ? 'selected' : ''}>Resposta Curta</option>
-                    <option value="Multipla Escolha" ${question.type === 'Multipla Escolha' ? 'selected' : ''}>Múltipla Escolha</option>
-                    <option value="Unica Escolha" ${question.type === 'Unica Escolha' ? 'selected' : ''}>Única Escolha</option>
-                </select>
+                    <select class="form-control question-type-select" id="${questionId}-type" onchange="changeQuestionType('${questionId}')">
+                        <option value="Resposta Curta" ${question.type === 'Resposta Curta' ? 'selected' : ''}>Resposta Curta</option>
+                        <option value="Multipla Escolha" ${question.type === 'Multipla Escolha' ? 'selected' : ''}>Múltipla Escolha</option>
+                        <option value="Unica Escolha" ${question.type === 'Unica Escolha' ? 'selected' : ''}>Única Escolha</option>
+                        <option value="Unica Escolha-Bairro" ${question.type === 'Unica Escolha-Bairro' ? 'selected' : ''}>Única Escolha-Bairro</option>
+                        <option value="Unica Escolha-Ubs" ${question.type === 'Unica Escolha-Ubs' ? 'selected' : ''}>Única Escolha-Ubs</option>
+                        <option value="Unica Escolha-Setor" ${question.type === 'Unica Escolha-Setor' ? 'selected' : ''}>Única Escolha-Setor</option>
+                    </select>
             </div>
             ${question.type === 'Resposta Curta' ? '' : `<div id="${questionId}-alternatives" class="form-group overflow-auto"  style="max-height:200px;">${alternativesHtml}</div>`}
             <button type="button" class="btn btn-danger" onclick="removeQuestion('${questionId}')">Remover Questão</button>

@@ -25,11 +25,7 @@ export async function capturarRespostas(ev) {
     
         let questionType = questionLabel.dataset.type;
     
-        // Se o questionType for "Unica Escolha-Bairro", altere para "Unica Escolha"
-        if (questionType === 'Unica Escolha-Bairro') {
-            questionType = 'Unica Escolha';
-        }
-        if (questionType === 'Unica Escolha-Setor') {
+        if (questionType === 'Unica Escolha-Bairro' || questionType === 'Unica Escolha-Ubs' || questionType === 'Unica Escolha-Setor') {
             questionType = 'Unica Escolha';
         }
     
@@ -92,7 +88,6 @@ export async function capturarRespostas(ev) {
             throw new Error('Erro ao salvar respostas');
         }
         const data = await response.json();
-        console.log('Respostas salvas com sucesso:', data.message);
     } catch (error) {
         console.error('Erro ao salvar respostas:', error);
     }

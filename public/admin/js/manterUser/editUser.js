@@ -14,7 +14,7 @@ function capturarValoresLinha(linha) {
     return valores;
 }
 
-// // Função de manipulador de evento para o clique no botão de edição
+// Função de manipulador de evento para o clique no botão de edição
 export function handleEditarClick() {
     const linha = this.closest('tr'); // Encontra a linha pai do botão clicado
     
@@ -55,25 +55,26 @@ function eraseError(errorElement) {
 }
 
 function deleteUser(valores) {
-    document
-        .querySelector('#confirmarExclusao')
-        .addEventListener('click', async () => {
-            const cpf = valores.cpf;
-            try {
-                const response = await api.delete('/delete/user', { cpf });
+    const btnConfirmar = document.querySelector('#confirmarExclusao');
+    const clonedBtn = btnConfirmar.cloneNode(true);
+    btnConfirmar.parentNode.replaceChild(clonedBtn, btnConfirmar);
 
-                if (!response.ok) {
-                    const error = await response.json();
-                    throw new Error(error.message);
-                } else {
-                    addUsersForList();
-                    mostrarMensagem('Usuário desativado com sucesso.', 'success',5);
-                }
-            } catch (error) {
-                console.error('Erro ao desativar usuário:', error);
-                throw error; // Re-lança o erro para manipulação em outro lugar, se necessário
+    clonedBtn.addEventListener('click', async () => {
+        const cpf = valores.cpf;
+        try {
+            const response = await api.delete('/delete/user', { cpf });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message);
+            } else {
+                addUsersForList();
+                mostrarMensagem('Usuário desativado com sucesso.', 'success',5);
             }
-        });
+        } catch (error) {
+            console.error('Erro ao desativar usuário:', error);
+        }
+    });
 }
 
 function editUser() {
@@ -93,7 +94,10 @@ function editUser() {
         const role = document.getElementById('editarFuncao').value;
 
         try {
-            const newUserInfo = { cpf, name, email, password, role };
+            const newUserInfo = { cpf, name, email, role };
+            if (password && password.length >= 6) {
+                newUserInfo.password = password;
+            }
             const response = await api.put('/edit/user', { newUserInfo, oldCPF });
 
             if (!response.ok) {
@@ -121,7 +125,7 @@ function editUser() {
             addUsersForList();
             mostrarMensagem('Usuário editado com sucesso.', 'success', 5);
         } catch (error) {
-            console.error('Erro ao criar Usuário:', error);
+            console.error('Erro ao editar Usuário:', error);
             throw error; // Re-lança o erro para manipulação em outro lugar, se necessário
         }
     });
