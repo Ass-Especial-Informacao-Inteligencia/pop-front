@@ -3,7 +3,7 @@ export function setupDashboardRedirect() {
     links.forEach((link) => {
         link.addEventListener('click', () => {
             const route = link.getAttribute('data-form');
-            document.cookie = `form=${route};`;
+            document.cookie = `form=${route}; path=/`;
             window.location.href = `/dashboard`;
         });
     });
@@ -14,7 +14,7 @@ export function setupResponseAdminRedirect() {
     links.forEach((link) => {
         link.addEventListener('click', () => {
             const route = link.getAttribute('data-form');
-            document.cookie = `form=${route};`;
+            document.cookie = `form=${route}; path=/`;
             window.location.href = `/adminResponse/${route}`;
         });
     });

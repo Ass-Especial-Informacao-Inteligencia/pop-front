@@ -17,5 +17,5 @@ function redirectFormPage(route) {
 }
 
 function setFormCookie(route) {
-    document.cookie = `form=${route};`;
+    document.cookie = `form=${route}; path=/`;
 }

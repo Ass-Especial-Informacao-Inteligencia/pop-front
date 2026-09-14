@@ -70,6 +70,6 @@ export function createForm() {
 
 function openFormCreated() {
     const title = document.getElementById('title').value.trim();
-    document.cookie = `form=${title};`; // Set a cookie with the form title
+    document.cookie = `form=${title}; path=/`; // Set a cookie with the form title
     window.location.href = `/edit/${encodeURIComponent(title)}`; // Redirect to edit page for the newly created form
 }
