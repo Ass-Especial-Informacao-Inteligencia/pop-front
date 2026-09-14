@@ -5,7 +5,7 @@ import { getUserData, logout, getCookie } from '../js/api.js';
 import { deleteAlternatives } from './js/deleteAlternatives.js';
 import { deleteQuestion } from './js/deleteQuestion.js';
 import { fillUpModalsInfo } from '../js/userInfo.js';
-import { changeTittleAndDexcription } from './js/changeTitleAndDescription.js';
+import { changeTitleAndDescription } from './js/changeTitleAndDescription.js';
 import { getQuestions, HandlerRecicleEvents } from './js/recicleQuestions.js';
 import { loadingScreen } from '../js/loadingScreen.js';
 
@@ -35,12 +35,12 @@ if (user.role === 'admin') {
 
     deleteAlternatives();
     await deleteQuestion();
-    changeTittleAndDexcription();
+    changeTitleAndDescription();
     if (questionsRecicle.length >= 1) {
         await HandlerRecicleEvents();
     } else {
-        const btnReclicleQuestions = document.getElementById('btnRecicleQuestionForm');
-        btnReclicleQuestions.style.display = 'none';
+        const btnRecycleQuestions = document.getElementById('btnRecicleQuestionForm');
+        btnRecycleQuestions.style.display = 'none';
     }
 }
 
@@ -48,7 +48,7 @@ const logoutAnchor = document.getElementById('logout-conta');
 logoutAnchor.addEventListener('click', logout);
 
 document.addEventListener('keypress', function(event) {
-    if (event.keyCode === 13) {
+    if (event.key === 'Enter') {
       event.preventDefault();
     }
 });

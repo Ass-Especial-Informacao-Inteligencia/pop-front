@@ -63,7 +63,7 @@ export async function fetchFormsAgendados() {
     }
 }
 
-export async function fetchFormsFinalzados() {
+export async function fetchFormsFinalizados() {
     try {
         const response = await api.get('/forms/finalizados');
         if (!response.ok) {
@@ -81,12 +81,12 @@ export async function getOneForm(title) {
     try {
         const response = await api.get(`/${title}/get`);
         if (!response.ok) {
-            throw new Error('Failed to fetch deactivated forms');
+            throw new Error('Failed to fetch form');
         }
         const form = await response.json();
         return form;
     } catch (error) {
-        console.error('Error fetching deactivated forms:', error);
+        console.error('Error fetching form:', error);
         throw error;
     }
 }

@@ -21,7 +21,6 @@ export function changeStatus(ev) {
         const card = this.parentNode.parentNode.querySelector(
             '.modal-body h5 span'
         );
-        // console.log(card);
         if (card) {
             const title = card.innerText;
             const status = card.dataset.active; // ou true ou false

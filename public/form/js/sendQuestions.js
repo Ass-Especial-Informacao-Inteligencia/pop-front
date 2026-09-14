@@ -10,7 +10,7 @@ export async function captureAndSendQuestions() {
         const questionBody = questionCard.querySelector('.question-body')?.value.trim().replace(/[`"\'´‘’“”‛›«»]/g, '');
         let questionType = questionCard.querySelector('.question-type-select')?.value.trim();
         const position = questionCard.dataset.position;
-        //Condicional para alterar o tipo de quesitonType para Unica Escolha
+        //Condicional para alterar o tipo de questionType para Unica Escolha
         if (questionType ==='Unica Escolha-Bairro' || questionType === 'Unica Escolha-Ubs' || questionType === 'Unica Escolha-Setor') {
             questionType = 'Unica Escolha'
         }
@@ -24,13 +24,13 @@ export async function captureAndSendQuestions() {
         const options = [];
         if (questionType === 'Multipla Escolha' || questionType === 'Unica Escolha' || questionType === 'Unica Escolha-Bairro' || questionType === 'Unica Escolha-Ubs' || questionType === 'Unica Escolha-Setor') {
             const optionInputs = questionCard.querySelectorAll('.question-alternatives');
-            optionInputs.forEach(async (input) => {
+            for (const input of optionInputs) {
                 const idOption = input.dataset.idoption;
                 const optionValue = input.value.trim();
                 if (optionValue) {
                     options.push({ text: optionValue, id: idOption });
-                }                
-            });
+                }
+            }
         }
         const questionData = {
             questionId,

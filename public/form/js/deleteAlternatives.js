@@ -38,7 +38,6 @@ export function deleteAlternatives() {
                 text: inputText,
                 body: questionBody,
             };
-            // console.log(alternativeGroup);
             fetchDeleteAlternatives(alternativeGroup)
                 .then(() => {
                     mostrarMensagem('Alternativa Excluida com sucesso!','success',5);

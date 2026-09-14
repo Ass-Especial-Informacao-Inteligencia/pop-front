@@ -2,7 +2,7 @@ import {
     fetchActiveForms,
     fetchDeactivatedForms,
     fetchFormsAgendados,
-    fetchFormsFinalzados,
+    fetchFormsFinalizados,
 } from './fetchForms.js';
 import {
     createCardDesactiveLayout,
@@ -45,7 +45,7 @@ export async function displayFormsAgendados() {
 export async function displayFormsFinalizados() {
     try {
         const user = await getUserData();
-        const forms = await fetchFormsFinalzados();
+        const forms = await fetchFormsFinalizados();
         createCardLayout('cardFinalizadosContainer', forms, user);
     } catch (error) {
         // Tratar erro aqui, ex: exibir mensagem de erro ao usuário

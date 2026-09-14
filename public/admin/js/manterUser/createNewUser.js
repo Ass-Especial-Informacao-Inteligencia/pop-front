@@ -27,11 +27,12 @@ export async function signUp() {
         // Sending a POST request to /signup endpoint
         const response = await api.post('/signup', formData);
 
-        const error = await response.json();
         const spanCpfMessage = document.getElementById('cpfErrorMessage');
         const spanAdminMessage = document.getElementById('message');
         const spanEmailMessage = document.getElementById('emailErrorMessage');
+
         if (!response.ok) {
+            const error = await response.json();
             // Handling specific error cases
             if (error.cpfMessage) {
                 spanCpfMessage.textContent = error.cpfMessage;
@@ -48,7 +49,8 @@ export async function signUp() {
                 eraseError(spanEmailMessage);
             }
         } else {
-            spanAdminMessage.textContent = error.userCreatedMessage;
+            const data = await response.json();
+            spanAdminMessage.textContent = data.userCreatedMessage;
             eraseError(spanAdminMessage);
             // If successful, update user list
             addUsersForList();

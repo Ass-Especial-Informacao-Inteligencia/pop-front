@@ -47,8 +47,7 @@ export function addQuestion() {
 // Atualize displayFormQuestionsFromFetch da mesma forma
 function displayFormQuestionsFromFetch(questions) {
     const questionsContainer = document.getElementById('questions-container');
-    questionsContainer.innerHTML = ''; // Limpa qualquer conteúdo anterior
-    // console.log(questions);
+    questionsContainer.innerHTML = '';
     
     questions.forEach((question, index) => {
         const questionId = `question-${index}`;
@@ -124,10 +123,10 @@ export async function fetchFormQuestions(formName) {
         const formData = await response.json();
         
         const formTitle = document.getElementById('form-title');
-        const formDescripiton = document.getElementById('form-description');
+        const formDescription = document.getElementById('form-description');
 
         formTitle.textContent = formData.title;
-        formDescripiton.textContent = formData.description;
+        formDescription.textContent = formData.description;
         
         displayFormQuestionsFromFetch(formData.Questions);
         liberarEdicaoParaFormularioNovo(formData.created_at,formData.active,formData.expiry_date);

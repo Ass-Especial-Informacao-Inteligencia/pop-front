@@ -50,7 +50,7 @@ export function handleSalvarButtonClick() {
             const response = await api.post('/access/users', { selectedUsers, title, openToAll });
 
             if (!response.ok) {
-                mostrarMensagem("Falha na tentativa de Liberar Formulário.","danger");
+                mostrarMensagem("Falha na tentativa de Liberar Formulário.","danger",5);
                 throw new Error('Erro ao enviar os dados para o servidor');
             }
 

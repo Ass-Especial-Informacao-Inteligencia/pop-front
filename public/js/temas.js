@@ -1,5 +1,7 @@
 export function themeToggle() {
     const themeToggleButton = document.getElementById('themeToggle');
+    if (!themeToggleButton) return;
+    
     const themeToggleIcon = themeToggleButton.firstElementChild;
 
     function applyTheme(theme) {

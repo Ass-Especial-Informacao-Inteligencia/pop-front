@@ -226,7 +226,7 @@ async function fetchFullForm() {
 function limitaRespostaParaFormAtivos(active,expiry_date) {
     if (active) {
         // O formulário está ativo
-        if (expiry_date && expiry_date <= new Date()) {
+        if (expiry_date && new Date(expiry_date) <= new Date()) {
             // O formulário está ativo, mas já expirou, então não recebe resposta
             mostrarMensagem('O formulário está ativo, mas já expirou, então não recebe mais respostas!','danger',7);
             return false;

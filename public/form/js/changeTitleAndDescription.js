@@ -1,6 +1,6 @@
 import { fetchFormUpdate } from '../js/fetch.js';
 
-export function changeTittleAndDexcription() {
+export function changeTitleAndDescription() {
     const titleElement = document.querySelector('#form-title');
     const descriptionElement = document.querySelector('#form-description');
 
@@ -26,7 +26,6 @@ export function changeTittleAndDexcription() {
             newTitle,
             description: newDescription,
         };
-        // console.log(params);
 
         await fetchFormUpdate(params);
         window.location.href = `/edit/${encodeURIComponent(newTitle)}`;

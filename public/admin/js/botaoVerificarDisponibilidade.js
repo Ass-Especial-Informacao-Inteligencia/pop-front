@@ -53,7 +53,6 @@ export async function btnVerificaDisponibilidade() {
                         alert('A data de abertura deve ser anterior à data de fechamento.');
                         return; // Aborta a requisição se a validação falhar
                     }
-                    // console.log(opening_date);
                     await fetchFormUpdate(params).then(() =>
                         displayForms()
                             .then(() => displayFormsDesativados())
