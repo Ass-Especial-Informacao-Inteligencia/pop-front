@@ -1,0 +1,78 @@
+/* ══════════════════════════════════════════════
+   POP — Design Tokens
+   ══════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ── Cores primárias ── */
+  --color-primary: #0047ff;
+  --color-primary-light: #0048ffb9;
+  --color-secondary: #ffffff;
+
+  /* ── Background ── */
+  --bg-body: #e0f1f8;
+  --bg-body-dark: #121212;
+
+  /* ── Superfícies ── */
+  --surface: #ffffff;
+  --surface-dark: #1f1f1f;
+  --surface-dark-alt: #2a2a2a;
+
+  /* ── Texto ── */
+  --text: #333333;
+  --text-dark: #ffffff;
+  --text-muted: #6c757d;
+
+  /* ── Bordas ── */
+  --border: #dee2e6;
+  --border-dark: #444444;
+
+  /* ── Feedback ── */
+  --color-success: #28a745;
+  --color-danger: #dc3545;
+  --color-warning: #ffc107;
+  --color-info: #17a2b8;
+
+  /* ── Sombras ── */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+
+  /* ── Border radius ── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  /* ── Espaçamento ── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* ── Tipografia ── */
+  --font-family: 'Poppins', sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+
+  /* ── Transições ── */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 350ms ease;
+
+  /* ── Login (migrado de sign/styles.css) ── */
+  --login-form-padding: 50px;
+  --login-form-padding-mobile: 30px;
+  --login-button-font-size: 12px;
+  --login-button-padding: 12px 45px;
+  --login-button-padding-mobile: 10px 35px;
+  --login-container-width: 768px;
+  --login-container-min-height: 480px;
+  --login-container-min-height-mobile: 600px;
+}
