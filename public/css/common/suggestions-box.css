@@ -1,0 +1,14 @@
+/* ══════════════════════════════════════════════
+   POP — Autocomplete Suggestions
+   ══════════════════════════════════════════════ */
+
+.custom-suggestion {
+  background-color: #f1eaea;
+  border: 1px solid #ccc;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.custom-suggestion:hover {
+  background-color: #ddd;
+}

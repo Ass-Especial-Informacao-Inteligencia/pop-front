@@ -1,0 +1,92 @@
+/* ══════════════════════════════════════════════
+   POP — Navbar / Layout base
+   ══════════════════════════════════════════════ */
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: var(--font-family, 'Poppins', sans-serif);
+  background-color: var(--bg-body, #e0f1f8);
+}
+
+.container {
+  flex: 1;
+}
+
+.footer {
+  background-color: #f5f5f5;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.fixed-bottom-right {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* ── Nav tabs ── */
+.nav-tabs .nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+a.nav-link.text-dark.active {
+  background: var(--color-primary, #0d6efd);
+  color: white !important;
+  border-radius: 5px;
+}
+
+.nav-tabs .nav-link:focus,
+.nav-tabs .nav-link:hover {
+  border: rgba(255, 255, 255, 0.1) 1px solid;
+}
+
+/* ── Nav tabs light mode ── */
+.nav-tabs {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.nav-tabs .nav-link {
+  color: #000000;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* ── Utilities ── */
+.hidden {
+  display: none;
+}
+
+.watermark {
+  position: fixed;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  opacity: 0.3;
+  max-width: 380px;
+  height: auto;
+}
+
+/* ── Responsive: nav tabs ── */
+@media (max-width: 768px) {
+  .nav-tabs .nav-link {
+    flex-direction: column;
+  }
+
+  .nav-tabs .nav-link .d-none {
+    display: none;
+  }
+}

@@ -1,0 +1,109 @@
+/* ══════════════════════════════════════════════
+   POP — Dark Mode
+   ══════════════════════════════════════════════ */
+
+/* ── Body ── */
+.dark-mode {
+  background-color: var(--bg-body-dark) !important;
+  color: var(--text-dark) !important;
+}
+
+/* ── Navbar ── */
+.dark-mode .navbar {
+  background-color: var(--surface-dark) !important;
+}
+
+.dark-mode .navbar .nav-link,
+.dark-mode .navbar .navbar-brand,
+.dark-mode .navbar .btn {
+  color: var(--text-dark) !important;
+}
+
+.dark-mode .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* ── Jumbotron ── */
+.dark-mode .jumbotron {
+  background-color: var(--surface-dark-alt) !important;
+}
+
+/* ── Cards ── */
+.dark-mode .card {
+  background-color: var(--surface-dark) !important;
+}
+
+/* ── Footer ── */
+.dark-mode footer {
+  background-color: var(--surface-dark) !important;
+}
+
+/* ── Tabs ── */
+.dark-mode .nav-tabs {
+  background-color: var(--surface-dark) !important;
+  color: var(--text-dark) !important;
+}
+
+.dark-mode .nav-tabs .nav-link {
+  color: var(--text-dark) !important;
+}
+
+.dark-mode .nav-tabs .nav-link.active {
+  background-color: var(--surface-dark-alt) !important;
+  color: var(--text-dark) !important;
+}
+
+/* ── Modal ── */
+.dark-mode .modal-content {
+  background-color: var(--surface-dark) !important;
+  color: var(--text-dark) !important;
+}
+
+.dark-mode .modal-header {
+  background-color: var(--surface-dark-alt) !important;
+  border-bottom: 1px solid var(--text-dark) !important;
+  color: var(--text-dark) !important;
+}
+
+.dark-mode .modal-title {
+  color: var(--text-dark) !important;
+}
+
+.dark-mode .modal-body {
+  color: var(--text-dark) !important;
+}
+
+.dark-mode .modal-footer {
+  background-color: var(--surface-dark-alt) !important;
+  border-top: 1px solid var(--text-dark) !important;
+  color: var(--text-dark) !important;
+}
+
+.dark-mode .modal-content .close {
+  color: var(--text-dark) !important;
+}
+
+.dark-mode .modal-body .overflow-auto .list-group li {
+  color: var(--surface-dark-alt);
+}
+
+/* ── Feedback ── */
+.dark-mode .valid-feedback,
+.dark-mode .invalid-feedback {
+  color: var(--text-dark);
+}
+
+/* ── Dashboard / Charts ── */
+.dark-mode .chart-container {
+  color: var(--text-dark);
+  background-color: var(--surface-dark-alt);
+}
+
+.dark-mode .chart-container .chart-canvas {
+  background: white;
+}
+
+.dark-mode .list-container {
+  background: var(--surface-dark-alt);
+  color: var(--text-dark);
+}
