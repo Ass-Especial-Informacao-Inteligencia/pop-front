@@ -28,9 +28,3 @@ table th {
 table td {
   background-color: inherit;
 }
-.dark-mode table td{
-  color: white;
-}
-.dark-mode canvas {
-  background-color: #f2f2f2;
-}

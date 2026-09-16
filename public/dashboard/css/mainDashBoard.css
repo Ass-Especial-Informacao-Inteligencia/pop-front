@@ -4,6 +4,7 @@
 @import url('../../css/common/dark-mode.css');
 @import url('./graficoStyle.css');
 @import url('../../css/common/loading.css');
+@import url('../../css/common/icons.css');
 
 .scrollable-container {
   max-height: 150px;
@@ -13,8 +14,4 @@
 .scrollable-container-table {
   max-width: auto;
   overflow-y: auto;
-}
-
-.dark-mode th {
-  color: black;
 }

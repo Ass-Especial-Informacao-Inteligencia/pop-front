@@ -10,7 +10,7 @@ import { pesquisarNaListaUsuarios } from './js/manterUser/searchInListUsers.js';
 import { submit } from './js/manterUser/submit.js';
 import { validaFormUser } from './js/manterUser/validaFormNewUser.js';
 import { fillUpModalsInfo } from './js/modals.js';
-import { themeToggle } from './js/themeToggle.js';
+import { themeToggle } from '../js/temas.js';
 
 // Faz logout
 const logoutAnchor = document.getElementById('logout-conta');

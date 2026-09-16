@@ -4,16 +4,15 @@ import { btnVerificaDisponibilidade } from './js/botaoVerificarDisponibilidade.j
 import { adicionaDataInModalArquivar, changeStatus } from './js/changeFormStatus.js';
 import { createForm } from './js/createFormHandler.js';
 import { setupDashboardRedirect, setupResponseAdminRedirect } from './js/dashboardRedict.js';
-import { fetchAcessDelegation } from './js/fetchAcessDelegationUsers.js';
+import { fetchAccessDelegation } from './js/fetchAccessDelegationUsers.js';
 import { handleSalvarButtonClick } from './js/fetchDelegationForm.js';
 import { setupFormRedirect } from './js/formRedirect.js';
 import { displayForms, displayFormsAgendados, displayFormsDesativados, displayFormsFinalizados } from './js/getFormularios.js';
-import { getUserData } from '../js/api.js';
+import { getUserData, logout } from '../js/api.js';
 import { loadingScreen } from './js/loadingScreen.js';
-import { logout } from '../js/api.js';
 import { fillAccessModal, fillUpModalsInfo, showModalAgendamentoInputs } from './js/modals.js';
 import { navtabModificador, updatetabsPerUser } from './js/navtab.js';
-import { themeToggle } from './js/themeToggle.js';
+import { themeToggle } from '../js/temas.js';
 
 const user = await getUserData(); // Capturando informações do usuário
 
@@ -56,7 +55,7 @@ createForm();
 fillUpModalsInfo();
 
 // gerenciar acesso do formulário
-fetchAcessDelegation();
+fetchAccessDelegation();
 handleSalvarButtonClick();
 
 // modal de agendamento funções
