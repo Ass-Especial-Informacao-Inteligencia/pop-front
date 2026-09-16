@@ -5,6 +5,15 @@ import { fetchResponsesForFormGraphics } from './js/fetchAnswersForForm.js';
 import { MainEditGraphicsAndTables } from './js/handlerDashboardActions.js';
 import { mostrarMensagem } from './js/geraNotificacao.js';
 import { loadingScreen } from '../js/loadingScreen.js';
+import { renderLoadingScreen } from '../js/components/loadingScreen.js';
+import { renderThemeToggle } from '../js/components/themeToggle.js';
+import { renderFooter } from '../js/components/footer.js';
+import { renderProfileModal } from '../js/components/profileModal.js';
+
+// Injeta componentes compartilhados
+document.getElementById('sharedComponents').innerHTML =
+    renderThemeToggle() + renderFooter('./') + renderLoadingScreen();
+document.getElementById('perfilModalPlaceholder').innerHTML = renderProfileModal({ isAdmin: true });
 
 
 function hasValidFormData(formData) {

@@ -69,59 +69,10 @@
         <!-- view formulario -->
         <div class="container mt-5 mb-5" id="formulario-container"></div>
 
-        <!-- Modal de Perfil -->
-        <div
-            class="modal fade"
-            id="perfilModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="perfilModalLabel"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="perfilModalLabel">
-                            <i class="fas fa-user-circle mr-2"></i>Perfil do Usuário
-                        </h5>
-                        <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                        >
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Informações do Perfil -->
-                        <div class="row">
-                            <div class="col-md-4 d-flex justify-content-center align-items-center">
-                                <i class="fas fa-user fa-5x"></i>
-                            </div>
-                            <div class="col-md-8">
-                                <p>
-                                    <strong>Nome:</strong>
-                                    <span id="modal-name"></span>
-                                </p>
-                                <p>
-                                    <strong>CPF:</strong>
-                                    <span id="modal-cpf"></span>
-                                </p>
-                                <p>
-                                    <strong>Email:</strong>
-                                    <span id="modal-email"></span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <p>Para atualizar suas informações, solicite para um administrador.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
+        <!-- Componentes compartilhados (injetados via JS) -->
+        <div id="perfilModalPlaceholder"></div>
+        <div id="sharedComponents"></div>
+
         <!-- Modal de Pergunta se desse cadastrar mais resposta -->
         <div class="modal fade" id="confirmacaoModal" tabindex="-1" role="dialog" aria-labelledby="confirmacaoModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-top" role="document">
@@ -141,51 +92,6 @@
                         <a class="btn btn-secondary" href="/home">Início</a>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- botão temas -->
-        <div class="fixed-bottom-right">
-            <button class="btn btn-secondary" id="themeToggle" role="button">
-                <i class="fas fa-moon"></i>
-            </button>
-        </div>
-
-        <!-- Rodapé -->
-        <footer class="bg-light text-center py-4">
-            <div class="container">
-                <p>Uma parceria entre</p>
-                <div
-                    class="row justify-content-center align-items-center d-flex justify-content-center align-items-center"
-                >
-                    <img
-                        src="../src/logo-fatec-ferraz.png"
-                        alt="Logo da Fatec Ferraz de Vasconcelos"
-                        class="img-fluid"
-                        style="max-width: 100px; padding: 15px"
-                    />
-                    <img
-                        src="../src/BRASAO-PREFEITURA-DE-FERRAZ.png"
-                        alt="Logo da Prefeitura de Ferraz de Vasconcelos"
-                        class="img-fluid"
-                        style="max-width: 50px; margin-bottom: 15px"
-                    />
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <p class="mb-0 mt-3">
-                            Desenvolvido por: Fatec Ferraz de Vasconcelos.<br />
-                            &copy; 2024 POP Prefeitura Municipal de Ferraz de
-                            Vasconcelos, Todos os direitos reservados.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-        <div id="loadingScreen">
-            <div class="spinner-border" role="status">
-                <span class="sr-only">Carregando...</span>
             </div>
         </div>
 

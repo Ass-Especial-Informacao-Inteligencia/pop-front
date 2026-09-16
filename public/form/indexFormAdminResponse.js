@@ -2,6 +2,15 @@ import { themeToggle } from '../js/temas.js';
 import { logout } from '../js/api.js';
 import { fillUpModalsInfo } from '../js/userInfo.js';
 import { loadingScreen } from '../js/loadingScreen.js';
+import { renderLoadingScreen } from '../js/components/loadingScreen.js';
+import { renderThemeToggle } from '../js/components/themeToggle.js';
+import { renderFooter } from '../js/components/footer.js';
+import { renderProfileModal } from '../js/components/profileModal.js';
+
+// Injeta componentes compartilhados
+document.getElementById('sharedComponents').innerHTML =
+    renderThemeToggle() + renderFooter('../') + renderLoadingScreen();
+document.getElementById('perfilModalPlaceholder').innerHTML = renderProfileModal({ isAdmin: true });
 
 // gerencia temas da página
 themeToggle();

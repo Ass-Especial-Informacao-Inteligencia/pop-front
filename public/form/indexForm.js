@@ -8,13 +8,24 @@ import { fillUpModalsInfo } from '../js/userInfo.js';
 import { changeTitleAndDescription } from './js/changeTitleAndDescription.js';
 import { getQuestions, HandlerRecicleEvents } from './js/recicleQuestions.js';
 import { loadingScreen } from '../js/loadingScreen.js';
+import { renderLoadingScreen } from '../js/components/loadingScreen.js';
+import { renderThemeToggle } from '../js/components/themeToggle.js';
+import { renderFooter } from '../js/components/footer.js';
+import { renderProfileModal } from '../js/components/profileModal.js';
+
+// Injeta componentes compartilhados
+const user = await getUserData();
+const isAdmin = user.role === 'admin';
+document.getElementById('sharedComponents').innerHTML =
+    renderThemeToggle() + renderFooter('../') + renderLoadingScreen();
+document.getElementById('perfilModalPlaceholder').innerHTML =
+    renderProfileModal({ isAdmin });
 
 // gerencia temas da página
 themeToggle();
 
 fillUpModalsInfo();
 
-const user = await getUserData();
 export const questionsRecicle = user.role === 'admin' ? await getQuestions(): []; // questões para copiar de outros formulários
 
 if (user.role === 'admin') {

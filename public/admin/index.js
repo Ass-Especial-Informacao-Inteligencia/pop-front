@@ -13,6 +13,15 @@ import { loadingScreen } from './js/loadingScreen.js';
 import { fillAccessModal, fillUpModalsInfo, showModalAgendamentoInputs } from './js/modals.js';
 import { navtabModificador, updatetabsPerUser } from './js/navtab.js';
 import { themeToggle } from '../js/temas.js';
+import { renderLoadingScreen } from '../js/components/loadingScreen.js';
+import { renderThemeToggle } from '../js/components/themeToggle.js';
+import { renderFooter } from '../js/components/footer.js';
+import { renderProfileModal } from '../js/components/profileModal.js';
+
+// Injeta componentes compartilhados
+document.getElementById('sharedComponents').innerHTML =
+    renderThemeToggle() + renderFooter('./') + renderLoadingScreen();
+document.getElementById('perfilModalPlaceholder').innerHTML = renderProfileModal({ isAdmin: true });
 
 const user = await getUserData(); // Capturando informações do usuário
 
