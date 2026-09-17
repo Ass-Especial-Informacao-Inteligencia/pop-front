@@ -6,6 +6,16 @@ import { renderLoadingScreen } from '../js/components/loadingScreen.js';
 import { renderThemeToggle } from '../js/components/themeToggle.js';
 import { renderFooter } from '../js/components/footer.js';
 import { renderProfileModal } from '../js/components/profileModal.js';
+import { renderNavbar } from '../js/components/navbar.js';
+
+// Injeta navbar
+document.getElementById('navbarPlaceholder').innerHTML = renderNavbar({
+    role: 'admin',
+    activeTab: 'home',
+    logoPath: '../src/',
+    showSearch: false,
+    searchPlaceholder: ''
+});
 
 // Injeta componentes compartilhados
 document.getElementById('sharedComponents').innerHTML =
@@ -17,6 +27,7 @@ themeToggle();
 
 fillUpModalsInfo();
 
+// Faz logout
 const logoutAnchor = document.getElementById('logout-conta');
 logoutAnchor.addEventListener('click', logout);
 document.addEventListener('keypress', function(event) {

@@ -9,11 +9,25 @@ import { renderLoadingScreen } from '../js/components/loadingScreen.js';
 import { renderThemeToggle } from '../js/components/themeToggle.js';
 import { renderFooter } from '../js/components/footer.js';
 import { renderProfileModal } from '../js/components/profileModal.js';
+import { renderNavbar } from '../js/components/navbar.js';
+
+// Injeta navbar
+document.getElementById('navbarPlaceholder').innerHTML = renderNavbar({
+    role: 'admin',
+    activeTab: 'home',
+    logoPath: './src/',
+    showSearch: false,
+    searchPlaceholder: ''
+});
 
 // Injeta componentes compartilhados
 document.getElementById('sharedComponents').innerHTML =
     renderThemeToggle() + renderFooter('./') + renderLoadingScreen();
 document.getElementById('perfilModalPlaceholder').innerHTML = renderProfileModal({ isAdmin: true });
+
+// Faz logout
+const logoutAnchor = document.getElementById('logout-conta');
+logoutAnchor.addEventListener('click', logout);
 
 
 function hasValidFormData(formData) {
@@ -31,9 +45,6 @@ tituloFormulario.innerText = getCookie('form');
 
 // adiciona info no modal de alterar perfil
 fillUpModalsInfo();
-
-const logoutAnchor = document.getElementById('logout-conta');
-logoutAnchor.addEventListener('click', logout);
 
 // gerencia temas da página
 themeToggle();

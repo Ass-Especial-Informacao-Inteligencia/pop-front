@@ -15,6 +15,16 @@ import { renderLoadingScreen } from '../js/components/loadingScreen.js';
 import { renderThemeToggle } from '../js/components/themeToggle.js';
 import { renderFooter } from '../js/components/footer.js';
 import { renderProfileModal } from '../js/components/profileModal.js';
+import { renderNavbar } from '../js/components/navbar.js';
+
+// Injeta navbar
+document.getElementById('navbarPlaceholder').innerHTML = renderNavbar({
+    role: 'admin',
+    activeTab: 'usuarios',
+    logoPath: './src/',
+    showSearch: true,
+    searchPlaceholder: 'Pesquisar Usuários'
+});
 
 // Injeta componentes compartilhados
 document.getElementById('sharedComponents').innerHTML =

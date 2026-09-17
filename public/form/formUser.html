@@ -13,46 +13,8 @@
     </head>
     <body>
         
-        <!-- Cabeçalho de navegação -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-            <a class="navbar-brand" href="/home">
-                <img
-                    src="../src/BRASAO-PREFEITURA-DE-FERRAZ.png"
-                    width="30"
-                    height="30"
-                    class="d-inline-block align-top"
-                    alt="Logo"
-                />
-            </a>
-
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarNav"
-                aria-controls="navbarNav"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" id="logout-conta" href="#"
-                            >Sair</a
-                        >
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="modal" data-target="#perfilModal" style="cursor: pointer !important;">Perfil</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <!-- Navbar (injetada via JS) -->
+        <div id="navbarPlaceholder"></div>
 
         <!-- Conteúdo Principal -->
         <div class="form-image-container">

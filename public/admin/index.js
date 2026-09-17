@@ -17,13 +17,23 @@ import { renderLoadingScreen } from '../js/components/loadingScreen.js';
 import { renderThemeToggle } from '../js/components/themeToggle.js';
 import { renderFooter } from '../js/components/footer.js';
 import { renderProfileModal } from '../js/components/profileModal.js';
+import { renderNavbar } from '../js/components/navbar.js';
+
+const user = await getUserData();
+
+// Injeta navbar
+document.getElementById('navbarPlaceholder').innerHTML = renderNavbar({
+    role: user.role,
+    activeTab: 'home',
+    logoPath: './src/',
+    showSearch: true,
+    searchPlaceholder: 'Pesquisar Formulário'
+});
 
 // Injeta componentes compartilhados
 document.getElementById('sharedComponents').innerHTML =
     renderThemeToggle() + renderFooter('./') + renderLoadingScreen();
 document.getElementById('perfilModalPlaceholder').innerHTML = renderProfileModal({ isAdmin: true });
-
-const user = await getUserData(); // Capturando informações do usuário
 
 // Faz logout
 const logoutAnchor = document.getElementById('logout-conta');
