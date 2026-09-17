@@ -14,9 +14,8 @@ export async function displayForms() {
     try {
         const user = await getUserData();
         const forms = await fetchActiveForms();
-        createCardLayout('cardContainer', forms, user);
+        createCardLayout('cardContainer', forms, user, 'active');
     } catch (error) {
-        // Tratar erro aqui, ex: exibir mensagem de erro ao usuário
         console.error('Error displaying forms:', error);
     }
 }
@@ -24,9 +23,8 @@ export async function displayForms() {
 export async function displayFormsDesativados() {
     try {
         const forms = await fetchDeactivatedForms();
-        createCardDesactiveLayout(forms);
+        createCardDesactiveLayout(forms, 'disabled');
     } catch (error) {
-        // Tratar erro aqui, ex: exibir mensagem de erro ao usuário
         console.error('Error displaying forms:', error);
     }
 }
@@ -35,9 +33,8 @@ export async function displayFormsAgendados() {
     try {
         const user = await getUserData();
         const forms = await fetchFormsAgendados();
-        createCardLayout('cardAgendadosContainer', forms, user);
+        createCardLayout('cardAgendadosContainer', forms, user, 'scheduled');
     } catch (error) {
-        // Tratar erro aqui, ex: exibir mensagem de erro ao usuário
         console.error('Error displaying forms:', error);
     }
 }
@@ -46,9 +43,8 @@ export async function displayFormsFinalizados() {
     try {
         const user = await getUserData();
         const forms = await fetchFormsFinalizados();
-        createCardLayout('cardFinalizadosContainer', forms, user);
+        createCardLayout('cardFinalizadosContainer', forms, user, 'finished');
     } catch (error) {
-        // Tratar erro aqui, ex: exibir mensagem de erro ao usuário
         console.error('Error displaying forms:', error);
     }
 }

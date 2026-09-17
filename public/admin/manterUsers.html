@@ -46,7 +46,7 @@
 
         <!-- Conteúdo Principal -->
         <div class="container">
-            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;background-color: white;margin: 10px;">
+            <div class="table-responsive table-scrollable">
                 <table class="table table-striped">
                     <thead class="thead-light sticky-top">
                         <tr>
@@ -59,7 +59,7 @@
                     </thead>
                     <tbody class="bg-white text-dark">
                         <!-- precisa dessa vazia para dar certo -->
-                        <tr><td></td><td><td></td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td><td></td><td></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -167,7 +167,7 @@
                                 <div class="form-group">
                                     <label for="editarEmail">E-mail</label>
                                     <input type="email" class="form-control" id="editarEmail" placeholder="Digite o E-mail" required>
-                                    <span style="color: red;" id="editModalEmailMessage"></span>
+                                    <span class="text-danger" id="editModalEmailMessage"></span>
                                 </div>
                             </div>
                             
@@ -175,7 +175,7 @@
                                 <div class="form-group">
                                     <label for="editarCPF">CPF</label>
                                     <input type="text" class="form-control" id="editarCPF" placeholder="Digite o CPF sem pontuação." required>
-                                    <span style="color: red;" id="editModalCpfMessage"></span>
+                                    <span class="text-danger" id="editModalCpfMessage"></span>
                                 </div>
                             </div>
                         </div>
@@ -201,7 +201,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <span style="color: red;" id="editModalAdminMessage"></span>
+                        <span class="text-danger" id="editModalAdminMessage"></span>
 
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         <button type="button" class="btn btn-primary" id="btnSalvarEdicao">Atualizar</button>

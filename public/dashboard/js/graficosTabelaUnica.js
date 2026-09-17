@@ -137,7 +137,6 @@ export function generateSingleQuestionBarChart(tableRows = []) {
         return colorPicker ? colorPicker.value : getRandomColor(); // Usa uma cor aleatória caso o seletor não esteja presente
     });
 
-    // Cria uma nova instância do gráfico com as cores individualizadas
     chartContainer.chartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -147,21 +146,39 @@ export function generateSingleQuestionBarChart(tableRows = []) {
                     label: 'Porcentagem (%)', // Define o label para a legenda
                     data: tableRows.map((row) => parseFloat(row[1])),
                     backgroundColor: colors, // Define as cores personalizadas
+                    borderRadius: 6,
+                    barThickness: 28,
                 },
             ],
         },
         options: {
+            indexAxis: 'y',
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 20,
+                },
+            },
             plugins: {
                 legend: {
-                    display: true, // Exibe a legenda
+                    display: true,
+                    position: 'top',
                 },
             },
             scales: {
-                y: {
+                x: {
                     beginAtZero: true,
                     max: 100,
                     ticks: {
                         stepSize: 10,
+                    },
+                    grid: {
+                        display: false,
+                    },
+                },
+                y: {
+                    grid: {
+                        display: false,
                     },
                 },
             },

@@ -80,6 +80,25 @@ a.nav-link.text-dark.active {
   height: auto;
 }
 
+/* ── Jumbotron hero ── */
+.home-jumbotron {
+  background: linear-gradient(135deg, #0d7377, #0a5c5f);
+  color: #ffffff;
+  border-radius: var(--radius-md, 12px);
+  padding: 2rem 2.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.home-jumbotron h1 {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.home-jumbotron .lead {
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 0;
+}
+
 /* ── Responsive: nav tabs ── */
 @media (max-width: 768px) {
   .nav-tabs .nav-link {

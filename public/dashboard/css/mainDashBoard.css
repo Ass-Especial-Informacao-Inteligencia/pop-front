@@ -12,6 +12,15 @@
 }
 
 .scrollable-container-table {
-  max-width: auto;
   overflow-y: auto;
+}
+
+.chart-container canvas,
+.single-question-chart-container canvas {
+  max-height: 500px;
+}
+
+.chart-container,
+.single-question-chart-container {
+  padding: 10px 0;
 }

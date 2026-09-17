@@ -1,8 +1,3 @@
-function getRandomColor() {
-    const randomNumber = Math.floor(Math.random() * 16777215);
-    return `#${randomNumber.toString(16).padStart(6, '0')}`;
-}
-
 function buildEmptyState() {
     return `
         <div class="card border-primary mb-3 mt-4">
@@ -25,7 +20,7 @@ function bindOpenAnswersPage() {
     });
 }
 
-export function createCardLayout(container, data, user) {
+export function createCardLayout(container, data, user, status = 'active') {
     const cardContainer = document.getElementById(container);
     cardContainer.innerHTML = '';
 
@@ -40,7 +35,7 @@ export function createCardLayout(container, data, user) {
         data.forEach((card) => {
             cardContainer.innerHTML += `
                 <div class="card grid-item">
-                    <div class="card-header" style="background-color:${getRandomColor()};"></div>
+                    <div class="card-header" data-status="${status}"></div>
                     <div class="card-body" data-status="${card.active === true ? 'active' : 'disable'}">
                         <h5 class="card-title">${card.title}</h5>
                         <p class="card-text">${card.description}</p>
@@ -72,7 +67,7 @@ export function createCardLayout(container, data, user) {
     data.forEach((card) => {
         cardContainer.innerHTML += `
             <div class="card grid-item">
-                <div class="card-header" style="background-color:${getRandomColor()};"></div>
+                <div class="card-header" data-status="${status}"></div>
                 <div class="card-body" data-status="${card.active === true ? 'active' : 'disable'}">
                     <h5 class="card-title">${card.title}</h5>
                     <p class="card-text">${card.description}</p>
@@ -83,7 +78,7 @@ export function createCardLayout(container, data, user) {
     });
 }
 
-export function createCardDesactiveLayout(data) {
+export function createCardDesactiveLayout(data, status = 'disabled') {
     const cardContainer = document.getElementById('cardDesativadosContainer');
     cardContainer.innerHTML = '';
 
@@ -97,7 +92,7 @@ export function createCardDesactiveLayout(data) {
     data.forEach((card) => {
         cardContainer.innerHTML += `
             <div class="card grid-item">
-                <div class="card-header" style="background-color:${getRandomColor()};"></div>
+                <div class="card-header" data-status="${status}"></div>
                 <div class="card-body" data-status="${card.active === true ? 'active' : 'disable'}">
                     <h5 class="card-title">${card.title}</h5>
                     <p class="card-text">${card.description}</p>

@@ -1,7 +1,7 @@
 @import url('../../css/variables.css');
 
 :root {
-	--input-bg-color: #eee;
+	--input-bg-color: var(--surface-muted, #eee);
 	--input-border-color: 0 none;
 }
 
@@ -45,6 +45,7 @@ a {
 	text-decoration: none;
 	margin: 15px 0;
 }
+
 button#signInButton{
 	border-radius: var(--radius-lg);
 	border: 1px solid var(--color-primary);
@@ -69,7 +70,8 @@ button#signInButton:active {
 }
 
 button#signInButton:focus {
-	outline: none;
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
 }
 
 button#signInButton.ghost {
@@ -96,10 +98,15 @@ input {
 	width: 100%;
 }
 
+input:focus {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+}
+
 .container {
 	background-color: var(--color-secondary);
 	border-radius: 10px;
-	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+	box-shadow: var(--shadow-lg);
 	position: relative;
 	overflow: hidden;
 	width: var(--login-container-width);
@@ -160,7 +167,7 @@ input {
 	height: 100%;
 	overflow: hidden;
 	transition: transform 0.6s ease-in-out;
-	z-index: 100;
+	z-index: 10;
 }
 
 .container.right-panel-active .overlay-container {
@@ -169,10 +176,10 @@ input {
 
 .overlay {
 	background: linear-gradient(
-		45deg,
-		rgba(2, 0, 36, 1) 0%,
-		rgba(9, 9, 121, 1) 35%,
-		rgba(0, 212, 255, 1) 100%
+		135deg,
+		#0d7377 0%,
+		#0a5c5f 50%,
+		#074a4c 100%
 	);
 	background-repeat: no-repeat;
 	background-size: cover;

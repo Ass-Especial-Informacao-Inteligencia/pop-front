@@ -27,22 +27,26 @@
         <div class="container" id="container">
 
             <div class="form-container sign-in-container">
-                <form id="sign-in-form">
+                <form id="sign-in-form" aria-label="Formulário de login">
                     <h1>Login</h1>
                     <span>use seu login</span>
+                    <label for="sign-in-cpf-email" class="sr-only">CPF ou Email</label>
                     <input
                         required
                         type="text"
                         placeholder="CPF ou Email"
                         id="sign-in-cpf-email"
+                        autocomplete="username"
                     />
+                    <label for="sign-in-password" class="sr-only">Senha</label>
                     <input
                         required
                         type="password"
                         placeholder="Senha"
                         id="sign-in-password"
+                        autocomplete="current-password"
                     />
-                    <span style="color: red" id="errorMessage"></span><br>
+                    <span class="text-danger" id="errorMessage" role="alert"></span><br>
                    
                     <button type="submit" id="signInButton">Login</button><br>
                     <span>Esqueceu sua senha? Procure um Administrador.</span>

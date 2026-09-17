@@ -6,8 +6,8 @@
 
 :root {
   /* ── Cores primárias ── */
-  --color-primary: #0047ff;
-  --color-primary-light: #0048ffb9;
+  --color-primary: #0d7377;
+  --color-primary-light: #0d7377b9;
   --color-secondary: #ffffff;
 
   /* ── Background ── */
@@ -24,6 +24,9 @@
   --text-dark: #ffffff;
   --text-muted: #6c757d;
 
+  /* ── Superfícies auxiliares ── */
+  --surface-muted: #f2f2f2;
+
   /* ── Bordas ── */
   --border: #dee2e6;
   --border-dark: #444444;
@@ -33,6 +36,12 @@
   --color-danger: #dc3545;
   --color-warning: #ffc107;
   --color-info: #17a2b8;
+
+  /* ── Status (cards por aba) ── */
+  --status-active: #0d7377;
+  --status-disabled: #5f8a8b;
+  --status-scheduled: #8fad2e;
+  --status-finished: #2e7d32;
 
   /* ── Sombras ── */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);

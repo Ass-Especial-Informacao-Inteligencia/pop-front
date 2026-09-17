@@ -219,9 +219,24 @@ export function generateCrossedBarChart(formData, xField, yField, dataOption) {
         }
 
         let optionsChart = {
+            indexAxis: 'y',
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 20,
+                },
+            },
             scales: {
-                y: {
+                x: {
                     beginAtZero: true,
+                    grid: {
+                        display: false,
+                    },
+                },
+                y: {
+                    grid: {
+                        display: false,
+                    },
                 },
             },
         };
@@ -247,14 +262,31 @@ export function generateCrossedBarChart(formData, xField, yField, dataOption) {
                         Array.isArray(a) ? a.includes(xOption) : a === xOption
                     ).length;
                     
-                    // Define opções de gráfico para exibir percentuais no eixo y
+                    // Define opções de gráfico para exibir percentuais no eixo x
                     optionsChart = {
-                        y: {
-                            beginAtZero: true,
-                            min: 0,
-                            max: 100,
-                            ticks: {
-                                stepSize: 10,
+                        indexAxis: 'y',
+                        layout: {
+                            padding: {
+                                left: 10,
+                                right: 20,
+                            },
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                min: 0,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 10,
+                                },
+                                grid: {
+                                    display: false,
+                                },
+                            },
+                            y: {
+                                grid: {
+                                    display: false,
+                                },
                             },
                         },
                     };
@@ -272,11 +304,13 @@ export function generateCrossedBarChart(formData, xField, yField, dataOption) {
             
             // Retorna um objeto de dataset com o rótulo, os dados, e as cores configuradas
             return {
-                label: yOption,                // Rótulo da série de dados (opção de yField)
-                data: data,                    // Dados da série de dados
-                backgroundColor: selectedColor, // Cor de fundo da série de dados
-                borderColor: selectedColor,     // Cor da borda da série de dados
-                borderWidth: 1,                 // Largura da borda da série de dados
+                label: yOption,
+                data: data,
+                backgroundColor: selectedColor,
+                borderColor: selectedColor,
+                borderWidth: 1,
+                borderRadius: 6,
+                barThickness: 28,
             };
         });
 

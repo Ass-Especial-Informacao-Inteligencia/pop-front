@@ -7,24 +7,16 @@ export function themeToggle() {
     function applyTheme(theme) {
         if (theme === 'dark') {
             document.body.classList.add('dark-mode');
-            document.querySelectorAll('.navbar, .jumbotron, .card, footer, thead, tbody, tr').forEach((element) => {
-                element.classList.add('dark-mode');
-            });
-            document.querySelectorAll('.nav-tabs').forEach((element) => {
-                element.classList.add('dark-mode-tabs');
-            });
             themeToggleIcon.classList.remove('fa-moon');
             themeToggleIcon.classList.add('fa-sun');
         } else {
             document.body.classList.remove('dark-mode');
-            document.querySelectorAll('.navbar, .jumbotron, .card, footer, thead, tbody, tr').forEach((element) => {
-                element.classList.remove('dark-mode');
-            });
-            document.querySelectorAll('.nav-tabs').forEach((element) => {
-                element.classList.remove('dark-mode-tabs');
-            });
             themeToggleIcon.classList.remove('fa-sun');
             themeToggleIcon.classList.add('fa-moon');
+        }
+        if (typeof Chart !== 'undefined') {
+            Chart.defaults.color = theme === 'dark' ? '#ffffff' : '#666666';
+            Chart.defaults.borderColor = theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
         }
     }
 
