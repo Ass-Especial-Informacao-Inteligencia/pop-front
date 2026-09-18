@@ -23,7 +23,7 @@ export async function updatetabsPerUser() {
     if (isAdmin) {
         // Se o usuário for um administrador, mostrar as duas abas e o conteúdo de arquivados
         $('#desativados-tab').parent().show(); // Mostra o tab de arquivados
-        $('.tab-pane').show(); // Mostra todas as abas
+        $('#ativos').show(); // Mostra apenas a aba de ativos
     } else {
         // Se o usuário não for um administrador, ocultar a aba de arquivados e seu conteúdo
         $('#desativados-tab').parent().hide(); // Oculta o tab de arquivados

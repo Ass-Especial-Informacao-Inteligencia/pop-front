@@ -79,7 +79,7 @@ function displayFormQuestionsFromFetch(questions) {
 
                       </select>
               </div>
-              <div id="${questionId}-alternatives" class="form-group overflow-auto" style="max-height:200px;"></div>
+              <div id="${questionId}-alternatives" class="form-group overflow-auto"></div>
               <button type="button" class="remove-question-btn-fetch btn btn-danger" onclick="removeQuestion('${questionId}')">Remover Questão</button>
           </div>
       `;
@@ -102,7 +102,7 @@ function displayFormQuestionsFromFetch(questions) {
   
                 alternativeContainer.innerHTML = `
                   <input type="${question.type === 'Multipla Escolha' ? 'checkbox' : 'radio'}" name="${questionId}-alternatives" id="${alternativeIdGerado}" class="mr-2">
-                  <input type="text" data-idoption="${alternativeId}" class="form-control question-alternatives" style="width: calc(100% - 90px);" placeholder="Digite a alternativa" value="${option.text}">
+                  <input type="text" data-idoption="${alternativeId}" class="form-control question-alternatives alternative-input" placeholder="Digite a alternativa" value="${option.text}">
                   <div class="input-group-append">
                       <button type="button" class="btn btn-danger btn-remove-alternative-fetch" data-alternative-id="${alternativeIdGerado}">X</button>
                   </div>

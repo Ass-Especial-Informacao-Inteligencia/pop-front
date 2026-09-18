@@ -286,3 +286,26 @@
   background-color: var(--surface-dark-alt);
   color: var(--text-dark);
 }
+
+/* ── Form question cards ── */
+.dark-mode #formulario-container .form-group {
+  background-color: var(--surface-dark);
+  border-color: var(--border-dark);
+}
+
+.dark-mode #formulario-container label[data-type] {
+  color: var(--text-dark);
+}
+
+.dark-mode #formulario-container .form-check:hover {
+  background-color: var(--surface-dark-alt);
+}
+
+.dark-mode #formulario-container .form-check-label {
+  color: var(--text-dark);
+}
+
+.dark-mode #formulario .d-flex.justify-content-end {
+  background-color: var(--surface-dark);
+  border-color: var(--border-dark);
+}

@@ -167,8 +167,11 @@ function criarFormulario(perguntas,liberaAcesso) {
         }
     });
 
+    const botoesContainer = document.createElement('div');
+    botoesContainer.classList.add('form-buttons-container');
+
     const botaoEnviar = document.createElement('button');
-    botaoEnviar.classList.add('mr-2', 'btn', 'btn-primary');
+    botaoEnviar.classList.add('btn', 'btn-primary');
     botaoEnviar.id = 'enviarRespostasFormulario';
     botaoEnviar.textContent = 'Enviar Respostas';
     botaoEnviar.type = 'submit';
@@ -179,7 +182,7 @@ function criarFormulario(perguntas,liberaAcesso) {
     }
     
     const botaoCancelar = document.createElement('button');
-    botaoCancelar.classList.add('mr-2', 'btn', 'btn-danger');
+    botaoCancelar.classList.add('btn', 'btn-danger');
     botaoCancelar.setAttribute('type', 'button');
     botaoCancelar.textContent = 'Cancelar';
 
@@ -187,8 +190,9 @@ function criarFormulario(perguntas,liberaAcesso) {
         window.location.href = '/home';
     });
 
-    form.appendChild(botaoEnviar);
-    form.appendChild(botaoCancelar);
+    botoesContainer.appendChild(botaoEnviar);
+    botoesContainer.appendChild(botaoCancelar);
+    form.appendChild(botoesContainer);
 
     container.appendChild(form);
 }

@@ -13,8 +13,7 @@ export function mostrarMensagem(msg, type, timeInSeconds) {
     if (!container) {
         container = document.createElement('div');
         container.id = 'container-alertas';
-        container.className = 'fixed-top w-100 text-center mt-5';
-        container.style.padding = '30px';
+        container.className = 'fixed-top w-100 text-center mt-5 notification-container';
         document.body.appendChild(container);
     }
 

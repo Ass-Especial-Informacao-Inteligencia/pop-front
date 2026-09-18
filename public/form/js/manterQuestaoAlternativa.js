@@ -327,7 +327,7 @@ function changeQuestionType(questionId) {
     );
 
     if (questionType === 'Resposta Curta') {
-        alternativesContainer.style.display = 'none';
+        alternativesContainer.classList.add('d-none');
     } else if (
         questionType === 'Multipla Escolha' ||
         questionType === 'Unica Escolha' ||
@@ -337,7 +337,7 @@ function changeQuestionType(questionId) {
     ) {
         
       
-        alternativesContainer.style.display = 'block';
+        alternativesContainer.classList.remove('d-none');
         if (!alternativesContainer.querySelector('button.btn.btn-secondary')) {
             const addAlternativeButton = document.createElement('button');
             addAlternativeButton.type = 'button';
@@ -374,7 +374,7 @@ function addAlternative(questionId, questionType) {
             <input type="${
                 questionType === 'Multipla Escolha' ? 'checkbox' : 'radio'
             }" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
-            <input type="text" class="form-control question-alternatives" style="width: calc(100% - 90px);" placeholder="Digite a alternativa">
+            <input type="text" class="form-control question-alternatives alternative-input" placeholder="Digite a alternativa">
             <div class="input-group-append">
                 <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" onclick="removeAlternative('${alternativeId}')">X</button>
             </div>
@@ -392,7 +392,7 @@ function addAlternative(questionId, questionType) {
             alternativeContainer.innerHTML = `
                 <div class="input-group">
                 <input type="radio" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
-                <input type="text" class="form-control question-alternatives" style="width: calc(100% - 90px);" value="${bairro}">
+                <input type="text" class="form-control question-alternatives alternative-input" value="${bairro}">
                 <div class="input-group-append">
                     <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" onclick="removeAlternative('${alternativeId}')">X</button>
                 </div>
@@ -410,7 +410,7 @@ function addAlternative(questionId, questionType) {
             alternativeContainer.innerHTML = `
                 <div class="input-group">
                 <input type="radio" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
-                <input type="text" class="form-control question-alternatives" style="width: calc(100% - 90px);" value="${ubs}">
+                <input type="text" class="form-control question-alternatives alternative-input" value="${ubs}">
                 <div class="input-group-append">
                     <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" onclick="removeAlternative('${alternativeId}')">X</button>
                 </div>
@@ -429,7 +429,7 @@ function addAlternative(questionId, questionType) {
             alternativeContainer.innerHTML = `
                 <div class="input-group">
                 <input type="radio" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
-                <input type="text" class="form-control question-alternatives" style="width: calc(100% - 90px);" value="${setor}">
+                <input type="text" class="form-control question-alternatives alternative-input" value="${setor}">
                 <div class="input-group-append">
                     <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" onclick="removeAlternative('${alternativeId}')">X</button>
                 </div>

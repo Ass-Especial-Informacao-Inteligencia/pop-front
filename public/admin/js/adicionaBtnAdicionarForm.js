@@ -8,7 +8,7 @@ export async function adicionaBtnAdicionarForm() {
     if (isAdmin) {
         const jumbotronDiv = document.querySelector('.home-jumbotron');
         let botaoHTML = `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#criarFormularioModal">Criar Novo Formulário</button>`;
-        jumbotronDiv.innerHTML+=botaoHTML;
+        jumbotronDiv.insertAdjacentHTML('beforeend', botaoHTML);
 
     } 
 }

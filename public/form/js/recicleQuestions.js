@@ -62,7 +62,7 @@ function addQuestionFromModal(question) {
             return `
                 <div class="input-group mb-2">
                     <input type="${question.type === 'Multipla Escolha' ? 'checkbox' : 'radio'}" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
-                    <input type="text" class="form-control question-alternatives" style="width: calc(100% - 90px);" value="${option.text}" placeholder="Digite a alternativa">
+                    <input type="text" class="form-control question-alternatives alternative-input" value="${option.text}" placeholder="Digite a alternativa">
                     <div class="input-group-append">
                         <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" onclick="removeAlternative('${alternativeId}')">X</button>
                     </div>
@@ -95,7 +95,7 @@ function addQuestionFromModal(question) {
                         <option value="Unica Escolha-Setor" ${question.type === 'Unica Escolha-Setor' ? 'selected' : ''}>Única Escolha-Setor</option>
                     </select>
             </div>
-            ${question.type === 'Resposta Curta' ? '' : `<div id="${questionId}-alternatives" class="form-group overflow-auto"  style="max-height:200px;">${alternativesHtml}</div>`}
+            ${question.type === 'Resposta Curta' ? '' : `<div id="${questionId}-alternatives" class="form-group overflow-auto">${alternativesHtml}</div>`}
             <button type="button" class="btn btn-danger" onclick="removeQuestion('${questionId}')">Remover Questão</button>
         </div>
     `;
