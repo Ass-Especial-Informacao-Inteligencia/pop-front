@@ -28,3 +28,22 @@ table th {
 table td {
   background-color: inherit;
 }
+
+/* ── Pivot table: coluna de pergunta não estica ── */
+#pivotTable table td:first-child {
+  text-align: left;
+  word-break: break-word;
+  max-width: 250px;
+  white-space: normal;
+}
+
+#pivotTable table th:first-child {
+  text-align: left;
+  white-space: nowrap;
+}
+
+#pivotTable table th:not(:first-child),
+#pivotTable table td:not(:first-child) {
+  white-space: nowrap;
+  min-width: 80px;
+}

@@ -1,5 +1,6 @@
 import { mostrarMensagem } from "../js/geraNotificacao.js";
-import { api } from '../../js/api.js'; // cliente API centralizado
+import { api } from '../../js/api.js';
+import { initCustomSelect } from '../../js/components/customSelect.js';
 let isRequestInProgress = false; // Variável de controle
 export function addQuestion() {
   if (isRequestInProgress) return; // Impede múltiplos cliques
@@ -38,6 +39,7 @@ export function addQuestion() {
   </div>
 `;
   document.getElementById('questions-container').appendChild(questionCard);
+  initCustomSelect(questionCard.querySelector('select.question-type-select'));
       // Exemplo de reabilitação após uma ação fictícia
       setTimeout(() => { // Simulando uma operação assíncrona
         isRequestInProgress = false; // Reabilita o botão após a operação
@@ -84,6 +86,7 @@ function displayFormQuestionsFromFetch(questions) {
           </div>
       `;
         questionsContainer.appendChild(questionCard);
+        initCustomSelect(questionCard.querySelector('select.question-type-select'));
   
         // Se a pergunta for de múltipla escolha ou única escolha, exiba as opções
         if (question.type === 'Multipla Escolha' || question.type === 'Unica Escolha' || question.type === 'Unica Escolha-Bairro' || question.type === 'Unica Escolha-Ubs' || question.type === 'Unica Escolha-Setor') {

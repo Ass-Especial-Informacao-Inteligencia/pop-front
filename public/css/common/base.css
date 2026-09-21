@@ -20,3 +20,63 @@ button:focus-visible,
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(13, 115, 119, 0.25);
 }
+
+/* ── Touch targets (mobile) ── */
+@media (max-width: 576px) {
+  button,
+  .btn,
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  select,
+  textarea {
+    min-height: 44px;
+  }
+
+  .nav-link {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* ── Modais responsivos (mobile) ── */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+
+  .modal-lg {
+    max-width: calc(100% - 1rem);
+  }
+
+  .modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+  }
+}
+
+/* ── Cookie banner responsivo (mobile) ── */
+@media (max-width: 576px) {
+  #cookie-banner {
+    padding: 12px;
+    text-align: center;
+  }
+
+  #cookie-banner button {
+    width: 100%;
+  }
+}

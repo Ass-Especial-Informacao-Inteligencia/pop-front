@@ -109,3 +109,18 @@ a.nav-link.text-dark.active {
     display: none;
   }
 }
+
+/* ── Responsive: jumbotron mobile ── */
+@media (max-width: 576px) {
+  .home-jumbotron {
+    padding: 1.25rem 1rem;
+  }
+
+  .home-jumbotron h1 {
+    font-size: 1.5rem;
+  }
+
+  .home-jumbotron .lead {
+    font-size: 0.95rem;
+  }
+}

@@ -24,3 +24,37 @@
 .single-question-chart-container {
   padding: 10px 0;
 }
+
+/* ── Table responsiveness ── */
+.scrollable-container-table,
+.single-question-table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Responsive: mobile ── */
+@media (max-width: 768px) {
+  .scrollable-container {
+    max-height: 120px;
+  }
+
+  .chart-container canvas,
+  .single-question-chart-container canvas {
+    max-height: 350px;
+  }
+
+  .single-question-chart-container {
+    max-height: 250px;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-row .col-sm-9,
+  .form-row .col-sm-3 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 8px;
+  }
+}

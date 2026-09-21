@@ -1,6 +1,7 @@
 import { questionsRecicle } from '../indexForm.js';
-import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
+import { getCookie, api } from '../../js/api.js';
 import { mostrarMensagem } from './geraNotificacao.js';
+import { initCustomSelect } from '../../js/components/customSelect.js';
 
 // Função para pegar todas as questões
 export async function getQuestions() {
@@ -101,6 +102,7 @@ function addQuestionFromModal(question) {
     `;
 
     document.getElementById('questions-container').appendChild(questionCard);
+    initCustomSelect(questionCard.querySelector('select.question-type-select'));
 }
 
 export async function HandlerRecicleEvents() {

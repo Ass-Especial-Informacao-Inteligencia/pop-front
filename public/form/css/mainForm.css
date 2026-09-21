@@ -3,6 +3,7 @@
 @import url('../../css/common/navbar.css');
 @import url('../../css/common/dark-mode.css');
 @import url('../../css/common/suggestions-box.css');
+@import url('../../css/common/customSelect.css');
 @import url('../../css/common/loading.css');
 @import url('../../css/common/icons.css');
 
@@ -220,4 +221,54 @@
 /* ── Notification container ── */
 .notification-container {
   padding: var(--space-xl, 32px);
+}
+
+/* ── Responsive: mobile ── */
+@media (max-width: 576px) {
+  .jumbotron {
+    padding: 1.25rem 1rem;
+  }
+
+  .jumbotron h1 {
+    font-size: 1.5rem;
+  }
+
+  .form-buttons-container {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .form-buttons-container .btn {
+    flex: 1 1 calc(50% - 6px);
+  }
+
+  .form-buttons-container .btn-danger {
+    flex: 1 1 100%;
+  }
+
+  .form-image-container {
+    margin-top: 40px;
+  }
+
+  #form-title::after {
+    max-width: 100%;
+  }
+
+  .alternative-input {
+    width: 100%;
+  }
+
+  select,
+  .form-control {
+    max-width: 100%;
+  }
+
+  .question-card {
+    overflow: hidden;
+  }
+
+  body,
+  html {
+    overflow-x: hidden;
+  }
 }

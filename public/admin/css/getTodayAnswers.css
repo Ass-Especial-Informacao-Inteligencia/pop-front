@@ -178,3 +178,23 @@ button {
 .btn-secondary:hover {
     background-color: var(--text);
 }
+
+@media (max-width: 768px) {
+    .container {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .filter-inputs {
+        flex-direction: column;
+    }
+
+    .filter-inputs label,
+    .filter-inputs input {
+        width: 100%;
+    }
+
+    .answers-table {
+        font-size: 0.85rem;
+    }
+}
