@@ -1,4 +1,5 @@
 import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
+import { mostrarMensagem } from './geraNotificacao.js';
 
 export async function captureAndSendQuestions() {
     const questionsData = [];
@@ -22,7 +23,7 @@ export async function captureAndSendQuestions() {
         }
 
         const options = [];
-        if (questionType === 'Multipla Escolha' || questionType === 'Unica Escolha' || questionType === 'Unica Escolha-Bairro' || questionType === 'Unica Escolha-Ubs' || questionType === 'Unica Escolha-Setor') {
+        if (questionType === 'Multipla Escolha' || questionType === 'Unica Escolha') {
             const optionInputs = questionCard.querySelectorAll('.question-alternatives');
             for (const input of optionInputs) {
                 const idOption = input.dataset.idoption;
@@ -44,7 +45,7 @@ export async function captureAndSendQuestions() {
 
     const title = getCookie('form');
     if (!title) {
-        alert('Título do formulário não encontrado.');
+        mostrarMensagem('Título do formulário não encontrado.', 'danger', 5);
         return;
     }
 
@@ -55,12 +56,12 @@ export async function captureAndSendQuestions() {
             throw new Error(`Falha ao enviar as questões: ${response.statusText}`);
         }
 
-        const data = await response.json();
-        alert('Questões enviadas com sucesso!');
-        location.href = '/home';
+        await response.json();
+        mostrarMensagem('Questões enviadas com sucesso!', 'success', 5);
+        setTimeout(() => { location.href = '/home'; }, 500);
     } catch (error) {
         console.error('Erro ao enviar as questões:', error);
-        alert(`Erro ao enviar as questões: ${error.message}`);
+        mostrarMensagem(`Erro ao enviar as questões: ${error.message}`, 'danger', 5);
     }
 }
 

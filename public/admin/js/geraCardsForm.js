@@ -50,8 +50,8 @@ export function createCardLayout(container, data, user, status = 'active') {
                     <div class="card-footer p-1 d-none">
                         <button class="archive-btn btn btn-danger float-right" data-toggle="modal" data-target="#arquivarFormularioModal" data-form="${card.title}" data-active="${card.active}" title="Arquivar Formulário"><i class="fas fa-archive"></i></button>
                         <div class="float-left btn-group">
-                            <button class="permission-btn btn btn-secondary" id="permission-btn" data-toggle="modal" data-form="${card.title}" data-target="#accessModal" title="Gerenciar Acesso"><i class="fas fa-user-plus"></i></button>
-                            <button class="clock-btn btn btn-secondary" data-toggle="modal" data-target="#agendarModal" data-form="${card.title}" title="Agendar Disponibilidade" id="agendarDisponibilidadeBtn"><i class="fas fa-clock"></i></button>
+                            <button class="permission-btn btn btn-secondary" data-toggle="modal" data-form="${card.title}" data-target="#accessModal" title="Gerenciar Acesso"><i class="fas fa-user-plus"></i></button>
+                            <button class="clock-btn btn btn-secondary" data-toggle="modal" data-target="#agendarModal" data-form="${card.title}" title="Agendar Disponibilidade"><i class="fas fa-clock"></i></button>
                             <button class="chart-btn btn btn-primary" title="Dashboard" data-form="${card.title}"><i class="fas fa-chart-bar"></i></button>
                             <button class="response-btn btn btn-success" title="Cadastrar Resposta" data-form="${card.title}"><i class="fas fa-clipboard-list"></i></button>
                         </div>
@@ -104,8 +104,8 @@ export function createCardDesactiveLayout(data, status = 'disabled') {
                 <div class="card-footer p-1 d-none">
                     <button class="archive-btn btn btn-danger float-right" data-toggle="modal" data-target="#arquivarFormularioModal" data-form="${card.title}" data-active="${card.active}" title="Arquivar Formulário"><i class="fas fa-archive"></i></button>
                     <div class="float-left btn-group">
-                        <button class="permission-btn btn btn-secondary" id="permission-btn" data-toggle="modal" data-form="${card.title}" data-target="#accessModal" title="Gerenciar Acesso"><i class="fas fa-user-plus"></i></button>
-                        <button class="clock-btn btn btn-secondary" data-toggle="modal" data-target="#agendarModal" data-form="${card.title}" title="Agendar Disponibilidade" id="agendarDisponibilidadeBtn"><i class="fas fa-clock"></i></button>
+                        <button class="permission-btn btn btn-secondary" data-toggle="modal" data-form="${card.title}" data-target="#accessModal" title="Gerenciar Acesso"><i class="fas fa-user-plus"></i></button>
+                        <button class="clock-btn btn btn-secondary" data-toggle="modal" data-target="#agendarModal" data-form="${card.title}" title="Agendar Disponibilidade"><i class="fas fa-clock"></i></button>
                         <button class="chart-btn btn btn-primary" title="Dashboard" data-form="${card.title}"><i class="fas fa-chart-bar"></i></button>
                         <button class="response-btn btn btn-success" title="Cadastrar Resposta" data-form="${card.title}"><i class="fas fa-clipboard-list"></i></button>
                     </div>

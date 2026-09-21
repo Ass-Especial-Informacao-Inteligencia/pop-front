@@ -6,7 +6,7 @@ import { deleteAlternatives } from './js/deleteAlternatives.js';
 import { deleteQuestion } from './js/deleteQuestion.js';
 import { fillUpModalsInfo } from '../js/userInfo.js';
 import { changeTitleAndDescription } from './js/changeTitleAndDescription.js';
-import { getQuestions, HandlerRecicleEvents } from './js/recicleQuestions.js';
+import { getQuestions, HandlerRecycleEvents } from './js/recycleQuestions.js';
 import { loadingScreen } from '../js/loadingScreen.js';
 import { renderLoadingScreen } from '../js/components/loadingScreen.js';
 import { renderThemeToggle } from '../js/components/themeToggle.js';
@@ -37,7 +37,7 @@ themeToggle();
 
 fillUpModalsInfo();
 
-export const questionsRecicle = user.role === 'admin' ? await getQuestions(): []; // questões para copiar de outros formulários
+export const questionsRecycle = user.role === 'admin' ? await getQuestions(): []; // questões para copiar de outros formulários
 
 if (user.role === 'admin') {
     const addButton = document.querySelector('.addQuestion');
@@ -58,10 +58,10 @@ if (user.role === 'admin') {
     deleteAlternatives();
     await deleteQuestion();
     changeTitleAndDescription();
-    if (questionsRecicle.length >= 1) {
-        await HandlerRecicleEvents();
+    if (questionsRecycle.length >= 1) {
+        await HandlerRecycleEvents();
     } else {
-        const btnRecycleQuestions = document.getElementById('btnRecicleQuestionForm');
+        const btnRecycleQuestions = document.getElementById('btnRecycleQuestionForm');
         btnRecycleQuestions.style.display = 'none';
     }
 }

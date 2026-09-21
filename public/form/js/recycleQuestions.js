@@ -1,4 +1,4 @@
-import { questionsRecicle } from '../indexForm.js';
+import { questionsRecycle } from '../indexForm.js';
 import { getCookie, api } from '../../js/api.js';
 import { mostrarMensagem } from './geraNotificacao.js';
 import { initCustomSelect } from '../../js/components/customSelect.js';
@@ -21,7 +21,7 @@ export async function getQuestions() {
 }
 
 // Função para renderizar as questões no modal
-function renderQuestionsRecicle(questions) {
+function renderQuestionsRecycle(questions) {
     const searchResults = document.getElementById('search-results');
     searchResults.innerHTML = '';
     if (questions.length === 0) {
@@ -44,8 +44,8 @@ function renderQuestionsRecicle(questions) {
 // Função para buscar e renderizar questões com base no input de pesquisa
 async function searchQuestions() {
     const query = document.getElementById('search-question').value.toLowerCase();
-    const filteredQuestions = questionsRecicle.filter(q => q.body.toLowerCase().includes(query));
-    renderQuestionsRecicle(filteredQuestions);
+    const filteredQuestions = questionsRecycle.filter(q => q.body.toLowerCase().includes(query));
+    renderQuestionsRecycle(filteredQuestions);
 }
 
 function addQuestionFromModal(question) {
@@ -105,21 +105,21 @@ function addQuestionFromModal(question) {
     initCustomSelect(questionCard.querySelector('select.question-type-select'));
 }
 
-export async function HandlerRecicleEvents() {
+export async function HandlerRecycleEvents() {
     
 // Adiciona o listener para o input de pesquisa
 document.getElementById('search-question').addEventListener('input', searchQuestions);
 
 // Chamada inicial para pegar e renderizar todas as questões quando o modal é aberto
 document.getElementById('pesquisarQuestaoModal').addEventListener('shown.bs.modal', async function() {
-    renderQuestionsRecicle(questionsRecicle);
+    renderQuestionsRecycle(questionsRecycle);
 });
 
 document.getElementById('btn-select-question').addEventListener('click', function () {
     const selectedRadio = document.querySelector('input[name="question-select"]:checked');
     if (selectedRadio) {
         const questionId = selectedRadio.value;
-        const selectedQuestion = questionsRecicle.find(q => q.id === parseInt(questionId));
+        const selectedQuestion = questionsRecycle.find(q => q.id === parseInt(questionId, 10));
         if (selectedQuestion) {
             addQuestionFromModal(selectedQuestion);
             mostrarMensagem('Questão copiada com Sucesso!','success',4);

@@ -1,4 +1,4 @@
-import { GeraEventoDowloads } from './dowloadChartAndGraphics.js';
+import { GeraEventoDownloads } from './downloadChartAndGraphics.js';
 import {
     generateOptionFilters,
     generateSingleQuestionColorPickers,
@@ -235,7 +235,7 @@ export function MainEditGraphicsAndTables() {
     populationHandlerEventListeners();
     populationSingleQuestionAndListeners();
     populateAlternativesAndListeners();
-    GeraEventoDowloads();
+    GeraEventoDownloads();
 
     if (selectX && selectY && selectX.value !== '' && selectY.value !== '') {
         updateVisualizations();

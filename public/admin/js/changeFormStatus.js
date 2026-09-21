@@ -1,6 +1,6 @@
 import { animationConfigBarForm } from './barraDeConfigAnimation.js';
 import { btnVerificaDisponibilidade } from './botaoVerificarDisponibilidade.js';
-import { setupDashboardRedirect, setupResponseAdminRedirect } from './dashboardRedict.js';
+import { setupDashboardRedirect, setupResponseAdminRedirect } from './dashboardRedirect.js';
 import { setupFormRedirect } from './formRedirect.js';
 import { mostrarMensagem } from './geraNotificacao.js';
 import {

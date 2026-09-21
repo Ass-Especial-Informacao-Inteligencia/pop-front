@@ -55,25 +55,25 @@
             <ul class="nav nav-tabs bg-white justify-content-center rounded-lg" id="myTabs">
                 <li class="nav-item">
                     <a class="nav-link active text-dark" id="ativos-tab" data-toggle="tab" href="#ativos" role="tab" aria-controls="ativos" aria-selected="true">
-                        <i class="fas fa-inbox fa-sm"style="padding-right: 5px;"></i> 
+                        <i class="fas fa-inbox fa-sm icon-spacing"></i> 
                         <span class="d-none d-sm-inline"> Ativos</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" id="desativados-tab" data-toggle="tab" href="#desativados" role="tab" aria-controls="desativados" aria-selected="false">
-                        <i class="fas fa-archive fa-sm" style="padding-right: 5px;"></i>
+                        <i class="fas fa-archive fa-sm icon-spacing"></i>
                         <span class="d-none d-sm-inline"> Arquivados</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" id="Agendados-tab" data-toggle="tab" href="#Agendados" role="tab" aria-controls="Agendados" aria-selected="false">
-                        <i class="fas fa-calendar-check fa-sm" style="padding-right: 5px;"></i>
+                        <i class="fas fa-calendar-check fa-sm icon-spacing"></i>
                         <span class="d-none d-sm-inline"> Agendados</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" id="Finalizados-tab" data-toggle="tab" href="#Finalizados" role="tab" aria-controls="Finalizados" aria-selected="false">
-                        <i class="fas fa-check-circle fa-sm" style="padding-right: 5px;"></i>
+                        <i class="fas fa-check-circle fa-sm icon-spacing"></i>
                         <span class="d-none d-sm-inline"> Finalizados</span>
                     </a>
                 </li>
@@ -123,7 +123,7 @@
                             type="button"
                             class="close"
                             data-dismiss="modal"
-                            aria-label="Close"
+                            aria-label="Fechar"
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -253,17 +253,17 @@
                             type="button"
                             class="close"
                             data-dismiss="modal"
-                            aria-label="Close"
+                            aria-label="Fechar"
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="cotainer-formulario-nome">
-                            <h5 class="nome-formulario">nome Formulario</h5>
+                        <div class="container-formulario-nome">
+                            <h5 class="nome-formulario">Formulário</h5>
                         </div>
                         <h6>Usuários com Acesso:</h6>
-                        <div class="overflow-auto" style="max-height: 100px">
+                        <div class="overflow-auto scroll-container-sm">
                             <ul id="usersWithAccess" class="list-group">
                                 <!-- Aqui fica listado os usuarios com acesso -->
                             </ul>
@@ -277,15 +277,14 @@
                                 <input
                                     type="search"
                                     class="form-control"
-                                    id="search-user-no-alow"
-                                    placeholder="Pesquiser pelo nome, CPF ou email do usuário"
+                                    id="search-user-no-allow"
+                                    placeholder="Pesquisar pelo nome, CPF ou email do usuário"
                                 />
                             </div>
                         </form>
 
                         <div
-                            class="overflow-auto mt-6"
-                            style="max-height: 100px"
+                            class="overflow-auto mt-6 scroll-container-sm"
                         >
                             <ul id="usersWithNotAccess" class="list-group">
                                 <!-- Aqui fica listado os usuários sem acesso -->
@@ -309,10 +308,9 @@
                             Cancelar
                         </button>
                         <a
-                            class="nav-link"
+                            class="nav-link nav-link-unstyled"
                             id="gerenciarUsers"
                             href="/managerUsers"
-                            style="text-decoration: none;color: inherit;"
                             ><i class="fas fa-user-plus"></i></a
                         >
                         <div class="form-check ml-auto">
@@ -325,7 +323,7 @@
                             <label
                                 class="form-check-label"
                                 for="liberarAcessoParaTodos"
-                                >Liberar acesso para todos</label
+                                >Liberar acesso para todos</label>
                             >
                         </div>
                     </div>
@@ -333,7 +331,7 @@
             </div>
         </div>
 
-        <!-- Modal de confirmação de arquivar o formulario -->
+        <!-- Modal de confirmação de arquivar o formulário -->
         <div
             class="modal fade"
             id="arquivarFormularioModal"
@@ -345,14 +343,14 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="excluirUsuarioModalLabel">
+                        <h5 class="modal-title" id="arquivarFormularioModalLabel">
                             Confirmar
                         </h5>
                         <button
                             type="button"
                             class="close"
                             data-dismiss="modal"
-                            aria-label="Close"
+                            aria-label="Fechar"
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -410,7 +408,7 @@
                             type="button"
                             class="close"
                             data-dismiss="modal"
-                            aria-label="Close"
+                            aria-label="Fechar"
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -462,12 +460,12 @@
         
         <!-- Banner de Cookie -->
         <div id="cookie-banner">
-            <p>Este site utiliza cookies para melhorar a sua experiência e analisar o tráfego. Ao continuar navegando, você concorda com o uso de cookies conforme descrito em nossa potiica de cookies:</p>
+            <p>Este site utiliza cookies para melhorar a sua experiência e analisar o tráfego. Ao continuar navegando, você concorda com o uso de cookies conforme descrito em nossa política de cookies:</p>
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#cookiesModal">
                 Política de Cookies
             </button>
             <button class="btn btn-success" onclick="acceptCookies()">Aceitar Todos</button>
-            <button class="btn  btn-danger" onclick="declineCookies()">Recusar</button>
+            <button class="btn btn-danger" onclick="declineCookies()">Recusar</button>
         </div>
     <script>
         function setCookie(name, value, days) {
@@ -516,13 +514,13 @@
 };
     </script>
 
-        <!-- Modal de politica de privacidade -->
+        <!-- Modal de política de privacidade -->
         <div class="modal fade" id="cookiesModal" tabindex="-1" role="dialog" aria-labelledby="cookiesModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="cookiesModalLabel">Política de Cookies</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

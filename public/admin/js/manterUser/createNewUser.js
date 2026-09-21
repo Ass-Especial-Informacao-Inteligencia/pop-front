@@ -16,7 +16,7 @@ export async function signUp() {
 
     // Checking if any required fields are empty
     if (checkEmptyFields(fields)) {
-        alert('Por favor, preencha todos os campos.');
+        mostrarMensagem('Por favor, preencha todos os campos.', 'warning', 5);
         return;
     }
 

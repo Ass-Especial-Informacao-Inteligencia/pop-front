@@ -45,7 +45,7 @@
         <!-- Conteudo Principal -->
         <div class="container mt-8 mb-5 d-flex flex-column">
             <form id="formulario" class="flex-grow-1">
-                <!-- perguntas vão ser gerados aqui! -->
+                <!-- perguntas vão ser geradas aqui! -->
                 <div id="questions-container"></div>
 
                 <div class="d-flex justify-content-end">
@@ -55,7 +55,7 @@
                     <button id="btnAddQuestionForm" type="button" class="btn btn-primary addQuestion mr-2">
                         Adicionar Questão
                     </button>
-                    <button id="btnRecicleQuestionForm" type="button" class="btn btn-secondary searchAndAddQuestion" data-toggle="modal" data-target="#pesquisarQuestaoModal">
+                    <button id="btnRecycleQuestionForm" type="button" class="btn btn-secondary searchAndAddQuestion" data-toggle="modal" data-target="#pesquisarQuestaoModal">
                         <i class="fas fa-search"></i> <i class="fas fa-plus"></i> Questão
                     </button>
                 </div>
@@ -65,7 +65,6 @@
         <!-- Modal de Perfil -->
         <div id="perfilModalPlaceholder"></div>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <div
             class="modal fade"
             id="editarTitulosModal"
@@ -84,7 +83,7 @@
                             type="button"
                             class="close"
                             data-dismiss="modal"
-                            aria-label="Close"
+                            aria-label="Fechar"
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -145,7 +144,7 @@
                             type="button"
                             class="close"
                             data-dismiss="modal"
-                            aria-label="Close"
+                            aria-label="Fechar"
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -164,7 +163,7 @@
                                 Comece a digitar para filtrar as questões disponíveis.
                             </small>
                         </div>
-                        <div id="search-results" class="overflow-auto" style="max-height: 150px;">
+                        <div id="search-results" class="overflow-auto scroll-container-md">
                             <!-- Resultados da pesquisa serão exibidos aqui -->
                         </div>
                     </div>

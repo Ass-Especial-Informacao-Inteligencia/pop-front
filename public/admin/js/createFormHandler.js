@@ -7,7 +7,7 @@ import {
 import {
     setupDashboardRedirect,
     setupResponseAdminRedirect,
-} from './dashboardRedict.js';
+} from './dashboardRedirect.js';
 import { fetchCreateForm } from './fetchForms.js';
 import { setupFormRedirect } from './formRedirect.js';
 import {

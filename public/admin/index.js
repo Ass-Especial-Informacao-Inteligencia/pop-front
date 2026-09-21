@@ -3,7 +3,7 @@ import { animationConfigBarForm } from './js/barraDeConfigAnimation.js';
 import { btnVerificaDisponibilidade } from './js/botaoVerificarDisponibilidade.js';
 import { adicionaDataInModalArquivar, changeStatus } from './js/changeFormStatus.js';
 import { createForm } from './js/createFormHandler.js';
-import { setupDashboardRedirect, setupResponseAdminRedirect } from './js/dashboardRedict.js';
+import { setupDashboardRedirect, setupResponseAdminRedirect } from './js/dashboardRedirect.js';
 import { fetchAccessDelegation } from './js/fetchAccessDelegationUsers.js';
 import { handleSalvarButtonClick } from './js/fetchDelegationForm.js';
 import { setupFormRedirect } from './js/formRedirect.js';

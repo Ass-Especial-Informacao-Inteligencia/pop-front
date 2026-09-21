@@ -1,4 +1,5 @@
 import { api } from '../../../js/api.js'; // cliente API centralizado
+import { mostrarMensagem } from './geraNotificacao.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
@@ -151,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
 
         if (!inputElement) {
-            alert(`Elemento de input não encontrado para ${interviewedId} e ${questionId}`);
+            mostrarMensagem(`Elemento de input não encontrado para ${interviewedId} e ${questionId}`, 'danger', 5);
             return;
         }
 
@@ -160,19 +161,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await api.put(`/updateAnswer/${interviewedId}/${questionId}`, { answer: inputElement.value });
 
             if (response.ok) {
-                alert('Resposta atualizada com sucesso!');
+                mostrarMensagem('Resposta atualizada com sucesso!', 'success', 5);
                 return;
             }
 
             const errorMessage = await response.json();
-            alert(
+            mostrarMensagem(
                 `Erro ao atualizar a resposta: ${
                     errorMessage.error || 'Erro desconhecido.'
-                }`
+                }`,
+                'danger',
+                5
             );
         } catch (error) {
             console.error('Erro ao salvar a resposta:', error);
-            alert('Erro ao salvar a resposta.');
+            mostrarMensagem('Erro ao salvar a resposta.', 'danger', 5);
         }
     }
 

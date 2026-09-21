@@ -25,7 +25,7 @@ export function fillAccessModal() {
         button.addEventListener('click', async () => {
             document.querySelector('.nome-formulario').textContent =
                 title.toUpperCase();
-            document.querySelector('#search-user-no-alow').value = '';
+            document.querySelector('#search-user-no-allow').value = '';
             document.querySelector('#usersWithNotAccess').innerHTML = '';
 
             await getUsersWithAccess(title).then((users) =>

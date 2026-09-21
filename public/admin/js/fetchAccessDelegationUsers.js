@@ -5,7 +5,7 @@ import {
 import { searchUsers } from './searchUsers.js';
 
 export async function fetchAccessDelegation() {
-    const inputField = document.getElementById('search-user-no-alow');
+    const inputField = document.getElementById('search-user-no-allow');
     const resultsList = document.getElementById('usersWithNotAccess');
     const savedList = document.getElementById('usersWithAccess');
 

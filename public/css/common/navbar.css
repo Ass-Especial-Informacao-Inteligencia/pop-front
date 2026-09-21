@@ -39,7 +39,7 @@ body {
 }
 
 a.nav-link.text-dark.active {
-  background: var(--color-primary, #0d6efd);
+  background: var(--color-primary, #0d7377);
   color: white !important;
   border-radius: 5px;
 }

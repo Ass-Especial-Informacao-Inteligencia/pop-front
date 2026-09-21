@@ -40,7 +40,7 @@ export function deleteAlternatives() {
             };
             fetchDeleteAlternatives(alternativeGroup)
                 .then(() => {
-                    mostrarMensagem('Alternativa Excluida com sucesso!','success',5);
+                    mostrarMensagem('Alternativa Excluída com sucesso!','success',5);
                     removeAlternative(alternativeContainer);
                 })
                 .catch((error) => {

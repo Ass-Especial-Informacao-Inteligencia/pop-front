@@ -19,7 +19,7 @@ body {
 	flex-direction: column;
 	font-family: var(--font-family) !important;
 	height: 100vh;
-	padding: auto;
+	padding: 0;
 }
 
 h1 {

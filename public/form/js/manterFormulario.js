@@ -97,7 +97,7 @@ function displayFormQuestionsFromFetch(questions) {
             addAlternativeButton.onclick = () => addAlternative(questionId, question.type);
             document.getElementById(`${questionId}-alternatives`).appendChild(addAlternativeButton);
   
-            question.Options.forEach((option, i) => {
+            (question.Options || []).forEach((option, i) => {
                 const alternativeIdGerado = `${questionId}-alt-${i}`;
                 const alternativeId = option.id;
                 const alternativeContainer = document.createElement('div');
@@ -116,7 +116,7 @@ function displayFormQuestionsFromFetch(questions) {
     });
 }
 
-// carrega perguntas ja cadastradas
+// carrega perguntas já cadastradas
 export async function fetchFormQuestions(formName) {
     try {
         const response = await api.get(`/getFullForm/${formName}`);
@@ -170,7 +170,7 @@ function liberarEdicaoParaFormularioNovo(dataCriacao, formActive, dataExpiracao)
 
 function desativaBotoesForm(formActive) {
     const formulario = document.getElementById('formulario');
-    const btnExternos = document.querySelectorAll('#btnSalvarForm,#btnEditarTituloDescricao,#btnAddQuestionForm,#btnRecicleQuestionForm');
+    const btnExternos = document.querySelectorAll('#btnSalvarForm,#btnEditarTituloDescricao,#btnAddQuestionForm,#btnRecycleQuestionForm');
     const elements = formulario.querySelectorAll('button, input, select');
 
     elements.forEach(el => el.disabled = formActive);

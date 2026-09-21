@@ -1,9 +1,10 @@
 import { animationConfigBarForm } from './barraDeConfigAnimation.js';
+import { mostrarMensagem } from './geraNotificacao.js';
 import {
     adicionaDataInModalArquivar,
     changeStatus,
 } from './changeFormStatus.js';
-import { setupDashboardRedirect, setupResponseAdminRedirect } from './dashboardRedict.js';
+import { setupDashboardRedirect, setupResponseAdminRedirect } from './dashboardRedirect.js';
 import { fetchFormUpdate, getOneForm } from './fetchForms.js';
 import { setupFormRedirect } from './formRedirect.js';
 import {
@@ -50,7 +51,7 @@ export async function btnVerificaDisponibilidade() {
                     };
                      // Validar se a data de abertura é antes da data de fechamento
                     if (new Date(opening_date) >= new Date(expiry_date)) {
-                        alert('A data de abertura deve ser anterior à data de fechamento.');
+                        mostrarMensagem('A data de abertura deve ser anterior à data de fechamento.', 'warning', 5);
                         return; // Aborta a requisição se a validação falhar
                     }
                     await fetchFormUpdate(params).then(() =>

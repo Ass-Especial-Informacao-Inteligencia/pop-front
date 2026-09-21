@@ -32,6 +32,6 @@ function verificarTipoEntrada(valor) {
     } else if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)) {
         return 'email';
     } else {
-        return 'nome de usuario';
+        return 'nome de usuário';
     }
 }

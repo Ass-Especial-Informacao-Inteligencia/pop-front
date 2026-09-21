@@ -1,0 +1,30 @@
+/* Cookies Banner */
+
+#cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  z-index: 1000;
+}
+
+#cookie-banner a {
+  color: var(--color-success, #4CAF50);
+  text-decoration: none;
+}
+
+#cookie-banner button {
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px 2px;
+  cursor: pointer;
+}

@@ -80,3 +80,23 @@ button:focus-visible,
     width: 100%;
   }
 }
+
+/* ── Utilitários inline-style ── */
+.icon-spacing {
+  padding-right: 5px;
+}
+
+.scroll-container-sm {
+  max-height: 100px;
+  overflow: auto;
+}
+
+.scroll-container-md {
+  max-height: 150px;
+  overflow: auto;
+}
+
+.nav-link-unstyled {
+  text-decoration: none;
+  color: inherit;
+}

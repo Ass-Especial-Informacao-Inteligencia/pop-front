@@ -20,7 +20,7 @@
   height: 3rem;
   border-width: 0.4em;
   border-radius: 50%;
-  border-top-color: var(--color-primary, #0047ff);
+  border-top-color: var(--color-primary, #0d7377);
 }
 
 body.loaded #loadingScreen {

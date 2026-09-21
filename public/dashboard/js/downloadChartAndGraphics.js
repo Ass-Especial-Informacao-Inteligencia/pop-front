@@ -66,7 +66,7 @@ function downloadTable(table, filename) {
     });
 }
 
-export function GeraEventoDowloads() {
+export function GeraEventoDownloads() {
     document.getElementById('downloadButton').addEventListener('click', function() {
         // Pegar o valor selecionado no <select>
         const selectedOption = document.getElementById('selectTableOrGraphicsDownload').value;
@@ -98,6 +98,6 @@ export function GeraEventoDowloads() {
 }
 
 async function downloadExcel() {
-    const dataDowloadExecel = await fetchResponsesForForm(getCookie('form'));
-    jsonToSheet(dataDowloadExecel);
+    const dataDownloadExcel = await fetchResponsesForForm(getCookie('form'));
+    jsonToSheet(dataDownloadExcel);
 }
