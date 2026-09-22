@@ -59,7 +59,7 @@ function updateOptions(questionId, position, isAlteration) {
 
 function toggleAlternatives(questionId, position, button) {
     const question = formData.Questions.find(
-        (q) => parseInt(q.id) === parseInt(questionId)
+        (q) => parseInt(q.id, 10) === parseInt(questionId, 10)
     );
     if (question) {
         const positionPicker = document.getElementById(position);
@@ -189,7 +189,7 @@ function populateAlternativesAndListeners() {
     selectX.addEventListener('change', () => {
         const selectedQuestionIdX = selectX.value;
         const selectedQuestion = formData.Questions.find(
-            (question) => question.id === parseInt(selectedQuestionIdX)
+            (question) => question.id === parseInt(selectedQuestionIdX, 10)
         );
 
         if (selectedQuestion) {
@@ -202,7 +202,7 @@ function populateAlternativesAndListeners() {
     selectY.addEventListener('change', () => {
         const selectedQuestionIdY = selectY.value;
         const selectedQuestion = formData.Questions.find(
-            (question) => question.id === parseInt(selectedQuestionIdY)
+            (question) => question.id === parseInt(selectedQuestionIdY, 10)
         );
 
         if (selectedQuestion) {
@@ -214,10 +214,10 @@ function populateAlternativesAndListeners() {
 
     document.addEventListener('change', (e) => {
         if (e.target.matches('#option-pickers-x input[type="checkbox"]')) {
-            updateOptions(parseInt(selectX.value), 'X', false);
+            updateOptions(parseInt(selectX.value, 10), 'X', false);
         }
         if (e.target.matches('#option-pickers-y input[type="checkbox"]')) {
-            updateOptions(parseInt(selectY.value), 'Y', false);
+            updateOptions(parseInt(selectY.value, 10), 'Y', false);
         }
     });
 }

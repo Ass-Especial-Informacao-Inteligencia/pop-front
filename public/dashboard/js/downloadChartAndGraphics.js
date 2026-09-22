@@ -30,6 +30,10 @@ function downloadSingleQuestionPieChart() {
 
 // Função genérica para baixar gráficos (canvas)
 function downloadCanvas(canvas, filename) {
+    if (!canvas || canvas.width === 0 || canvas.height === 0) {
+        mostrarMensagem('Nenhum gráfico para baixar. Gere a visualização primeiro.', 'danger', 3);
+        return;
+    }
     const cloneCanvas = document.createElement('canvas');
     cloneCanvas.width = canvas.width;
     cloneCanvas.height = canvas.height;
@@ -44,6 +48,10 @@ function downloadCanvas(canvas, filename) {
 
     // Converter o clone do canvas para Blob de imagem PNG
     cloneCanvas.toBlob(function(blob) {
+        if (!blob) {
+            mostrarMensagem('Erro ao gerar a imagem do gráfico.', 'danger', 3);
+            return;
+        }
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -55,14 +63,25 @@ function downloadCanvas(canvas, filename) {
 
 // Função para baixar tabelas (usando html2canvas)
 function downloadTable(table, filename) {
+    if (!table || table.children.length === 0) {
+        mostrarMensagem('Nenhuma tabela para baixar. Gere a visualização primeiro.', 'danger', 3);
+        return;
+    }
     html2canvas(table).then(canvas => {
         canvas.toBlob(function(blob) {
+            if (!blob) {
+                mostrarMensagem('Erro ao gerar a imagem da tabela.', 'danger', 3);
+                return;
+            }
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = filename;
             a.click();
-        });
+            URL.revokeObjectURL(url);
+        }, 'image/png');
+    }).catch(() => {
+        mostrarMensagem('Erro ao gerar a imagem da tabela.', 'danger', 3);
     });
 }
 

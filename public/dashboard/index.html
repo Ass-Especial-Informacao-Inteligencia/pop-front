@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard de Respostas</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="./css/mainDashBoard.css">
   <link
             rel="icon"
@@ -17,10 +16,6 @@
    rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
 />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.17.4/dist/xlsx.full.min.js"></script>
-
 </head>
 <body>
   
@@ -203,7 +198,7 @@
                                         <canvas id="chart"></canvas>
                                     </div>
                                     <div class="scrollable-container-table table-responsive">
-                                        <table id="pivotTable" class="table table-bordered"></table>
+                                        <div id="pivotTable"></div>
                                     </div>
                             </div>
                             <div class="tab-pane fade mt-3" id="single-question-graphics" role="tabpanel" aria-labelledby="single-question-graphics-tab">
@@ -218,9 +213,9 @@
                                         <div class="row mt-5">
                                             <div class="col-md-6">
                                                 <div class="single-question-table-container table-responsive">
-                                                    <table id="singleQuestionTable" class="table table-bordered">
+                                                    <div id="singleQuestionTable">
                                                         <!-- Table will be generated dynamically by JavaScript -->
-                                                    </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -243,9 +238,12 @@
         <div id="perfilModalPlaceholder"></div>
         <div id="sharedComponents"></div>
 
-  <script src="./mainDashBoardHandler.js" type="module"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.17.4/dist/xlsx.full.min.js" defer></script>
+  <script src="./mainDashBoardHandler.js" type="module"></script>
 </body>
 </html>

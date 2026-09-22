@@ -69,6 +69,7 @@ export function generateSingleQuestionVisualizations(formData, questionId) {
         tableContainer.innerHTML = '';
 
         const table = document.createElement('table');
+        table.className = 'table table-bordered';
         const tableHeaderRow = table.insertRow();
         const tableHeaders = ['Alternativas', 'Porcentagem'];
         tableHeaders.forEach((headerText) => {

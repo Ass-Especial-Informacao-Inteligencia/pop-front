@@ -131,6 +131,7 @@ export function generatePivotTable(formData, xField, yField, dataOption) {
             let start = (page - 1) * rowsPerPage;
             let end = Math.min(start + rowsPerPage, tableRows.length);
             let table = document.createElement('table');
+            table.className = 'table table-bordered';
 
             // Cabeçalho da tabela
             let headerRow = table.insertRow();
