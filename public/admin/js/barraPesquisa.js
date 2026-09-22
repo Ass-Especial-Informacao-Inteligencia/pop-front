@@ -1,8 +1,10 @@
 $(document).ready(function () {
-    // Função para lidar com a pesquisa e o filtro
-    function handleSearchAndFilter(container) {
-        $('#searchInput').on('input', function () {
-            const searchText = $(this).val().toLowerCase();
+    const containers = ['#cardContainer', '#cardDesativadosContainer', '#Agendados', '#Finalizados'];
+
+    // Delegação: #searchInput é injetado depois pelo renderNavbar()
+    $(document).on('input', '#searchInput', function () {
+        const searchText = $(this).val().toLowerCase();
+        containers.forEach(function (container) {
             $(container + ' .card').each(function () {
                 const currentTitle = $(this).find('.card-title').text().toLowerCase();
                 if (currentTitle.indexOf(searchText) === -1) {
@@ -12,11 +14,5 @@ $(document).ready(function () {
                 }
             });
         });
-    }
-
-    // Chamando a função para os contêineres
-    handleSearchAndFilter('#cardContainer');
-    handleSearchAndFilter('#cardDesativadosContainer');
-    handleSearchAndFilter('#Agendados');
-    handleSearchAndFilter('#Finalizados');
+    });
 });
