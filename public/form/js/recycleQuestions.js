@@ -65,7 +65,7 @@ function addQuestionFromModal(question) {
                     <input type="${question.type === 'Multipla Escolha' ? 'checkbox' : 'radio'}" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
                     <input type="text" class="form-control question-alternatives alternative-input" value="${option.text}" placeholder="Digite a alternativa">
                     <div class="input-group-append">
-                        <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" onclick="removeAlternative('${alternativeId}')">X</button>
+                        <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}">X</button>
                     </div>
                 </div>
             `;
@@ -77,8 +77,8 @@ function addQuestionFromModal(question) {
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="card-title">${question.body}</h5>
                 <div>
-                    <button type="button" class="btn btn-light btn-move-up" onclick="moveQuestion('${questionId}', 'up')">↑</button>
-                    <button type="button" class="btn btn-light btn-move-down" onclick="moveQuestion('${questionId}', 'down')">↓</button>
+                    <button type="button" class="btn btn-light btn-move-up">↑</button>
+                    <button type="button" class="btn btn-light btn-move-down">↓</button>
                 </div>
             </div>
             <div class="form-group">
@@ -87,7 +87,7 @@ function addQuestionFromModal(question) {
             </div>
             <div class="form-group">
                 <label for="${questionId}-type">Tipo de Questão</label>
-                    <select class="form-control question-type-select" id="${questionId}-type" onchange="changeQuestionType('${questionId}')">
+                    <select class="form-control question-type-select" id="${questionId}-type">
                         <option value="Resposta Curta" ${question.type === 'Resposta Curta' ? 'selected' : ''}>Resposta Curta</option>
                         <option value="Multipla Escolha" ${question.type === 'Multipla Escolha' ? 'selected' : ''}>Múltipla Escolha</option>
                         <option value="Unica Escolha" ${question.type === 'Unica Escolha' ? 'selected' : ''}>Única Escolha</option>
@@ -97,12 +97,17 @@ function addQuestionFromModal(question) {
                     </select>
             </div>
             ${question.type === 'Resposta Curta' ? '' : `<div id="${questionId}-alternatives" class="form-group overflow-auto">${alternativesHtml}</div>`}
-            <button type="button" class="btn btn-danger" onclick="removeQuestion('${questionId}')">Remover Questão</button>
+            <button type="button" class="btn btn-danger remove-question-btn">Remover Questão</button>
         </div>
     `;
 
     document.getElementById('questions-container').appendChild(questionCard);
     initCustomSelect(questionCard.querySelector('select.question-type-select'));
+
+    questionCard.querySelector('.btn-move-up').addEventListener('click', () => moveQuestion(questionId, 'up'));
+    questionCard.querySelector('.btn-move-down').addEventListener('click', () => moveQuestion(questionId, 'down'));
+    questionCard.querySelector('.question-type-select').addEventListener('change', () => changeQuestionType(questionId));
+    questionCard.querySelector('.remove-question-btn').addEventListener('click', () => removeQuestion(questionId));
 }
 
 export async function HandlerRecycleEvents() {

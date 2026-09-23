@@ -2,6 +2,16 @@ import { mostrarMensagem } from "../js/geraNotificacao.js";
 import { api } from '../../js/api.js';
 import { initCustomSelect } from '../../js/components/customSelect.js';
 let isRequestInProgress = false; // Variável de controle
+
+function bindQuestionCardEvents(questionCard, questionId, { skipRemove = false } = {}) {
+  questionCard.querySelector('.btn-move-up').addEventListener('click', () => moveQuestion(questionId, 'up'));
+  questionCard.querySelector('.btn-move-down').addEventListener('click', () => moveQuestion(questionId, 'down'));
+  questionCard.querySelector('.question-type-select').addEventListener('change', () => changeQuestionType(questionId));
+  if (!skipRemove) {
+    questionCard.querySelector('.remove-question-btn').addEventListener('click', () => removeQuestion(questionId));
+  }
+}
+
 export function addQuestion() {
   if (isRequestInProgress) return; // Impede múltiplos cliques
 
@@ -15,8 +25,8 @@ export function addQuestion() {
     <div class="d-flex justify-content-between align-items-center">
       <h5 class="card-title">Nova Questão</h5>
       <div>
-        <button type="button" class="btn btn-light btn-move-up" onclick="moveQuestion('${questionId}', 'up')">↑</button>
-        <button type="button" class="btn btn-light btn-move-down" onclick="moveQuestion('${questionId}', 'down')">↓</button>
+        <button type="button" class="btn btn-light btn-move-up">↑</button>
+        <button type="button" class="btn btn-light btn-move-down">↓</button>
       </div>
     </div>
     <div class="form-group">
@@ -25,7 +35,7 @@ export function addQuestion() {
     </div>
     <div class="form-group">
       <label for="${questionId}-type">Tipo de Questão</label>
-      <select class="form-control question-type-select" id="${questionId}-type" onchange="changeQuestionType('${questionId}')">
+      <select class="form-control question-type-select" id="${questionId}-type">
         <option value="Resposta Curta">Resposta Curta</option>
         <option value="Multipla Escolha">Múltipla Escolha</option>
         <option value="Unica Escolha">Única Escolha</option>
@@ -35,18 +45,18 @@ export function addQuestion() {
       </select>
     </div>
     <div id="${questionId}-alternatives" class="form-group"></div>
-    <button type="button" class="btn btn-danger" onclick="removeQuestion('${questionId}')">Remover Questão</button>
+    <button type="button" class="btn btn-danger remove-question-btn">Remover Questão</button>
   </div>
 `;
   document.getElementById('questions-container').appendChild(questionCard);
   initCustomSelect(questionCard.querySelector('select.question-type-select'));
+  bindQuestionCardEvents(questionCard, questionId);
       // Exemplo de reabilitação após uma ação fictícia
       setTimeout(() => { // Simulando uma operação assíncrona
         isRequestInProgress = false; // Reabilita o botão após a operação
     }, 1000); // Ajuste conforme necessário
 }
 
-// Atualize displayFormQuestionsFromFetch da mesma forma
 function displayFormQuestionsFromFetch(questions) {
     const questionsContainer = document.getElementById('questions-container');
     questionsContainer.innerHTML = '';
@@ -61,8 +71,8 @@ function displayFormQuestionsFromFetch(questions) {
               <div class="d-flex justify-content-between align-items-center">
                 <h5 class="card-title">Questão ${index + 1}</h5>
                 <div>
-                  <button type="button" class="btn btn-light btn-move-up" onclick="moveQuestion('${questionId}', 'up')">↑</button>
-                  <button type="button" class="btn btn-light btn-move-down" onclick="moveQuestion('${questionId}', 'down')">↓</button>
+                  <button type="button" class="btn btn-light btn-move-up">↑</button>
+                  <button type="button" class="btn btn-light btn-move-down">↓</button>
                 </div>
               </div>
               <div class="form-group">
@@ -71,7 +81,7 @@ function displayFormQuestionsFromFetch(questions) {
               </div>
               <div class="form-group">
                   <label for="${questionId}-type">Tipo de Questão</label>
-                  <select class="form-control question-type-select" id="${questionId}-type" onchange="changeQuestionType('${questionId}')">
+                  <select class="form-control question-type-select" id="${questionId}-type">
                       <option value="Resposta Curta" ${question.type === 'Resposta Curta' ? 'selected' : ''}>Resposta Curta</option>
                       <option value="Multipla Escolha" ${question.type === 'Multipla Escolha' ? 'selected' : ''}>Múltipla Escolha</option>
                       <option value="Unica Escolha" ${question.type === 'Unica Escolha' ? 'selected' : ''}>Única Escolha</option>
@@ -82,11 +92,12 @@ function displayFormQuestionsFromFetch(questions) {
                       </select>
               </div>
               <div id="${questionId}-alternatives" class="form-group overflow-auto"></div>
-              <button type="button" class="remove-question-btn-fetch btn btn-danger" onclick="removeQuestion('${questionId}')">Remover Questão</button>
+              <button type="button" class="remove-question-btn-fetch btn btn-danger">Remover Questão</button>
           </div>
       `;
         questionsContainer.appendChild(questionCard);
         initCustomSelect(questionCard.querySelector('select.question-type-select'));
+        bindQuestionCardEvents(questionCard, questionId, { skipRemove: true });
   
         // Se a pergunta for de múltipla escolha ou única escolha, exiba as opções
         if (question.type === 'Multipla Escolha' || question.type === 'Unica Escolha' || question.type === 'Unica Escolha-Bairro' || question.type === 'Unica Escolha-Ubs' || question.type === 'Unica Escolha-Setor') {
@@ -140,7 +151,7 @@ export async function fetchFormQuestions(formName) {
 
 function liberarEdicaoParaFormularioNovo(dataCriacao, formActive, dataExpiracao) {
     const horarioDataAtual = new Date();
-    const tempoParaEditarEmMinutos = 240; // 4 hora
+    const tempoParaEditarEmMinutos = 240; // 4 horas
 
     // Verifica se dataCriacao é válida
     let dateMaxEditForm = null;

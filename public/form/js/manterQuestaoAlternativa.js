@@ -326,6 +326,19 @@ function changeQuestionType(questionId) {
         `${questionId}-alternatives`
     );
 
+    // Questões copiadas como "Resposta Curta" não renderizam o container de alternativas
+    if (!alternativesContainer) {
+        if (questionType === 'Resposta Curta') return;
+        const cardBody = document.getElementById(questionId);
+        if (!cardBody) return;
+        const container = document.createElement('div');
+        container.id = `${questionId}-alternatives`;
+        container.className = 'form-group overflow-auto';
+        cardBody.appendChild(container);
+        bindAlternativeRemoveEvents();
+        return changeQuestionType(questionId);
+    }
+
     if (questionType === 'Resposta Curta') {
         alternativesContainer.classList.add('d-none');
     } else if (
@@ -376,7 +389,7 @@ function addAlternative(questionId, questionType) {
             }" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
             <input type="text" class="form-control question-alternatives alternative-input" placeholder="Digite a alternativa">
             <div class="input-group-append">
-                <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" onclick="removeAlternative('${alternativeId}')">X</button>
+                <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}">X</button>
             </div>
             </div>
         `;
@@ -394,7 +407,7 @@ function addAlternative(questionId, questionType) {
                 <input type="radio" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
                 <input type="text" class="form-control question-alternatives alternative-input" value="${bairro}">
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" onclick="removeAlternative('${alternativeId}')">X</button>
+                    <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}">X</button>
                 </div>
                 </div>
             `;
@@ -412,7 +425,7 @@ function addAlternative(questionId, questionType) {
                 <input type="radio" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
                 <input type="text" class="form-control question-alternatives alternative-input" value="${ubs}">
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" onclick="removeAlternative('${alternativeId}')">X</button>
+                    <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}">X</button>
                 </div>
                 </div>
             `;
@@ -431,7 +444,7 @@ function addAlternative(questionId, questionType) {
                 <input type="radio" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
                 <input type="text" class="form-control question-alternatives alternative-input" value="${setor}">
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" onclick="removeAlternative('${alternativeId}')">X</button>
+                    <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}">X</button>
                 </div>
                 </div>
             `;
@@ -450,6 +463,18 @@ function removeQuestion(questionId) {
     const questionElement = document.getElementById(questionId).parentElement;
     questionElement.remove();
 }
+
+function bindAlternativeRemoveEvents() {
+    const container = document.getElementById('questions-container');
+    if (!container || container.dataset.removeBound) return;
+    container.dataset.removeBound = '1';
+    container.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-remove-alternative');
+        if (btn) removeAlternative(btn.dataset.alternativeId);
+    });
+}
+
+bindAlternativeRemoveEvents();
 
 function moveQuestion(questionId, direction) {
     const questionsContainer = document.getElementById('questions-container');
