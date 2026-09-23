@@ -2,6 +2,11 @@ import { questionsRecycle } from '../indexForm.js';
 import { getCookie, api } from '../../js/api.js';
 import { mostrarMensagem } from './geraNotificacao.js';
 import { initCustomSelect } from '../../js/components/customSelect.js';
+import {
+    changeQuestionType,
+    removeQuestion,
+    moveQuestion,
+} from './manterQuestaoAlternativa.js';
 
 // Função para pegar todas as questões
 export async function getQuestions() {

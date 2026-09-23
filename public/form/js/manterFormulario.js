@@ -1,6 +1,12 @@
 import { mostrarMensagem } from "../js/geraNotificacao.js";
 import { api } from '../../js/api.js';
 import { initCustomSelect } from '../../js/components/customSelect.js';
+import {
+    changeQuestionType,
+    addAlternative,
+    removeQuestion,
+    moveQuestion,
+} from './manterQuestaoAlternativa.js';
 let isRequestInProgress = false; // Variável de controle
 
 function bindQuestionCardEvents(questionCard, questionId, { skipRemove = false } = {}) {

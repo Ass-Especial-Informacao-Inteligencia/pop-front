@@ -1,4 +1,4 @@
-const bairrosFerrazDeVasconcelos = {
+export const bairrosFerrazDeVasconcelos = {
     "Parque Imperial": {},
     "Sitio do Paiolzinho": {},
     "Sitio Sebastião": {},
@@ -151,7 +151,7 @@ const bairrosFerrazDeVasconcelos = {
 };
 
 
-  const ubsFerrazDeVasconcelos = {
+  export const ubsFerrazDeVasconcelos = {
    "ESF Antônio Nhan": {},
    "ESF Jardim Yone (Geraldo Alckmin)": {},
    "ESF Jardim São Lázaro": {},
@@ -168,7 +168,7 @@ const bairrosFerrazDeVasconcelos = {
    "UBS Vila São Paulo": {}
 };
 
-const bairroComSetor = {
+export const bairroComSetor = {
     "Chácara Descansolândia - S1": {},
     "Jardim do Papai - S1": {},
     "Vila São Sebastião - S1": {},
@@ -320,7 +320,7 @@ const bairroComSetor = {
     "Vila Santa Margarida - S10": {}
   }
   
-function changeQuestionType(questionId) {
+export function changeQuestionType(questionId) {
     const questionType = document.getElementById(`${questionId}-type`).value;
     const alternativesContainer = document.getElementById(
         `${questionId}-alternatives`
@@ -374,7 +374,7 @@ function changeQuestionType(questionId) {
     }
 }
 
-function addAlternative(questionId, questionType) {
+export function addAlternative(questionId, questionType) {
     const alternativeId = `${questionId}-alt-${Date.now()}`;
     const alternativesContainer = document.getElementById(`${questionId}-alternatives`);
     const alternativeContainer = document.createElement('div');
@@ -453,13 +453,13 @@ function addAlternative(questionId, questionType) {
     }
 }
 
-function removeAlternative(alternativeId) {
+export function removeAlternative(alternativeId) {
     const alternativeContainer =
         document.getElementById(alternativeId).parentNode;
     alternativeContainer.remove();
 }
 
-function removeQuestion(questionId) {
+export function removeQuestion(questionId) {
     const questionElement = document.getElementById(questionId).parentElement;
     questionElement.remove();
 }
@@ -476,7 +476,7 @@ function bindAlternativeRemoveEvents() {
 
 bindAlternativeRemoveEvents();
 
-function moveQuestion(questionId, direction) {
+export function moveQuestion(questionId, direction) {
     const questionsContainer = document.getElementById('questions-container');
     const questionCard = document.getElementById(questionId).closest('.question-card');
 

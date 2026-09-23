@@ -25,7 +25,7 @@ export function deleteAlternatives() {
 
             const inputText = inputAlternativa.value.trim();
             if (!inputText) {
-                removeAlternative(alternativeContainer);
+                removeAlternativeElement(alternativeContainer);
                 return;
             }
 
@@ -41,7 +41,7 @@ export function deleteAlternatives() {
             fetchDeleteAlternatives(alternativeGroup)
                 .then(() => {
                     mostrarMensagem('Alternativa Excluída com sucesso!','success',5);
-                    removeAlternative(alternativeContainer);
+                    removeAlternativeElement(alternativeContainer);
                 })
                 .catch((error) => {
                     console.error('Error deleting alternative:', error);
@@ -50,6 +50,6 @@ export function deleteAlternatives() {
     });
 }
 
-function removeAlternative(alternativeContainer) {
+function removeAlternativeElement(alternativeContainer) {
     alternativeContainer.remove();
 }
