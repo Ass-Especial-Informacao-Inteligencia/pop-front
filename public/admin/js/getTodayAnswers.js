@@ -1,4 +1,4 @@
-import { api } from '../../../js/api.js'; // cliente API centralizado
+import { api } from '../../js/api.js'; // cliente API centralizado
 import { mostrarMensagem } from '../../js/geraNotificacao.js';
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -1,4 +1,4 @@
-import { loadingScreen } from './js/loadingScreen.js';
+import { loadingScreen } from '../js/loadingScreen.js';
 import { logout } from '../js/api.js';
 import { addUsersForList } from './js/manterUser/geraTrUsuarios.js';
 import {

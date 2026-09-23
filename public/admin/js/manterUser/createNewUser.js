@@ -1,7 +1,7 @@
 import { mostrarMensagem } from '../../../js/geraNotificacao.js';
 import { checkEmptyFields } from './checkEmptyFields.js';
 import { addUsersForList } from './geraTrUsuarios.js';
-import { api } from '../../../../js/api.js'; // cliente API centralizado
+import { api } from '../../../js/api.js'; // cliente API centralizado
 
 export async function signUp() {
     // Retrieving form data

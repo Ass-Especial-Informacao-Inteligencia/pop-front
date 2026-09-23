@@ -1,7 +1,7 @@
 import { adicionarUsersComAcesso } from './accessFormDelegation.js';
 import { mostrarMensagem } from '../../js/geraNotificacao.js';
 import { getUsersWithAccess } from './searchUsers.js';
-import { api } from '../../../js/api.js'; // cliente API centralizado
+import { api } from '../../js/api.js'; // cliente API centralizado
 
 // Função para listar os usuários com acesso em formato JSON
 export function listarUsuariosComAcesso() {

@@ -9,7 +9,7 @@ import { handleSalvarButtonClick } from './js/fetchDelegationForm.js';
 import { setupFormRedirect } from './js/formRedirect.js';
 import { displayForms, displayFormsAgendados, displayFormsDesativados, displayFormsFinalizados } from './js/getFormularios.js';
 import { getUserData, logout } from '../js/api.js';
-import { loadingScreen } from './js/loadingScreen.js';
+import { loadingScreen } from '../js/loadingScreen.js';
 import { fillAccessModal, fillUpModalsInfo, showModalAgendamentoInputs } from './js/modals.js';
 import { navtabModificador, updatetabsPerUser } from './js/navtab.js';
 import { themeToggle } from '../js/temas.js';

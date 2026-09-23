@@ -10,7 +10,7 @@ import {
     displayFormsFinalizados,
 } from './getFormularios.js';
 import { fillAccessModal } from './modals.js';
-import { api } from '../../../js/api.js'; // cliente API centralizada
+import { api } from '../../js/api.js'; // cliente API centralizada
 
 export function changeStatus(ev) {
     const confirmButton = document.querySelector(

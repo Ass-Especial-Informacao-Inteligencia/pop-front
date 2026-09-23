@@ -1,4 +1,4 @@
-import { api } from '../../../js/api.js'; // cliente API centralizado
+import { api } from '../../js/api.js'; // cliente API centralizado
 
 export async function searchUsers(searchTerm, selectedUsers) {
     try {

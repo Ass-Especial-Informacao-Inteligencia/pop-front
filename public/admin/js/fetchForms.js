@@ -1,6 +1,6 @@
 import { clearError, displayError } from './errorHandler.js';
 import { mostrarMensagem } from '../../js/geraNotificacao.js';
-import { api } from '../../../js/api.js'; // cliente API centralizado
+import { api } from '../../js/api.js'; // cliente API centralizado
 
 export async function fetchActiveForms() {
     try {
