@@ -1,4 +1,4 @@
-import { mostrarMensagem } from '../geraNotificacao.js';
+import { mostrarMensagem } from '../../../js/geraNotificacao.js';
 import { checkEmptyFields } from './checkEmptyFields.js';
 import { addUsersForList } from './geraTrUsuarios.js';
 import { api } from '../../../../js/api.js'; // cliente API centralizado

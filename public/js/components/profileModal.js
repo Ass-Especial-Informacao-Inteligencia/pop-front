@@ -4,7 +4,7 @@ export function renderProfileModal({ isAdmin = false } = {}) {
                 <button
                     type="button"
                     class="btn btn-primary ml-2"
-                    onclick="window.location.href='/managerUsers'"
+                    data-nav-href="/managerUsers"
                 >
                     Editar Informações
                 </button>
@@ -32,7 +32,7 @@ export function renderProfileModal({ isAdmin = false } = {}) {
                             type="button"
                             class="close"
                             data-dismiss="modal"
-                            aria-label="Close"
+                            aria-label="Fechar"
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -63,3 +63,10 @@ export function renderProfileModal({ isAdmin = false } = {}) {
             </div>
         </div>`;
 }
+
+document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-nav-href]');
+    if (trigger) {
+        window.location.href = trigger.getAttribute('data-nav-href');
+    }
+});

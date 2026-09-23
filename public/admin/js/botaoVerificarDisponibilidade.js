@@ -1,5 +1,5 @@
 import { animationConfigBarForm } from './barraDeConfigAnimation.js';
-import { mostrarMensagem } from './geraNotificacao.js';
+import { mostrarMensagem } from '../../js/geraNotificacao.js';
 import {
     adicionaDataInModalArquivar,
     changeStatus,

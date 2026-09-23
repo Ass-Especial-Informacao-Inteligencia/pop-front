@@ -1,6 +1,6 @@
 import { questionsRecycle } from '../indexForm.js';
 import { getCookie, api } from '../../js/api.js';
-import { mostrarMensagem } from './geraNotificacao.js';
+import { mostrarMensagem } from '../../js/geraNotificacao.js';
 import { initCustomSelect } from '../../js/components/customSelect.js';
 import {
     changeQuestionType,

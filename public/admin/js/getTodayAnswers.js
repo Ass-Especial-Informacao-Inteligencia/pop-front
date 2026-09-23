@@ -1,5 +1,5 @@
 import { api } from '../../../js/api.js'; // cliente API centralizado
-import { mostrarMensagem } from './geraNotificacao.js';
+import { mostrarMensagem } from '../../js/geraNotificacao.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;

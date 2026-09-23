@@ -463,8 +463,8 @@
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#cookiesModal">
                 Política de Cookies
             </button>
-            <button class="btn btn-success" onclick="acceptCookies()">Aceitar Todos</button>
-            <button class="btn btn-danger" onclick="declineCookies()">Recusar</button>
+            <button type="button" class="btn btn-success" id="accept-cookies">Aceitar Todos</button>
+            <button type="button" class="btn btn-danger" id="decline-cookies">Recusar</button>
         </div>
     <script>
         function setCookie(name, value, days) {
@@ -497,6 +497,9 @@
             document.getElementById('cookie-banner').style.display = 'none';
             setCookie('cookiesAccepted', 'false', 365); // Salva a recusa por 365 dias
         }
+
+        document.getElementById('accept-cookies').addEventListener('click', acceptCookies);
+        document.getElementById('decline-cookies').addEventListener('click', declineCookies);
 
         window.onload = function() {
     var cookiesAccepted = getCookie('cookiesAccepted');

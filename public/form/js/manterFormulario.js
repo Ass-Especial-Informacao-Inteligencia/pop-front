@@ -1,4 +1,4 @@
-import { mostrarMensagem } from "../js/geraNotificacao.js";
+import { mostrarMensagem } from "../../js/geraNotificacao.js";
 import { api } from '../../js/api.js';
 import { initCustomSelect } from '../../js/components/customSelect.js';
 import {

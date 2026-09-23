@@ -1,5 +1,5 @@
 import { adicionarUsersComAcesso } from './accessFormDelegation.js';
-import { mostrarMensagem } from './geraNotificacao.js';
+import { mostrarMensagem } from '../../js/geraNotificacao.js';
 import { getUsersWithAccess } from './searchUsers.js';
 import { api } from '../../../js/api.js'; // cliente API centralizado
 

@@ -1,4 +1,4 @@
-import { mostrarMensagem } from '../js/geraNotificacao.js';
+import { mostrarMensagem } from '../../js/geraNotificacao.js';
 import { fetchDeleteAlternatives } from './fetch.js';
 
 export function deleteAlternatives() {

@@ -1,6 +1,10 @@
-import { mostrarMensagem } from '../js/geraNotificacao.js';
+import { mostrarMensagem } from '../../js/geraNotificacao.js';
 import { capturarRespostas } from './sendAnswers.js';
 import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
+
+document.getElementById('btn-novas-respostas')?.addEventListener('click', () => {
+    window.location.reload();
+});
 
 // Função para criar um input com autocomplete
 function criarAutocompleteInput(bairros, index, liberaAcesso) {

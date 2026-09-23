@@ -1,4 +1,4 @@
-import { mostrarMensagem } from '../geraNotificacao.js';
+import { mostrarMensagem } from '../../../js/geraNotificacao.js';
 import { getCookie, api } from '../../../js/api.js'; // cliente API centralizado
 import { addUsersForList } from './geraTrUsuarios.js';
 

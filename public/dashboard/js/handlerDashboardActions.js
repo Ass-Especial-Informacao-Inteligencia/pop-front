@@ -9,7 +9,7 @@ import {
     updateVisualizations,
 } from './graficoTabelaCruzada.js';
 import { formData } from '../mainDashBoardHandler.js';
-import { mostrarMensagem } from './geraNotificacao.js';
+import { mostrarMensagem } from '../../js/geraNotificacao.js';
 
 function selectedQuestionFunction() {
     return document.getElementById('selectSingleQuestion').value;
