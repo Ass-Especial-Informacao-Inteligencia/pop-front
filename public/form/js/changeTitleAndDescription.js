@@ -19,8 +19,6 @@ export function changeTitleAndDescription() {
         const newTitle = inputTitulo.value.trim(); // Remove espaços em branco no início e no final do novo título
         const newDescription = inputDescricao.value.trim(); // Remove espaços em branco no início e no final da nova descrição
 
-        // Aqui você pode aplicar o tratamento adicional para caracteres indesejados no final do título, se necessário
-
         const params = {
             title: title.trim(), // Remove espaços em branco no início e no final do título original
             newTitle,

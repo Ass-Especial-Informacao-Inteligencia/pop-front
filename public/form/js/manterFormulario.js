@@ -57,10 +57,10 @@ export function addQuestion() {
   document.getElementById('questions-container').appendChild(questionCard);
   initCustomSelect(questionCard.querySelector('select.question-type-select'));
   bindQuestionCardEvents(questionCard, questionId);
-      // Exemplo de reabilitação após uma ação fictícia
-      setTimeout(() => { // Simulando uma operação assíncrona
-        isRequestInProgress = false; // Reabilita o botão após a operação
-    }, 1000); // Ajuste conforme necessário
+  // Reabilita o botão após 1s (evita clique duplo enquanto DOM monta)
+  setTimeout(() => {
+    isRequestInProgress = false;
+  }, 1000);
 }
 
 function displayFormQuestionsFromFetch(questions) {
@@ -172,7 +172,7 @@ function liberarEdicaoParaFormularioNovo(dataCriacao, formActive, dataExpiracao)
         dateExpiryForm = new Date(dataExpiracao);
     }
 
-    // não permite edição de forms ativos com criação a mais de 1 hora, caso seja novo permite edição de até uma hora
+    // não permite edição de forms ativos com criação a mais de 4 horas (tempoParaEditarEmMinutos)
     if (formActive && dateMaxEditForm && horarioDataAtual > dateMaxEditForm) {
         desativaBotoesForm(formActive);
         mostrarMensagem('Formulários Ativos não podem ser Editados! Arquive o formulário caso queira editar!', 'info', 6);

@@ -1,3 +1,7 @@
+// Gera os cards de formulário nas abas (ativos/desativados/agendados/finalizados).
+// Contrato DOM com outros módulos: .card com data-status, .archive-btn,
+// .open-new-tab-btn e .form-redirect — consumidos por querySelector em
+// changeFormStatus, formRedirect e dashboardRedirect. Não renomear sem revisar esses arquivos.
 function buildEmptyState() {
     return `
         <div class="card border-primary mb-3 mt-4">

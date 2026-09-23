@@ -159,7 +159,7 @@ const createTypesRow = (responsesByUser) => {
   // Adiciona os tipos de pergunta para cada pergunta única encontrada
   Object.keys(questionTypes).forEach((question) => {
     questionTypes[question].forEach((tipo) => {
-      //typesRow.push(tipo);
+      // typesRow.push(tipo); // desativado: tipos vão em outra linha do sheet
     });
   });
 

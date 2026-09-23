@@ -1,3 +1,7 @@
+// Servidor estático + proxy do front (POP 1.0).
+// Serve public/ e encaminha chamadas de API para o pop-back (BACKEND_URL).
+// Rotas amigáveis (/home, /form/:title…) gravam cookie `form` e redirecionam
+// para o HTML correspondente — o cookie é lido pelo front para saber qual form.
 require('dotenv').config();
 
 const express = require('express');

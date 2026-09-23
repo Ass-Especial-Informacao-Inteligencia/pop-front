@@ -1,4 +1,4 @@
-// ── Cookie helper (substitui getCookie.js duplicado) ──
+// ── Cookie helper ──
 export function getCookie(name) {
     const nameEQ = name + '=';
     const decodedCookie = decodeURIComponent(document.cookie);

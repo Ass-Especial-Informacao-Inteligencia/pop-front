@@ -304,4 +304,3 @@ export function generateOptionFilters(formData, questionId) {
 export function updateSingleQuestionVisualizations(questionId) {
     generateSingleQuestionVisualizations(formData, questionId);
 }
-//Pega please

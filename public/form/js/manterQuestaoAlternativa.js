@@ -360,13 +360,7 @@ export function changeQuestionType(questionId) {
                 'mt-2',
                 'mb-2'
             );
-            // if(questionType === 'Unica Escolha-Bairro'){
-            //     questionType = 'Unica Escolha'
-            // }
             addAlternativeButton.innerText = 'Adicionar Alternativa';
-             // if(questionType === 'Unica Escolha-Bairro'){
-            //     questionType = 'Unica Escolha'
-            // }
             addAlternativeButton.onclick = () =>
                 addAlternative(questionId, questionType);
             alternativesContainer.appendChild(addAlternativeButton);

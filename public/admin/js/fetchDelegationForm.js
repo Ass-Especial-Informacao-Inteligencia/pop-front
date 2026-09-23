@@ -24,7 +24,7 @@ export function listarUsuariosComAcesso() {
         usuariosComAcesso.push(usuario);
     });
 
-    // Retorna a string JSON
+    // Retorna array de objetos { name, cpf, email }
     return usuariosComAcesso;
 }
 

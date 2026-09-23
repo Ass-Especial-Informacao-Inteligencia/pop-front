@@ -1,3 +1,6 @@
+// Orquestra o dashboard: sincroniza checkboxes de questões/opções com
+// formData.Questions, repinta color pickers e re-renderiza gráficos/tabelas.
+// X aceita Múltipla/Única Escolha; Y só Única Escolha (regra em populateSelectOptions).
 import { GeraEventoDownloads } from './downloadChartAndGraphics.js';
 import {
     generateOptionFilters,

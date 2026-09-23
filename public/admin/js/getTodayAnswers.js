@@ -1,3 +1,5 @@
+// Página "Respostas por Mês": busca /todayAnswers, agrupa por entrevistado
+// (rowspan na tabela) e pagina manualmente com currentPage + itemsPerPage.
 import { api } from '../../js/api.js'; // cliente API centralizado
 import { mostrarMensagem } from '../../js/geraNotificacao.js';
 

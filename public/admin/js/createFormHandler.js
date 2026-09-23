@@ -19,9 +19,8 @@ import {
 import { fillAccessModal } from './modals.js';
 
 export function createForm() {
-    //  Capture o form do modal
     document
-        .getElementById('createForm') // Substitua pelo id do form do modal
+        .getElementById('createForm')
         .addEventListener('submit', (ev) => {
             ev.preventDefault();
 
@@ -37,14 +36,11 @@ export function createForm() {
                 ),
             };
 
-            // Substitua 'errorElementId' pelo id do elemento onde deseja exibir o erro
             const errorElement = document.getElementById('titleError');
 
-            // Lida com o fetch
             fetchCreateForm(formData, errorElement)
                 .then(() => {
                     openFormCreated();
-                    // Se a resposta for bem-sucedida, manipule os dados recebidos
                     $('#criarFormularioModal').modal('hide');
                 })
                 .then(() =>
@@ -62,7 +58,6 @@ export function createForm() {
                         .then(() => setupResponseAdminRedirect())
                 )
                 .catch((error) => {
-                    // Se ocorrer um erro, manipule-o aqui
                     console.error('Erro ao criar formulário:', error.message);
                 });
         });

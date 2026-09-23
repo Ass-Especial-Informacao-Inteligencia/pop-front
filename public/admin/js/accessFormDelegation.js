@@ -1,15 +1,17 @@
 import { getUserData } from '../../js/api.js';
 const userLogged = await getUserData();
 
+// Monta as listas do modal de delegação de acesso.
+// O POST real para o backend acontece só no botão Salvar (fetchDelegationForm.js).
+
 export function adicionarUsersComAcesso(users) {
     const usersWithAccessList = document.getElementById('usersWithAccess');
     usersWithAccessList.innerHTML = '';
 
-    // Separe os usuários administradores dos outros usuários
     const adminUsers = users.filter((user) => user.role === 'admin');
     const regularUsers = users.filter((user) => user.role !== 'admin');
 
-    // Adicione os usuários administradores primeiro à lista
+    // Admins primeiro; o logado aparece como "EU" e sem botão de remover
     adminUsers.forEach(async (user) => {
         if (user.cpf === userLogged.cpf) {
             const admin = {
@@ -43,7 +45,7 @@ export function adicionarUsersComAcesso(users) {
         }
     });
 
-    // Adicione os outros usuários à lista após os usuários administradores
+    // Entrevistadores após os admins
     regularUsers.forEach((user) => {
         const users = {
             role: 'ENTREVISTADOR',
@@ -80,7 +82,6 @@ export function consultarUsersSemAcesso(
         document.querySelectorAll('#usersWithAccess li .CPF')
     ).map((cpfElement) => cpfElement.getAttribute('data-cpf'));
 
-    // Filtra os usuários que não estão na lista de selecionados nem na lista de usuários com acesso
     const usersWithoutAccess = users.filter(
         (user) =>
             !selectedUsers.some(
@@ -88,17 +89,15 @@ export function consultarUsersSemAcesso(
             ) && !usersWithAccessCPF.includes(user.cpf)
     );
 
-    // Para cada usuário sem acesso, cria um item de lista e adiciona um botão para adicionar
     usersWithoutAccess.forEach((user) => {
         const users = {
-            role: user.role === 'admin' ? 'ADMIN' : 'ENTREVISTADOR', // Define o papel do usuário
-            name: user.name,           // Nome do usuário
-            cpf: user.cpf,             // CPF do usuário
-            email: user.email,         // Email do usuário
+            role: user.role === 'admin' ? 'ADMIN' : 'ENTREVISTADOR',
+            name: user.name,
+            cpf: user.cpf,
+            email: user.email,
         };
-        const listItem = createUserListItem(users); // Cria um item de lista para o usuário
+        const listItem = createUserListItem(users);
 
-        // Cria um botão 'Adicionar' para adicionar o usuário à lista de salvos
         const adicionarBotao = createButton(
             'Adicionar',
             ['btn', 'btn-success', 'btn-sm'],
@@ -109,95 +108,93 @@ export function consultarUsersSemAcesso(
                     cpf: user.cpf,
                     email: user.email.split('@')[0] + '@', // Remove o domínio do email
                 };
-                selectedUsers.push(user); // Adiciona o usuário à lista de selecionados
-                const savedListItem = createUserListItem(users); // Cria um item de lista para a lista de salvos
+                selectedUsers.push(user);
+                const savedListItem = createUserListItem(users);
                 const removerBotao = createButton(
                     'Remover',
                     ['btn', 'btn-danger', 'remove-user', 'btn-sm'],
                     () => {
-                        savedList.removeChild(savedListItem); // Remove o item da lista de salvos
-                        const index = selectedUsers.indexOf(users); // Encontra o índice do usuário na lista de selecionados
-                        if (index !== -1) selectedUsers.splice(index, 1); // Remove o usuário da lista de selecionados
-                        resultsList.appendChild(createUserListItem(user)); // Re-adiciona o usuário à lista de resultados
+                        savedList.removeChild(savedListItem);
+                        const index = selectedUsers.indexOf(users);
+                        if (index !== -1) selectedUsers.splice(index, 1);
+                        resultsList.appendChild(createUserListItem(user));
                     }
                 );
-                savedListItem.appendChild(removerBotao); // Adiciona o botão 'Remover' ao item da lista de salvos
-                savedList.appendChild(savedListItem); // Adiciona o item à lista de salvos
-                listItem.remove(); // Remove o item da lista de resultados
-                // Lógica do fetch para adicionar acesso ao usuário (não implementada)
+                savedListItem.appendChild(removerBotao);
+                savedList.appendChild(savedListItem);
+                listItem.remove();
+                // Persistência: fetch em fetchDelegationForm.js (botão Salvar)
             }
         );
-        listItem.appendChild(adicionarBotao); // Adiciona o botão 'Adicionar' ao item da lista
-        resultsList.appendChild(listItem); // Adiciona o item à lista de resultados
+        listItem.appendChild(adicionarBotao);
+        resultsList.appendChild(listItem);
     });
 
-    // Adiciona um listener para o evento 'userRemoved' na lista de salvos
+    // Volta o usuário para a lista de resultados quando removido dos salvos
     savedList.addEventListener('userRemoved', (event) => {
-        const userRemoved = event.detail; // Obtém o usuário removido do evento
+        const userRemoved = event.detail;
         usersWithoutAccess.forEach((user) => {
             if (
                 user.name.includes(userRemoved.name) ||
                 user.cpf === userRemoved.cpf ||
                 user.email === userRemoved.email
             ) {
-                const listItem = createUserListItem(user); // Cria um item de lista para o usuário sem acesso
+                const listItem = createUserListItem(user);
                 const adicionarBotao = createButton(
                     'Adicionar',
                     ['btn', 'btn-success', 'btn-sm'],
                     () => {
-                        selectedUsers.push(user); // Adiciona o usuário à lista de selecionados
-                        const savedListItem = createUserListItem(user); // Cria um item de lista para a lista de salvos
+                        selectedUsers.push(user);
+                        const savedListItem = createUserListItem(user);
                         const removerBotao = createButton(
                             'Remover',
                             ['btn', 'btn-danger', 'remove-user', 'btn-sm'],
                             () => {
-                                savedList.removeChild(savedListItem); // Remove o item da lista de salvos
-                                const index = selectedUsers.indexOf(user); // Encontra o índice do usuário na lista de selecionados
-                                if (index !== -1) selectedUsers.splice(index, 1); // Remove o usuário da lista de selecionados
-                                resultsList.appendChild(createUserListItem(user)); // Re-adiciona o usuário à lista de resultados
+                                savedList.removeChild(savedListItem);
+                                const index = selectedUsers.indexOf(user);
+                                if (index !== -1) selectedUsers.splice(index, 1);
+                                resultsList.appendChild(createUserListItem(user));
                             }
                         );
-                        savedListItem.appendChild(removerBotao); // Adiciona o botão 'Remover' ao item da lista de salvos
-                        savedList.appendChild(savedListItem); // Adiciona o item à lista de salvos
-                        listItem.remove(); // Remove o item da lista de resultados
-                        // Lógica do fetch para adicionar acesso ao usuário (não implementada)
+                        savedListItem.appendChild(removerBotao);
+                        savedList.appendChild(savedListItem);
+                        listItem.remove();
                     }
                 );
-                listItem.appendChild(adicionarBotao); // Adiciona o botão 'Adicionar' ao item da lista
-                resultsList.appendChild(listItem); // Adiciona o item à lista de resultados
+                listItem.appendChild(adicionarBotao);
+                resultsList.appendChild(listItem);
             }
         });
     });
 
-    // Adiciona um listener para o evento 'userRemoved' na lista de salvos
+    // Re-insere nos resultados se o usuário removido não estava em usersWithoutAccess
     savedList.addEventListener('userRemoved', (event) => {
-        const userRemoved = event.detail; // Obtém o usuário removido do evento
+        const userRemoved = event.detail;
         if (!usersWithoutAccess.some((user) => user.cpf === userRemoved.cpf)) {
-            const listItem = createUserListItem(userRemoved); // Cria um item de lista para o usuário removido
+            const listItem = createUserListItem(userRemoved);
             const adicionarBotao = createButton(
                 'Adicionar',
                 ['btn', 'btn-success', 'btn-sm'],
                 () => {
-                    selectedUsers.push(userRemoved); // Adiciona o usuário à lista de selecionados
-                    const savedListItem = createUserListItem(userRemoved); // Cria um item de lista para a lista de salvos
+                    selectedUsers.push(userRemoved);
+                    const savedListItem = createUserListItem(userRemoved);
                     const removerBotao = createButton(
                         'Remover',
                         ['btn', 'btn-danger', 'remove-user', 'btn-sm'],
                         () => {
-                            savedList.removeChild(savedListItem); // Remove o item da lista de salvos
-                            const index = selectedUsers.indexOf(userRemoved); // Encontra o índice do usuário na lista de selecionados
-                            if (index !== -1) selectedUsers.splice(index, 1); // Remove o usuário da lista de selecionados
-                            resultsList.appendChild(createUserListItem(userRemoved)); // Re-adiciona o usuário à lista de resultados
+                            savedList.removeChild(savedListItem);
+                            const index = selectedUsers.indexOf(userRemoved);
+                            if (index !== -1) selectedUsers.splice(index, 1);
+                            resultsList.appendChild(createUserListItem(userRemoved));
                         }
                     );
-                    savedListItem.appendChild(removerBotao); // Adiciona o botão 'Remover' ao item da lista de salvos
-                    savedList.appendChild(savedListItem); // Adiciona o item à lista de salvos
-                    listItem.remove(); // Remove o item da lista de resultados
-                    // Lógica do fetch para adicionar acesso ao usuário (não implementada)
+                    savedListItem.appendChild(removerBotao);
+                    savedList.appendChild(savedListItem);
+                    listItem.remove();
                 }
             );
-            listItem.appendChild(adicionarBotao); // Adiciona o botão 'Adicionar' ao item da lista
-            resultsList.appendChild(listItem); // Adiciona o item à lista de resultados
+            listItem.appendChild(adicionarBotao);
+            resultsList.appendChild(listItem);
         }
     });
 }
@@ -222,16 +219,9 @@ function createButton(text, classNames, onClick) {
     button.type = 'button';
     button.textContent = text;
     button.addEventListener('click', onClick);
-
-    // Verifique se classNames é um array
-    if (Array.isArray(classNames)) {
-        // Adicione cada classe separadamente ao elemento do botão
-        classNames.forEach((className) => button.classList.add(className));
-    } else {
-        // Se for uma única classe, apenas adicione-a
-        button.classList.add(classNames);
-    }
-
+    (Array.isArray(classNames) ? classNames : [classNames]).forEach((c) =>
+        button.classList.add(c)
+    );
     return button;
 }
 

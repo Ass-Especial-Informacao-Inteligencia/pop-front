@@ -72,7 +72,6 @@ export async function capturarRespostas(ev) {
     // Se algum campo não estiver preenchido, não fazemos o fetch
     if (!allFieldsValid) {
         mostrarMensagem("Existem campos não preenchidos!","danger",5);
-        // Aqui você pode adicionar lógica para exibir mensagens de erro ao usuário
         return;
     } else {
         btnSubmitForOpenModal.dataset.toggle = "modal";
