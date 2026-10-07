@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>${answer.User ? answer.User.name : 'Desconhecido'}</td>
                         <td>${answer.form_id}</td>
                         <td>${new Date(answer.createdAt).toLocaleString()}</td>
-                        <td><button class="save-btn" data-interviewed="${interviewed}" data-question="${questionId}">Salvar</button></td>
+                        <td><button class="save-btn" data-interviewed="${interviewed}" data-question="${questionId}" data-form="${answer.form_id}">Salvar</button></td>
                     `;
                 } else {
                     row.innerHTML = `
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>${answer.User ? answer.User.name : 'Desconhecido'}</td>
                         <td>${answer.form_id}</td>
                         <td>${new Date(answer.createdAt).toLocaleString()}</td>
-                        <td><button class="save-btn" data-interviewed="${interviewed}" data-question="${questionId}">Salvar</button></td>
+                        <td><button class="save-btn" data-interviewed="${interviewed}" data-question="${questionId}" data-form="${answer.form_id}">Salvar</button></td>
                     `;
                 }
 
@@ -149,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function handleSave(event) {
         const interviewedId = event.target.dataset.interviewed;
         const questionId = event.target.dataset.question;
+        const formId = event.target.dataset.form;
         const inputElement = document.getElementById(
             `answer-${interviewedId}-${questionId}`
         );
@@ -158,9 +159,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        if (!formId) {
+            mostrarMensagem('Formulário da resposta não identificado.', 'danger', 5);
+            return;
+        }
+
         try {
             // Atualiza resposta individual via api centralizada
-            const response = await api.put(`/updateAnswer/${interviewedId}/${questionId}`, { answer: inputElement.value });
+            const response = await api.put(`/updateAnswer/${interviewedId}/${questionId}`, { answer: inputElement.value, form_id: Number(formId) });
 
             if (response.ok) {
                 mostrarMensagem('Resposta atualizada com sucesso!', 'success', 5);
