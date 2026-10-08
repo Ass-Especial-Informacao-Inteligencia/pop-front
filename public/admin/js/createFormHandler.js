@@ -17,6 +17,7 @@ import {
     displayFormsFinalizados,
 } from './getFormularios.js';
 import { fillAccessModal } from './modals.js';
+import { mostrarMensagem } from '../../js/geraNotificacao.js';
 
 export function createForm() {
     document
@@ -24,13 +25,25 @@ export function createForm() {
         .addEventListener('submit', (ev) => {
             ev.preventDefault();
 
+            const releaseDateValue = document.getElementById('releaseDate').value;
+            if (!releaseDateValue) {
+                // Obrigatório: revela a seção de agendamento (botão "Planejar Agendamento")
+                // e leva o foco até o campo para o admin preencher
+                document.querySelector('.agendamento').style.display = 'block';
+                document.getElementById('releaseDate').focus();
+                mostrarMensagem(
+                    'Informe a data de liberação do formulário.',
+                    'danger',
+                    5
+                );
+                return;
+            }
+
             const formData = {
                 title: document.getElementById('title').value.trim(),
                 description: document.getElementById('description').value,
                 form_type: document.getElementById('editarFuncao').value, 
-                opening_date: new Date(
-                    document.getElementById('releaseDate').value
-                ),
+                opening_date: new Date(releaseDateValue),
                 expiry_date: new Date(
                     document.getElementById('closeDate').value
                 ),

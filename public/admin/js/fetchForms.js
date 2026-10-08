@@ -22,8 +22,9 @@ export async function fetchCreateForm(formData, errorElement) {
 
         if (!response.ok) {
             const error = await response.json();
-            displayError(error.message, errorElement);
-            throw new Error(error.message);
+            // 400 de validação vem como { errors: [{ msg }] }; demais como { message }
+            displayError(error.errors?.[0]?.msg ?? error.message, errorElement);
+            throw new Error(error.errors?.[0]?.msg ?? error.message);
         } else {
             clearError(errorElement);
         }
