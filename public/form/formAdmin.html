@@ -47,15 +47,15 @@
                 <!-- perguntas vão ser geradas aqui! -->
                 <div id="questions-container"></div>
 
-                <div class="d-flex justify-content-end">
-                    <button id="btnSalvarForm" type="submit" class="btn btn-success mr-2">
+                <div class="d-flex justify-content-end" role="toolbar" aria-label="Ações do formulário">
+                    <button id="btnSalvarForm" type="submit" class="btn btn-success mr-2" aria-label="Salvar formulário">
                         Salvar
                     </button>
-                    <button id="btnAddQuestionForm" type="button" class="btn btn-primary addQuestion mr-2">
+                    <button id="btnAddQuestionForm" type="button" class="btn btn-primary addQuestion mr-2" aria-label="Adicionar nova questão">
                         Adicionar Questão
                     </button>
-                    <button id="btnRecycleQuestionForm" type="button" class="btn btn-secondary searchAndAddQuestion" data-toggle="modal" data-target="#pesquisarQuestaoModal">
-                        <i class="fas fa-search"></i> <i class="fas fa-plus"></i> Questão
+                    <button id="btnRecycleQuestionForm" type="button" class="btn btn-secondary searchAndAddQuestion" data-toggle="modal" data-target="#pesquisarQuestaoModal" aria-label="Pesquisar questões já cadastradas para adicionar">
+                        <i class="fas fa-search" aria-hidden="true" focusable="false"></i> <i class="fas fa-plus" aria-hidden="true" focusable="false"></i> Questão
                     </button>
                 </div>
             </form>
@@ -187,12 +187,16 @@
             </div>
         </div>
 
+        <!-- Região viva para leitores de tela (anúncios de mudanças nas questões) -->
+        <div id="sr-live" role="status" aria-live="polite"></div>
+
         <!-- Componentes compartilhados (injetados via JS) -->
         <div id="sharedComponents"></div>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
         <script src="./indexForm.js" type="module"></script>
     </body>
 </html>

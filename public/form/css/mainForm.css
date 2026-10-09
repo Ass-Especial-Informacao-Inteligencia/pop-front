@@ -203,6 +203,24 @@
   transition: var(--transition-fast, 150ms ease);
 }
 
+/* ── Drag-and-drop das questões (SortableJS) ── */
+#questions-container:not(.sortable-disabled) .question-card {
+  cursor: grab;
+}
+
+#questions-container:not(.sortable-disabled) .question-card .card-title {
+  cursor: grab;
+}
+
+#questions-container:not(.sortable-disabled) .question-card:active {
+  cursor: grabbing;
+}
+
+.question-card-ghost {
+  opacity: 0.4;
+  background-color: var(--surface, #e9ecef);
+}
+
 /* ── Admin toolbar ── */
 #formulario .d-flex.justify-content-end {
   background-color: var(--surface, #fff);
@@ -213,6 +231,23 @@
   margin-top: var(--space-lg, 24px);
 }
 
+/* ── Contraste AA do "Salvar" (branco sobre #28a745 = 3.1:1; escurecido = 5.1:1) ── */
+#btnSalvarForm {
+  background-color: #1e7e34;
+  border-color: #1e7e34;
+}
+
+#btnSalvarForm:hover,
+#btnSalvarForm:focus {
+  background-color: #18652b;
+  border-color: #18652b;
+}
+
+#btnSalvarForm:active {
+  background-color: #144f22;
+  border-color: #144f22;
+}
+
 /* ── Alternative input ── */
 .alternative-input {
   width: calc(100% - 90px);
@@ -221,6 +256,33 @@
 /* ── Notification container ── */
 .notification-container {
   padding: var(--space-xl, 32px);
+}
+
+/* ── Aviso da região viva (#sr-live): some quando vazio ── */
+#sr-live:empty {
+  display: none;
+}
+
+#sr-live:not(:empty) {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-lg, 24px);
+  transform: translateX(-50%);
+  max-width: 90vw;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm, 8px);
+  background-color: var(--surface, #fff);
+  color: var(--text, #333);
+  border: 1px solid var(--border, #dee2e6);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.12));
+  font-size: var(--font-size-sm, 0.875rem);
+  z-index: 1080;
+}
+
+.dark-mode #sr-live:not(:empty) {
+  background-color: var(--surface-dark, #1f1f1f);
+  color: var(--text-dark, #fff);
+  border-color: var(--border-dark, #444);
 }
 
 /* ── Responsive: mobile ── */

@@ -69,10 +69,55 @@ if (user.role === 'admin') {
 const logoutAnchor = document.getElementById('logout-conta');
 logoutAnchor.addEventListener('click', logout);
 
+// Enter não deve dar submit acidental (ex.: dentro de inputs do formulário),
+// mas precisa continuar ativando botões/links focados — em alguns browsers o
+// click do Enter em <button>/<a> é a default action do keypress.
 document.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
+    if (event.key !== 'Enter') return;
+    const alvo = event.target;
+    if (alvo instanceof Element && alvo.closest('button, a, [role="button"]')) return;
+    event.preventDefault();
+});
+
+// Tabulação: dentro de #questions-container só repousa no enunciado
+// (.question-body) e nos inputs de texto das alternativas (.alternative-input).
+// Select de tipo, custom select, radios e botões (↑↓/Remover/X/Adicionar
+// Alternativa) são pulados. Fora do container o comportamento é o padrão do
+// navegador. Modal aberto => ignora (foco fica com o trap do Bootstrap).
+document.addEventListener('keydown', function(event) {
+    if (event.key !== 'Tab') return;
+    if (document.querySelector('.modal.show')) return;
+
+    const ativo = document.activeElement;
+    if (!(ativo instanceof Element) || ativo === document.body) return;
+
+    // Focáveis visíveis e habilitados, na ordem do DOM.
+    const todos = [...document.querySelectorAll(
+        'a[href], button, input, select, textarea, [tabindex]'
+    )].filter(el =>
+        !el.disabled &&
+        el.tabIndex >= 0 &&
+        el.getClientRects().length > 0 &&
+        !el.closest('#sr-live')
+    );
+
+    const permitido = el =>
+        !el.closest('#questions-container') ||
+        el.matches('.question-body, .alternative-input');
+
+    const inicio = todos.indexOf(ativo);
+    if (inicio === -1) return;
+
+    const passo = event.shiftKey ? -1 : 1;
+    let destino = null;
+    for (let i = inicio + passo; i >= 0 && i < todos.length; i += passo) {
+        if (permitido(todos[i])) { destino = todos[i]; break; }
     }
+
+    // Alvo já era o próximo natural (nada pulado) => deixa o padrão do navegador.
+    if (!destino || destino === todos[inicio + passo]) return;
+    event.preventDefault();
+    destino.focus();
 });
 
 loadingScreen();

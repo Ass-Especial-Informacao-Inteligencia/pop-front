@@ -1,4 +1,4 @@
-import { mostrarMensagem } from "../../js/geraNotificacao.js";
+import { mostrarMensagem, anunciarSr } from "../../js/geraNotificacao.js";
 import { api } from '../../js/api.js';
 import { initCustomSelect } from '../../js/components/customSelect.js';
 import {
@@ -6,8 +6,31 @@ import {
     addAlternative,
     removeQuestion,
     moveQuestion,
+    renumberPositions,
 } from './manterQuestaoAlternativa.js';
 let isRequestInProgress = false; // Variável de controle
+
+// Drag-and-drop das questões (SortableJS global, carregado no formAdmin.html).
+// Idempotente: só cria a instância uma vez; novos cards são cobertos pelo filtro draggable.
+export function initQuestionSortable() {
+  const container = document.getElementById('questions-container');
+  if (!container || typeof Sortable === 'undefined' || container.sortableInstance) return;
+  container.sortableInstance = Sortable.create(container, {
+    draggable: '.question-card',
+    handle: '.card-title', // arrasta pelo título — não conflita com inputs/botões do card
+    animation: 150,
+    ghostClass: 'question-card-ghost',
+    // Auto-scroll: rola a página ao arrastar perto das bordas da tela
+    scroll: true,
+    scrollSensitivity: 60, // px da borda onde começa a rolar (padrão: 1)
+    scrollSpeed: 12,
+    bubbleScroll: true,
+    // Em Chrome/Firefox o Sortable desliga o próprio auto-scroll para window e
+    // confia no nativo do navegador (que não rola aqui) — força o ramo interno.
+    forceAutoScrollFallback: true,
+    onEnd: renumberPositions,
+  });
+}
 
 function bindQuestionCardEvents(questionCard, questionId, { skipRemove = false } = {}) {
   questionCard.querySelector('.btn-move-up').addEventListener('click', () => moveQuestion(questionId, 'up'));
@@ -57,6 +80,11 @@ export function addQuestion() {
   document.getElementById('questions-container').appendChild(questionCard);
   initCustomSelect(questionCard.querySelector('select.question-type-select'));
   bindQuestionCardEvents(questionCard, questionId);
+  // Conteúdo inserido dinamicamente: anuncia para leitores de tela e move o foco
+  // para o campo da questão nova (o browser já rola até ela).
+  const posicaoNova = document.getElementById('questions-container').children.length;
+  anunciarSr(`Questão ${posicaoNova} adicionada`);
+  questionCard.querySelector('.question-body').focus();
   // Reabilita o botão após 1s (evita clique duplo enquanto DOM monta)
   setTimeout(() => {
     isRequestInProgress = false;
@@ -149,6 +177,7 @@ export async function fetchFormQuestions(formName) {
         formDescription.textContent = formData.description;
         
         displayFormQuestionsFromFetch(formData.Questions);
+        initQuestionSortable();
         liberarEdicaoParaFormularioNovo(formData.created_at,formData.active,formData.expiry_date);
     } catch (error) {
         console.error('Error fetching form questions:', error);
@@ -192,5 +221,10 @@ function desativaBotoesForm(formActive) {
 
     elements.forEach(el => el.disabled = formActive);
     btnExternos.forEach(el => el.disabled=formActive);
+
+    // Mesma regra das setas: se a edição está bloqueada, o arrasto também fica
+    const questionsContainer = document.getElementById('questions-container');
+    questionsContainer?.sortableInstance?.option('disabled', formActive);
+    questionsContainer?.classList.toggle('sortable-disabled', formActive);
 }
 

@@ -1,3 +1,16 @@
+// Anúncio para leitores de tela via região viva (#sr-live, formAdmin.html).
+// Também exibe o texto como aviso visível (some sozinho após 4s).
+// Limpa e reatribui o texto para garantir que mensagens repetidas sejam reanunciadas.
+let timerSr = null;
+export function anunciarSr(msg) {
+    const live = document.getElementById('sr-live');
+    if (!live) return;
+    live.textContent = '';
+    requestAnimationFrame(() => { live.textContent = msg; });
+    clearTimeout(timerSr);
+    timerSr = setTimeout(() => { live.textContent = ''; }, 4000);
+}
+
 export function mostrarMensagem(msg, type, timeInSeconds) {
     const alerta = document.createElement('div');
     alerta.className = `alert alert-${type} alert-dismissible fade show`;

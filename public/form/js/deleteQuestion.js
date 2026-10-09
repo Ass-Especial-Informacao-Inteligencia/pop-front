@@ -1,4 +1,6 @@
 import { fetchDeleteQuestion } from './fetch.js';
+import { renumberPositions } from './manterQuestaoAlternativa.js';
+import { anunciarSr } from '../../js/geraNotificacao.js';
 
 export async function deleteQuestion() {
     document.addEventListener('click', function (event) {
@@ -9,6 +11,10 @@ export async function deleteQuestion() {
 
             fetchDeleteQuestion(body,idQuestion);
             card.parentNode.remove();
+            renumberPositions(); // mantém data-position sem buracos após remoção
+            // Devolve o foco a um elemento estável (o foco anterior sumiu com o card)
+            anunciarSr('Questão removida');
+            document.getElementById('btnAddQuestionForm')?.focus();
         }
     });
 }

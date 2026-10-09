@@ -28,9 +28,6 @@ export function renderNavbar({ role = 'user', activeTab = 'home', logoPath = './
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" id="logout-conta" href="#">Sair</a>
-                    </li>
                     <li class="nav-item${activeTab === 'home' ? ' active' : ''}">
                         <a class="nav-link" href="/home">Home${activeTab === 'home' ? ' <span class="sr-only">(current)</span>' : ''}</a>
                     </li>
@@ -41,6 +38,9 @@ export function renderNavbar({ role = 'user', activeTab = 'home', logoPath = './
                     <li class="nav-item${activeTab === 'usuarios' ? ' active' : ''}">
                         <a class="nav-link" href="/managerUsers">Usuários${activeTab === 'usuarios' ? ' <span class="sr-only">(current)</span>' : ''}</a>
                     </li>` : ''}
+                    <li class="nav-item">
+                        <a class="nav-link" id="logout-conta" href="#">Sair</a>
+                    </li>
                 </ul>
                 ${showSearch ? `
                 <!-- barra de pesquisa -->

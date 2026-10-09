@@ -1,3 +1,5 @@
+import { anunciarSr } from '../../js/geraNotificacao.js';
+
 export const bairrosFerrazDeVasconcelos = {
     "Parque Imperial": {},
     "Sitio do Paiolzinho": {},
@@ -456,6 +458,10 @@ export function removeAlternative(alternativeId) {
 export function removeQuestion(questionId) {
     const questionElement = document.getElementById(questionId).parentElement;
     questionElement.remove();
+    renumberPositions(); // mantém data-position sem buracos após remoção
+    // Devolve o foco a um elemento estável (o foco anterior sumiu com o card)
+    anunciarSr('Questão removida');
+    document.getElementById('btnAddQuestionForm')?.focus();
 }
 
 function bindAlternativeRemoveEvents() {
@@ -469,6 +475,16 @@ function bindAlternativeRemoveEvents() {
 }
 
 bindAlternativeRemoveEvents();
+
+// Renumera data-position de todos os cards conforme a ordem atual do DOM.
+// Usado pelas setas, pelo drag-and-drop e após exclusões (evita posições duplicadas).
+export function renumberPositions() {
+    const questionsContainer = document.getElementById('questions-container');
+    if (!questionsContainer) return;
+    Array.from(questionsContainer.children).forEach((question, index) => {
+        question.dataset.position = index;
+    });
+}
 
 export function moveQuestion(questionId, direction) {
     const questionsContainer = document.getElementById('questions-container');
@@ -499,8 +515,6 @@ export function moveQuestion(questionId, direction) {
     questions.forEach(question => questionsContainer.appendChild(question));
 
     // Atualizar a posição dos dados no DOM
-    questions.forEach((question, index) => {
-        question.dataset.position = index;
-    });
+    renumberPositions();
 }
 
