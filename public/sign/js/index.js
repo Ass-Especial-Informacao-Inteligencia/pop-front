@@ -1,4 +1,8 @@
 import { submit } from './submit.js';
+import { ativarFocusLoop } from '../../js/focusLoop.js';
+
+// Loop de Tab: CPF → Senha → Login → (× do aviso de erro, se aparecer) → CPF. O escopo é reavaliado a cada Tab, então o aviso entra/sai do loop sozinho.
+ativarFocusLoop(['#sign-in-form', '#container-alertas']);
 
 document
     .querySelector('#sign-in-cpf-email')

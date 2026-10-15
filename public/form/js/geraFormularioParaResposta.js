@@ -1,6 +1,10 @@
 import { mostrarMensagem } from '../../js/geraNotificacao.js';
 import { capturarRespostas } from './sendAnswers.js';
 import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
+import { ativarFocusLoop } from '../../js/focusLoop.js';
+
+// Loop de Tab nestas telas (formUser/formResponseAdmin): só dentro do form — campos → Enviar/Cancelar → (× do aviso, se aparecer) → campos. Navbar fica fora (alcançável antes de entrar no form, ou com mouse/F6). Modais Bootstrap também ficam de fora, então o trap deles continua mandando enquanto abertos.
+ativarFocusLoop(['#formulario-container', '#container-alertas']);
 
 document.getElementById('btn-novas-respostas')?.addEventListener('click', () => {
     window.location.reload();

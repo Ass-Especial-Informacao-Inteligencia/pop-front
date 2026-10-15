@@ -13,6 +13,7 @@ import { renderThemeToggle } from '../js/components/themeToggle.js';
 import { renderFooter } from '../js/components/footer.js';
 import { renderProfileModal } from '../js/components/profileModal.js';
 import { renderNavbar } from '../js/components/navbar.js';
+import { ativarFocusLoop } from '../js/focusLoop.js';
 
 const user = await getUserData();
 const isAdmin = user.role === 'admin';
@@ -69,9 +70,7 @@ if (user.role === 'admin') {
 const logoutAnchor = document.getElementById('logout-conta');
 logoutAnchor.addEventListener('click', logout);
 
-// Enter não deve dar submit acidental (ex.: dentro de inputs do formulário),
-// mas precisa continuar ativando botões/links focados — em alguns browsers o
-// click do Enter em <button>/<a> é a default action do keypress.
+// Enter não deve dar submit acidental (ex.: dentro de inputs do formulário), mas precisa continuar ativando botões/links focados — em alguns browsers o click do Enter em <button>/<a> é a default action do keypress.
 document.addEventListener('keypress', function(event) {
     if (event.key !== 'Enter') return;
     const alvo = event.target;
@@ -79,13 +78,20 @@ document.addEventListener('keypress', function(event) {
     event.preventDefault();
 });
 
-// Tabulação: dentro de #questions-container só repousa no enunciado
-// (.question-body) e nos inputs de texto das alternativas (.alternative-input).
-// Select de tipo, custom select, radios e botões (↑↓/Remover/X/Adicionar
-// Alternativa) são pulados. Fora do container o comportamento é o padrão do
-// navegador. Modal aberto => ignora (foco fica com o trap do Bootstrap).
+// Paradas da navegação por teclado: dentro de #questions-container só repousa no enunciado (.question-body) e nos inputs de texto das alternativas (.alternative-input). Select de tipo, custom select, radios e botões (↑↓/Remover/X/Adicionar Alternativa) são pulados. Fora do container o comportamento é o padrão do navegador. Usado pelo loop E pela Tab seletiva.
+const permitidoTab = el =>
+    !el.closest('#questions-container') ||
+    el.matches('.question-body, .alternative-input');
+
+// Loop de Tab (só no formAdmin — a página tem #questions-container): com o foco no form, Tab no último volta ao primeiro e Shift+Tab no primeiro vai ao último, sempre nas paradas permitidas acima. Registrado antes da Tab seletiva; ambos cedem via event.defaultPrevented, então a ordem não quebra.
+if (document.getElementById('questions-container')) {
+    ativarFocusLoop(['#formulario', '#container-alertas'], permitidoTab);
+}
+
+// Tabulação: dentro de #questions-container só repousa no enunciado (.question-body) e nos inputs de texto das alternativas (.alternative-input). Select de tipo, custom select, radios e botões (↑↓/Remover/X/Adicionar Alternativa) são pulados. Fora do container o comportamento é o padrão do navegador. Modal aberto => ignora (foco fica com o trap do Bootstrap).
 document.addEventListener('keydown', function(event) {
     if (event.key !== 'Tab') return;
+    if (event.defaultPrevented) return; // loop de Tab já interceptou
     if (document.querySelector('.modal.show')) return;
 
     const ativo = document.activeElement;
@@ -101,9 +107,7 @@ document.addEventListener('keydown', function(event) {
         !el.closest('#sr-live')
     );
 
-    const permitido = el =>
-        !el.closest('#questions-container') ||
-        el.matches('.question-body, .alternative-input');
+    const permitido = permitidoTab;
 
     const inicio = todos.indexOf(ativo);
     if (inicio === -1) return;
