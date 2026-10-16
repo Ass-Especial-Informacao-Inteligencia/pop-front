@@ -20,12 +20,13 @@
 <body>
   
         <!-- marca d'agua -->
-        <img src="./src/SloganFerraz.png" class="watermark" alt="Marca d'água">
+        <img src="./src/SloganFerraz.png" class="watermark" alt="">
 
         <!-- Navbar (injetada via JS) -->
         <div id="navbarPlaceholder"></div>
 
         <!-- dashboard são geradas aqui -->
+        <main id="conteudo">
         <div class="container-fluid mb-4 mt-5">
         <div class="row mb-4">
             <!-- Controles -->
@@ -49,7 +50,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="selectX">
-                                                <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Selecione a questão que você deseja usar para as linhas do cruzamento! a quantidade maxima de linhas por gráfico é 10."></i>
+                                                <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione a questão que você deseja usar para as linhas do cruzamento! a quantidade maxima de linhas por gráfico é 10."></i>
                                                 Linhas:
                                             </label>
                                             <select id="selectX" class="form-control">
@@ -58,11 +59,11 @@
                                             </select>
                                             <details class="m-3">
                                                 <summary class="mb-2">
-                                                    <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Selecione as alternativas que você deseja visualizar no gráfico e tabela. para as linhas do cruzamento."></i>
+                                                    <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione as alternativas que você deseja visualizar no gráfico e tabela. para as linhas do cruzamento."></i>
                                                     Escolher Alternativas
                                                 </summary>
                                                 <button class="btn btn-primary mb-2" id="toggleAlternativesBtnX">Desselecionar Todos</button>
-                                                <div id="option-pickers-x" class="scrollable-container">
+                                                <div id="option-pickers-x" class="scrollable-container" tabindex="0" role="region" aria-label="Opções das linhas">
                                                     <!-- option pickers x will be generated dynamically by JavaScript -->
                                                 </div>
                                             </details>
@@ -71,7 +72,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="selectY">
-                                                <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Selecione a questão que você deseja usar para as colunas do cruzamento."></i>
+                                                <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione a questão que você deseja usar para as colunas do cruzamento."></i>
                                                 Colunas:
                                             </label>
                                             <select id="selectY" class="form-control">
@@ -80,11 +81,11 @@
                                             </select>
                                             <details class="m-3">
                                                 <summary class="mb-2">
-                                                    <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Selecione as alternativas que você deseja visualizar no gráfico e tabela. para as colunas do cruzamento."></i>
+                                                    <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione as alternativas que você deseja visualizar no gráfico e tabela. para as colunas do cruzamento."></i>
                                                     Escolher Alternativas
                                                 </summary>
                                                 <button class="btn btn-primary mb-2" id="toggleAlternativesBtnY">Desselecionar Todos</button>
-                                                <div id="option-pickers-y" class="scrollable-container">
+                                                <div id="option-pickers-y" class="scrollable-container" tabindex="0" role="region" aria-label="Opções das colunas">
                                                     <!-- option pickers y will be generated dynamically by JavaScript -->
                                                 </div>
                                             </details>
@@ -96,10 +97,10 @@
                                         <div class="form-group">
                                             <details class="m-3">
                                                 <summary>
-                                                    <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Selecione as cores que você deseja visualizar nas colunas do gráfico."></i>
+                                                    <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione as cores que você deseja visualizar nas colunas do gráfico."></i>
                                                     Personalizar Cores
                                                 </summary>
-                                                <div id="color-pickers" class="scrollable-container">
+                                                <div id="color-pickers" class="scrollable-container" tabindex="0" role="region" aria-label="Cores das colunas">
                                                     <!-- Color pickers will be generated dynamically by JavaScript -->
                                                 </div>
                                             </details>
@@ -108,7 +109,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="form-group">
-                                                <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Selecione a unidade de medida que será usada para os dados do gráfico e tabela."></i>
+                                                <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione a unidade de medida que será usada para os dados do gráfico e tabela."></i>
                                                 <label for="dataOption">Dados:</label>
                                                 <select id="dataOption" class="form-control">
                                                     <option value="percentage">Porcentagem</option>
@@ -123,7 +124,7 @@
                                 <!-- Questão Única -->
                                 <div class="form-group">
                                     <label for="selectSingleQuestion">
-                                        <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Selecione a questão que você deseja visualizar nos gráficos e na tabela."></i>
+                                        <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione a questão que você deseja visualizar nos gráficos e na tabela."></i>
                                         Questão:
                                     </label>
                                     <select id="selectSingleQuestion" class="form-control">
@@ -132,22 +133,22 @@
                                     </select>
                                     <details class="m-3">
                                         <summary class="mb-2">
-                                            <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Selecione as alternativas que você deseja visualizar nos gráficos e na tabela."></i>
+                                            <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione as alternativas que você deseja visualizar nos gráficos e na tabela."></i>
                                             Escolher Alternativas
                                         </summary>
                                         <button class="btn btn-primary mb-2" id="toggleAlternativesBtnSingle">Des/selecionar Todos</button>
-                                        <div id="single-question-filter" class="scrollable-container">
+                                        <div id="single-question-filter" class="scrollable-container" tabindex="0" role="region" aria-label="Alternativas da questão">
                                             <!-- option pickers y will be generated dynamically by JavaScript -->
                                         </div>
                                     </details>
                                 </div>
                                 <details class="m-3">
                                     <summary>
-                                        <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Selecione as cores do gráfico de pizza."></i>
+                                        <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione as cores do gráfico de pizza."></i>
                                         Personalizar Cores
                                     </summary>
                                     <div><input type="color" id="color-for-porcent-bars" style="width: 40px; margin-bottom: 10px; margin-right: 5px; padding: 0px;"><label>Cor para Porcentagem</label></div>
-                                    <div id="single-question-color-pickers" class="scrollable-container">
+                                    <div id="single-question-color-pickers" class="scrollable-container" tabindex="0" role="region" aria-label="Cores do gráfico de pizza">
 
                                     </div>
                                 </details>
@@ -168,7 +169,7 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-3 mt-2 text-right">
-                                    <button id="downloadButton" class="btn btn-success btn-block"><i class="fas fa-download"></i></button>
+                                    <button id="downloadButton" class="btn btn-success btn-block" aria-label="Baixar planilha"><i class="fas fa-download" aria-hidden="true"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -197,7 +198,7 @@
                                     <div>
                                         <canvas id="chart"></canvas>
                                     </div>
-                                    <div class="scrollable-container-table table-responsive">
+                                    <div class="scrollable-container-table table-responsive" tabindex="0" role="region" aria-label="Tabela de resultados">
                                         <div id="pivotTable"></div>
                                     </div>
                             </div>
@@ -232,6 +233,7 @@
             </div>
         </div>
         </div>
+        </main>
 
 
         <!-- Componentes compartilhados (injetados via JS) -->

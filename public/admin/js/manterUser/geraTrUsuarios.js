@@ -34,16 +34,16 @@ export async function addUsersForList() {
             <td data-email="${usuario.email}">${usuario.email}</td>
             <td>
                 <div class="btn-group" role="group" aria-label="Botões de Ação">
-                    <button type="button" class="btn btn-primary btn-sm edit-user" data-toggle="modal" data-target="#editarUsuarioModal">
-                        <i class="fas fa-edit"></i>
+                    <button type="button" class="btn btn-primary btn-sm edit-user" data-toggle="modal" data-target="#editarUsuarioModal" aria-label="Editar ${usuario.name}">
+                        <i class="fas fa-edit" aria-hidden="true"></i>
                     </button>
                     ${usuario.deleted_at ? `
-                    <button type="button" class="btn btn-success btn-sm restore-user" id="restore-user-${usuario.id}">
-                        <i class="fas fa-undo"></i>
+                    <button type="button" class="btn btn-success btn-sm restore-user" id="restore-user-${usuario.id}" aria-label="Restaurar ${usuario.name}">
+                        <i class="fas fa-undo" aria-hidden="true"></i>
                     </button>
                     ` : `
-                    <button type="button" class="btn btn-danger btn-sm delete-user" data-toggle="modal" data-target="#excluirUsuarioModal">
-                        <i class="fas fa-user-slash fa-sm"></i>
+                    <button type="button" class="btn btn-danger btn-sm delete-user" data-toggle="modal" data-target="#excluirUsuarioModal" aria-label="Excluir ${usuario.name}">
+                        <i class="fas fa-user-slash fa-sm" aria-hidden="true"></i>
                     </button>
                     `}
                 </div>

@@ -28,11 +28,12 @@
     <body>
         
         <!-- Marca D´agua de fundo -->
-        <img src="./src/SloganFerraz.png" class="watermark" alt="Marca d'água">
+        <img src="./src/SloganFerraz.png" class="watermark" alt="">
         
         <!-- Navbar (injetada via JS) -->
         <div id="navbarPlaceholder"></div>
 
+        <main id="conteudo">
         <!-- Topo introdução -->
         <div class="container mt-5">
             <div class="jumbotron home-jumbotron">
@@ -46,7 +47,7 @@
 
         <!-- Conteúdo Principal -->
         <div class="container">
-            <div class="table-responsive table-scrollable">
+            <div class="table-responsive table-scrollable" tabindex="0" role="region" aria-label="Lista de usuários">
                 <table class="table table-striped">
                     <thead class="thead-light sticky-top">
                         <tr>
@@ -64,6 +65,7 @@
                 </table>
             </div>
         </div> 
+        </main>
 
        <!-- Modal Criar Novo Usuário -->
         <div class="modal fade" id="criarNovoUsuario" tabindex="-1" role="dialog" aria-labelledby="criarNovoUsuarioLabel" aria-hidden="true">
@@ -167,7 +169,7 @@
                                 <div class="form-group">
                                     <label for="editarEmail">E-mail</label>
                                     <input type="email" class="form-control" id="editarEmail" placeholder="Digite o E-mail" required>
-                                    <span class="text-danger" id="editModalEmailMessage"></span>
+                                    <span class="text-danger" id="editModalEmailMessage" role="alert"></span>
                                 </div>
                             </div>
                             
@@ -175,7 +177,7 @@
                                 <div class="form-group">
                                     <label for="editarCPF">CPF</label>
                                     <input type="text" class="form-control" id="editarCPF" placeholder="Digite o CPF sem pontuação." required>
-                                    <span class="text-danger" id="editModalCpfMessage"></span>
+                                    <span class="text-danger" id="editModalCpfMessage" role="alert"></span>
                                 </div>
                             </div>
                         </div>
@@ -201,7 +203,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <span class="text-danger" id="editModalAdminMessage"></span>
+                        <span class="text-danger" id="editModalAdminMessage" role="alert"></span>
 
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         <button type="button" class="btn btn-primary" id="btnSalvarEdicao">Atualizar</button>

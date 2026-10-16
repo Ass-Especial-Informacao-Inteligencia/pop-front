@@ -25,10 +25,11 @@
         <!-- Navbar (injetada via JS) -->
         <div id="navbarPlaceholder"></div>
 
+        <main id="conteudo">
            <!-- Conteúdo Principal -->
             
            <div class="form-image-container">
-            <img src="../src/SloganFerraz.png" alt="Imagem do Formulário" class="form-image">
+            <img src="../src/SloganFerraz.png" alt="" class="form-image">
         </div>
            <div class="container mt-5">
            
@@ -42,6 +43,7 @@
 
         <!-- view formulario -->
         <div class="container mt-5 mb-5" id="formulario-container"></div>
+        </main>
 
         <!-- Componentes compartilhados (injetados via JS) -->
         <div id="perfilModalPlaceholder"></div>
@@ -58,7 +60,7 @@
                                 </button>
                             </div>
                             <div class="modal-body text-center">
-                                <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+                                <i class="fas fa-check-circle fa-4x text-success mb-3" aria-hidden="true"></i>
                                 <p>Suas respostas foram salvas com sucesso!</p>
                             </div>
                             <div class="modal-footer">

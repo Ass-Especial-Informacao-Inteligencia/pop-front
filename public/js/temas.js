@@ -5,7 +5,8 @@ export function themeToggle() {
     const themeToggleIcon = themeToggleButton.firstElementChild;
 
     function applyTheme(theme) {
-        if (theme === 'dark') {
+        const isDark = theme === 'dark';
+        if (isDark) {
             document.body.classList.add('dark-mode');
             themeToggleIcon.classList.remove('fa-moon');
             themeToggleIcon.classList.add('fa-sun');
@@ -14,6 +15,7 @@ export function themeToggle() {
             themeToggleIcon.classList.remove('fa-sun');
             themeToggleIcon.classList.add('fa-moon');
         }
+        themeToggleButton.setAttribute('aria-pressed', String(isDark));
         if (typeof Chart !== 'undefined') {
             Chart.defaults.color = theme === 'dark' ? '#ffffff' : '#666666';
             Chart.defaults.borderColor = theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';

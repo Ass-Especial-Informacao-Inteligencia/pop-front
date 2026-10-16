@@ -16,6 +16,7 @@ import { renderThemeToggle } from '../js/components/themeToggle.js';
 import { renderFooter } from '../js/components/footer.js';
 import { renderProfileModal } from '../js/components/profileModal.js';
 import { renderNavbar } from '../js/components/navbar.js';
+import { ativarFocusLoop } from '../js/focusLoop.js';
 
 // Injeta navbar
 document.getElementById('navbarPlaceholder').innerHTML = renderNavbar({
@@ -37,6 +38,9 @@ logoutAnchor.addEventListener('click', logout);
 
 // Mudança de tema light|dark
 themeToggle();
+
+// Loop de Tab no conteúdo principal (botão criar + tabela de usuários); linhas dinâmicas entram no loop pois o escopo é relido a cada Tab.
+ativarFocusLoop('#conteudo');
 
 fillUpModalsInfo();
 

@@ -31,13 +31,14 @@
         <img
             src="./src/SloganFerraz.png"
             class="watermark"
-            alt="Marca d'água"
+            alt=""
         />
 
         <!-- Navbar (injetada via JS) -->
         <div id="navbarPlaceholder"></div>
 
         <!-- Conteúdo Principal -->
+        <main id="conteudo">
         <div class="container mt-5">
             <div class="jumbotron home-jumbotron">
                 <h1 class="display-5 display-md-3 display-lg-1">Bem-vindo(a) ao POP</h1>
@@ -55,25 +56,25 @@
             <ul class="nav nav-tabs bg-white justify-content-center rounded-lg" id="myTabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active text-dark" id="ativos-tab" data-toggle="tab" href="#ativos" role="tab" aria-controls="ativos" aria-selected="true">
-                        <i class="fas fa-inbox fa-sm icon-spacing"></i> 
+                        <i class="fas fa-inbox fa-sm icon-spacing" aria-hidden="true"></i> 
                         <span class="d-none d-sm-inline"> Ativos</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" id="desativados-tab" data-toggle="tab" href="#desativados" role="tab" aria-controls="desativados" aria-selected="false">
-                        <i class="fas fa-archive fa-sm icon-spacing"></i>
+                        <i class="fas fa-archive fa-sm icon-spacing" aria-hidden="true"></i>
                         <span class="d-none d-sm-inline"> Arquivados</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" id="Agendados-tab" data-toggle="tab" href="#Agendados" role="tab" aria-controls="Agendados" aria-selected="false">
-                        <i class="fas fa-calendar-check fa-sm icon-spacing"></i>
+                        <i class="fas fa-calendar-check fa-sm icon-spacing" aria-hidden="true"></i>
                         <span class="d-none d-sm-inline"> Agendados</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" id="Finalizados-tab" data-toggle="tab" href="#Finalizados" role="tab" aria-controls="Finalizados" aria-selected="false">
-                        <i class="fas fa-check-circle fa-sm icon-spacing"></i>
+                        <i class="fas fa-check-circle fa-sm icon-spacing" aria-hidden="true"></i>
                         <span class="d-none d-sm-inline"> Finalizados</span>
                     </a>
                 </li>
@@ -102,6 +103,7 @@
                 </div>
             </div>
         </div>
+        </main>
 
         <!-- Modal para criar o formulário -->
         <div
@@ -141,7 +143,7 @@
                                     required
                                 />
                                 <!-- Span para mostrar mensagem de erro -->
-                                <span id="titleError" class="text-danger"></span>
+                                <span id="titleError" class="text-danger" role="alert"></span>
                             </div>
                             <div class="form-group">
                                 <label for="description">Descrição:</label>
@@ -262,7 +264,7 @@
                             <h5 class="nome-formulario">Formulário</h5>
                         </div>
                         <h6>Usuários com Acesso:</h6>
-                        <div class="overflow-auto scroll-container-sm">
+                        <div class="overflow-auto scroll-container-sm" tabindex="0" role="region" aria-label="Usuários com acesso">
                             <ul id="usersWithAccess" class="list-group">
                                 <!-- Aqui fica listado os usuarios com acesso -->
                             </ul>
@@ -272,7 +274,7 @@
                         <!-- Formulário para adicionar usuário -->
                         <form id="addUserForm">
                             <div class="form-group">
-                                <label for="username">Adicionar Usuário:</label>
+                                <label for="search-user-no-allow">Adicionar Usuário:</label>
                                 <input
                                     type="search"
                                     class="form-control"
@@ -284,6 +286,9 @@
 
                         <div
                             class="overflow-auto mt-6 scroll-container-sm"
+                            tabindex="0"
+                            role="region"
+                            aria-label="Usuários sem acesso"
                         >
                             <ul id="usersWithNotAccess" class="list-group">
                                 <!-- Aqui fica listado os usuários sem acesso -->
@@ -310,7 +315,8 @@
                             class="nav-link nav-link-unstyled"
                             id="gerenciarUsers"
                             href="/managerUsers"
-                            ><i class="fas fa-user-plus"></i></a
+                            aria-label="Gerenciar usuários"
+                            ><i class="fas fa-user-plus" aria-hidden="true"></i></a
                         >
                         <div class="form-check ml-auto">
                             <!-- Checkbox para liberar acesso para todos -->
@@ -457,7 +463,7 @@
         <div id="sharedComponents"></div>
         
         <!-- Banner de Cookie -->
-        <div id="cookie-banner">
+        <div id="cookie-banner" role="region" aria-label="Aviso de cookies">
             <p>Este site utiliza cookies para melhorar a sua experiência e analisar o tráfego. Ao continuar navegando, você concorda com o uso de cookies conforme descrito em nossa política de cookies:</p>
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#cookiesModal">
                 Política de Cookies

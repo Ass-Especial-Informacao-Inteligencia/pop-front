@@ -4,13 +4,13 @@ export function renderNavbar({ role = 'user', activeTab = 'home', logoPath = './
     return `
         <!-- Cabeçalho de navegação -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-            <a class="navbar-brand" href="/home">
+            <a class="navbar-brand" href="/home" aria-label="POP — Página inicial">
                 <img
                     src="${logoPath}BRASAO-PREFEITURA-DE-FERRAZ.png"
                     width="30"
                     height="30"
                     class="d-inline-block align-top"
-                    alt="Logo"
+                    alt=""
                 />
             </a>
 
@@ -21,7 +21,7 @@ export function renderNavbar({ role = 'user', activeTab = 'home', logoPath = './
                 data-target="#navbarNav"
                 aria-controls="navbarNav"
                 aria-expanded="false"
-                aria-label="Toggle navigation"
+                aria-label="Alternar navegação"
             >
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -51,7 +51,7 @@ export function renderNavbar({ role = 'user', activeTab = 'home', logoPath = './
                             type="search"
                             id="searchInput"
                             placeholder="${searchPlaceholder}"
-                            aria-label="Search"
+                            aria-label="Pesquisar"
                         />
                     </div>
                 </form>` : ''}

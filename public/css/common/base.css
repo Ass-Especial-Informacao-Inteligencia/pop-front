@@ -21,6 +21,11 @@ button:focus-visible,
   box-shadow: 0 0 0 4px rgba(13, 115, 119, 0.25);
 }
 
+/* ── Contraste AA do texto secundário (token escurecido vs #6c757d do Bootstrap) ── */
+.text-muted {
+  color: var(--text-muted, #59636b) !important;
+}
+
 /* ── Touch targets (mobile) ── */
 @media (max-width: 576px) {
   button,

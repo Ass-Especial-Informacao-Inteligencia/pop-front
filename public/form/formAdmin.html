@@ -25,6 +25,7 @@
         <!-- Navbar (injetada via JS) -->
         <div id="navbarPlaceholder"></div>
         
+        <main id="conteudo">
         <!-- Head da pagina -->
         <div class="container mt-5">
             <div class="jumbotron">
@@ -60,6 +61,7 @@
                 </div>
             </form>
         </div>
+        </main>
 
         <!-- Modal de Perfil -->
         <div id="perfilModalPlaceholder"></div>
@@ -162,7 +164,7 @@
                                 Comece a digitar para filtrar as questões disponíveis.
                             </small>
                         </div>
-                        <div id="search-results" class="overflow-auto scroll-container-md">
+                        <div id="search-results" class="overflow-auto scroll-container-md" tabindex="0" role="region" aria-label="Resultados da pesquisa">
                             <!-- Resultados da pesquisa serão exibidos aqui -->
                         </div>
                     </div>

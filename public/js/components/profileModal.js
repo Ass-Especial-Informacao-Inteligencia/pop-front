@@ -26,7 +26,7 @@ export function renderProfileModal({ isAdmin = false } = {}) {
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="perfilModalLabel">
-                            <i class="fas fa-user-circle mr-2"></i>Perfil do Usuário
+                            <i class="fas fa-user-circle mr-2" aria-hidden="true"></i>Perfil do Usuário
                         </h5>
                         <button
                             type="button"
@@ -40,7 +40,7 @@ export function renderProfileModal({ isAdmin = false } = {}) {
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-4 d-flex justify-content-center align-items-center">
-                                <i class="fas fa-user fa-5x"></i>
+                                <i class="fas fa-user fa-5x" aria-hidden="true"></i>
                             </div>
                             <div class="col-md-8">
                                 <p>

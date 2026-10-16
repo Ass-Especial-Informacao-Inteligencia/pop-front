@@ -6,6 +6,7 @@
 .dark-mode {
   background-color: var(--bg-body-dark) !important;
   color: var(--text-dark) !important;
+  --text-muted: #9aa4ad;
 }
 
 /* ── Navbar ── */
