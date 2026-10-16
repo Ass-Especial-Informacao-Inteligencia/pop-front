@@ -29,8 +29,8 @@
         <!-- Head da pagina -->
         <div class="container mt-5">
             <div class="jumbotron">
-                <h1 id="form-title">Titulo Formulário</h1>
-                <p id="form-description">descrição:</p>
+                <h1 id="form-title"></h1>
+                <p id="form-description"></p>
                 <button
                     id="btnEditarTituloDescricao"
                     class="editFormInfo btn btn-primary"
@@ -52,11 +52,11 @@
                     <button id="btnSalvarForm" type="submit" class="btn btn-success mr-2" aria-label="Salvar formulário">
                         Salvar
                     </button>
-                    <button id="btnAddQuestionForm" type="button" class="btn btn-primary addQuestion mr-2" aria-label="Adicionar nova questão">
+                    <button id="btnAddQuestionForm" type="button" class="btn btn-primary addQuestion mr-2">
                         Adicionar Questão
                     </button>
-                    <button id="btnRecycleQuestionForm" type="button" class="btn btn-secondary searchAndAddQuestion" data-toggle="modal" data-target="#pesquisarQuestaoModal" aria-label="Pesquisar questões já cadastradas para adicionar">
-                        <i class="fas fa-search" aria-hidden="true" focusable="false"></i> <i class="fas fa-plus" aria-hidden="true" focusable="false"></i> Questão
+                    <button id="btnRecycleQuestionForm" type="button" class="btn btn-secondary searchAndAddQuestion" data-toggle="modal" data-target="#pesquisarQuestaoModal">
+                        <i class="fas fa-search" aria-hidden="true"></i> <i class="fas fa-plus" aria-hidden="true"></i> Pesquisar Questão
                     </button>
                 </div>
             </form>
@@ -77,9 +77,9 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editarModalLabel">
+                        <h2 class="modal-title" id="editarModalLabel">
                             Editar Título ou Descrição
-                        </h5>
+                        </h2>
                         <button
                             type="button"
                             class="close"
@@ -138,9 +138,9 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="pesquisarQuestaoModalLabel">
+                        <h2 class="modal-title" id="pesquisarQuestaoModalLabel">
                             Pesquisar Questões já Cadastradas
-                        </h5>
+                        </h2>
                         <button
                             type="button"
                             class="close"

@@ -80,6 +80,17 @@
   background-color: var(--surface-muted, #f8f9fa);
 }
 
+/* Opção destacada pelo teclado (aria-activedescendant) */
+.custom-select-option.active {
+  outline: 2px solid var(--color-primary, #0d7377);
+  outline-offset: -2px;
+  background-color: var(--surface-muted, #f8f9fa);
+}
+
+.custom-select-option.active.selected {
+  background-color: var(--color-primary, #0d7377);
+}
+
 .custom-select-option.selected {
   background-color: var(--color-primary, #0d7377);
   color: #fff;

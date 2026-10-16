@@ -1,11 +1,12 @@
 import { questionsRecycle } from '../indexForm.js';
 import { getCookie, api } from '../../js/api.js';
-import { mostrarMensagem } from '../../js/geraNotificacao.js';
+import { mostrarMensagem, anunciarSr } from '../../js/geraNotificacao.js';
 import { initCustomSelect } from '../../js/components/customSelect.js';
 import {
     changeQuestionType,
     removeQuestion,
     moveQuestion,
+    renumberPositions,
 } from './manterQuestaoAlternativa.js';
 
 // Função para pegar todas as questões
@@ -26,24 +27,33 @@ export async function getQuestions() {
 }
 
 // Função para renderizar as questões no modal
+let timerAnuncioResultados = null;
 function renderQuestionsRecycle(questions) {
     const searchResults = document.getElementById('search-results');
     searchResults.innerHTML = '';
     if (questions.length === 0) {
         searchResults.innerHTML = '<p>Nenhuma questão encontrada.</p>';
-        return;
+    } else {
+        questions.forEach(question => {
+            const div = document.createElement('div');
+            div.className = 'search-result';
+            div.innerHTML = `
+                <div class="search-result-item">
+                    <input type="radio" name="question-select" value="${question.id}" id="question-${question.id}" />
+                    <label for="question-${question.id}">${question.body}</label>
+                </div>
+            `;
+            searchResults.appendChild(div);
+        });
     }
-    questions.forEach(question => {
-        const div = document.createElement('div');
-        div.className = 'search-result';
-        div.innerHTML = `
-            <div class="search-result-item">
-                <input type="radio" name="question-select" value="${question.id}" id="question-${question.id}" />
-                <label for="question-${question.id}">${question.body}</label>
-            </div>
-        `;
-        searchResults.appendChild(div);
-    });
+    // Anuncia o resultado para leitores de tela (debounce: digitação rápida
+    // não dispara um anúncio por tecla)
+    clearTimeout(timerAnuncioResultados);
+    timerAnuncioResultados = setTimeout(() => {
+        anunciarSr(questions.length === 0
+            ? 'Nenhuma questão encontrada'
+            : `${questions.length} ${questions.length === 1 ? 'questão encontrada' : 'questões encontradas'}`);
+    }, 500);
 }
 
 // Função para buscar e renderizar questões com base no input de pesquisa
@@ -67,10 +77,11 @@ function addQuestionFromModal(question) {
             const alternativeId = `${questionId}-alt-${index}`;
             return `
                 <div class="input-group mb-2">
-                    <input type="${question.type === 'Multipla Escolha' ? 'checkbox' : 'radio'}" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
-                    <input type="text" class="form-control question-alternatives alternative-input" value="${option.text}" placeholder="Digite a alternativa">
+                    <input type="${question.type === 'Multipla Escolha' ? 'checkbox' : 'radio'}" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2" aria-label="Selecionar alternativa">
+                    <label class="sr-only" for="${alternativeId}-text">Texto da alternativa</label>
+                    <input type="text" id="${alternativeId}-text" class="form-control question-alternatives alternative-input" value="${option.text}" placeholder="Digite a alternativa">
                     <div class="input-group-append">
-                        <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}">X</button>
+                        <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" aria-label="Remover alternativa">X</button>
                     </div>
                 </div>
             `;
@@ -80,10 +91,10 @@ function addQuestionFromModal(question) {
     questionCard.innerHTML = `
         <div class="card-body" id="${questionId}">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title">${question.body}</h5>
+                <h2 class="card-title"></h2>
                 <div>
-                    <button type="button" class="btn btn-light btn-move-up">↑</button>
-                    <button type="button" class="btn btn-light btn-move-down">↓</button>
+                    <button type="button" class="btn btn-light btn-move-up" aria-label="Mover questão para cima">↑</button>
+                    <button type="button" class="btn btn-light btn-move-down" aria-label="Mover questão para baixo">↓</button>
                 </div>
             </div>
             <div class="form-group">
@@ -108,6 +119,7 @@ function addQuestionFromModal(question) {
 
     document.getElementById('questions-container').appendChild(questionCard);
     initCustomSelect(questionCard.querySelector('select.question-type-select'));
+    renumberPositions(); // preenche o título "Questão N" e ajusta as setas ↑↓
 
     questionCard.querySelector('.btn-move-up').addEventListener('click', () => moveQuestion(questionId, 'up'));
     questionCard.querySelector('.btn-move-down').addEventListener('click', () => moveQuestion(questionId, 'down'));

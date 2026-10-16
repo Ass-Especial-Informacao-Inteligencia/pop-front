@@ -26,6 +26,33 @@ button:focus-visible,
   color: var(--text-muted, #59636b) !important;
 }
 
+/* ── Hierarquia de headings: títulos de modal em h2 (h1→h2, sem salto para h5) mantendo o tamanho do antigo h5 ── */
+.modal h2.modal-title {
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+/* ── Aviso da região viva (#sr-live): some quando vazio ── */
+#sr-live:empty {
+  display: none;
+}
+
+#sr-live:not(:empty) {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-lg, 24px);
+  transform: translateX(-50%);
+  max-width: 90vw;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm, 8px);
+  background-color: var(--surface, #fff);
+  color: var(--text, #333);
+  border: 1px solid var(--border, #dee2e6);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.12));
+  font-size: var(--font-size-sm, 0.875rem);
+  z-index: 1080;
+}
+
 /* ── Touch targets (mobile) ── */
 @media (max-width: 576px) {
   button,

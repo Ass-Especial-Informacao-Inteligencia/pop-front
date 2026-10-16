@@ -1,4 +1,5 @@
 import { anunciarSr } from '../../js/geraNotificacao.js';
+import { confirmarAcao } from '../../js/components/confirmarAcao.js';
 
 export const bairrosFerrazDeVasconcelos = {
     "Parque Imperial": {},
@@ -359,6 +360,7 @@ export function changeQuestionType(questionId) {
             addAlternativeButton.classList.add(
                 'btn',
                 'btn-secondary',
+                'add-alternative-btn',
                 'mt-2',
                 'mb-2'
             );
@@ -382,14 +384,16 @@ export function addAlternative(questionId, questionType) {
             <div class="input-group">
             <input type="${
                 questionType === 'Multipla Escolha' ? 'checkbox' : 'radio'
-            }" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
-            <input type="text" class="form-control question-alternatives alternative-input" placeholder="Digite a alternativa">
+            }" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2" aria-label="Selecionar alternativa">
+            <label class="sr-only" for="${alternativeId}-text">Texto da alternativa</label>
+            <input type="text" id="${alternativeId}-text" class="form-control question-alternatives alternative-input" placeholder="Digite a alternativa">
             <div class="input-group-append">
-                <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}">X</button>
+                <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" aria-label="Remover alternativa">X</button>
             </div>
             </div>
         `;
         alternativesContainer.appendChild(alternativeContainer);
+        anunciarSr('Alternativa adicionada');
     } else if (questionType === 'Unica Escolha-Bairro') {
         alternativesContainer.innerHTML = '';
         questionType = 'Unica Escolha'
@@ -400,15 +404,17 @@ export function addAlternative(questionId, questionType) {
             alternativeContainer.classList.add('alternative-container', 'mb-2'); // Adicionando classe para espaçamento entre as alternativas
             alternativeContainer.innerHTML = `
                 <div class="input-group">
-                <input type="radio" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
-                <input type="text" class="form-control question-alternatives alternative-input" value="${bairro}">
+                <input type="radio" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2" aria-label="Selecionar alternativa">
+                <label class="sr-only" for="${alternativeId}-text">Texto da alternativa</label>
+                <input type="text" id="${alternativeId}-text" class="form-control question-alternatives alternative-input" value="${bairro}">
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}">X</button>
+                    <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" aria-label="Remover alternativa">X</button>
                 </div>
                 </div>
             `;
             alternativesContainer.appendChild(alternativeContainer);
         });
+        anunciarSr(`${alternativesContainer.querySelectorAll('.alternative-container').length} alternativas preenchidas`);
     }else if (questionType === 'Unica Escolha-Ubs') {
         alternativesContainer.innerHTML = ''; // Limpa alternativas existentes
          questionType = 'Unica Escolha'
@@ -418,15 +424,17 @@ export function addAlternative(questionId, questionType) {
             alternativeContainer.classList.add('alternative-container', 'mb-2'); // Adicionando classe para espaçamento entre as alternativas
             alternativeContainer.innerHTML = `
                 <div class="input-group">
-                <input type="radio" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
-                <input type="text" class="form-control question-alternatives alternative-input" value="${ubs}">
+                <input type="radio" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2" aria-label="Selecionar alternativa">
+                <label class="sr-only" for="${alternativeId}-text">Texto da alternativa</label>
+                <input type="text" id="${alternativeId}-text" class="form-control question-alternatives alternative-input" value="${ubs}">
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}">X</button>
+                    <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" aria-label="Remover alternativa">X</button>
                 </div>
                 </div>
             `;
             alternativesContainer.appendChild(alternativeContainer);
         });
+        anunciarSr(`${alternativesContainer.querySelectorAll('.alternative-container').length} alternativas preenchidas`);
     } else if (questionType === 'Unica Escolha-Setor') {
         alternativesContainer.innerHTML = ''; // Limpa alternativas existentes
         
@@ -437,26 +445,57 @@ export function addAlternative(questionId, questionType) {
             alternativeContainer.classList.add('alternative-container', 'mb-2'); // Adicionando classe para espaçamento entre as alternativas
             alternativeContainer.innerHTML = `
                 <div class="input-group">
-                <input type="radio" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2">
-                <input type="text" class="form-control question-alternatives alternative-input" value="${setor}">
+                <input type="radio" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2" aria-label="Selecionar alternativa">
+                <label class="sr-only" for="${alternativeId}-text">Texto da alternativa</label>
+                <input type="text" id="${alternativeId}-text" class="form-control question-alternatives alternative-input" value="${setor}">
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}">X</button>
+                    <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" aria-label="Remover alternativa">X</button>
                 </div>
                 </div>
             `;
             alternativesContainer.appendChild(alternativeContainer);
         });
+        anunciarSr(`${alternativesContainer.querySelectorAll('.alternative-container').length} alternativas preenchidas`);
     }
 }
 
-export function removeAlternative(alternativeId) {
-    const alternativeContainer =
-        document.getElementById(alternativeId).parentNode;
+export async function removeAlternative(alternativeId) {
+    const input = document.getElementById(alternativeId);
+    if (!input) return;
+    const alternativeContainer = input.closest('.alternative-container') || input.parentNode;
+    const card = input.closest('.question-card');
+    const texto = alternativeContainer.querySelector('input[type="text"]')?.value.trim();
+
+    const ok = await confirmarAcao(
+        'Remover alternativa',
+        texto
+            ? `A alternativa "${texto}" será removida. Deseja continuar?`
+            : 'Deseja remover esta alternativa?'
+    );
+    if (!ok) return;
+
     alternativeContainer.remove();
+    anunciarSr('Alternativa removida');
+    focarAposRemocaoAlternativa(card);
 }
 
-export function removeQuestion(questionId) {
+function focarAposRemocaoAlternativa(card) {
+    const alvo = card?.querySelector('.add-alternative-btn') || card?.querySelector('.question-body');
+    alvo?.focus();
+}
+
+export async function removeQuestion(questionId) {
     const questionElement = document.getElementById(questionId).parentElement;
+    const corpo = document.getElementById(questionId).querySelector('.question-body')?.value.trim();
+
+    const ok = await confirmarAcao(
+        'Remover questão',
+        corpo
+            ? `A questão "${corpo}" será removida do formulário. Deseja continuar?`
+            : 'Deseja remover esta questão do formulário?'
+    );
+    if (!ok) return;
+
     questionElement.remove();
     renumberPositions(); // mantém data-position sem buracos após remoção
     // Devolve o foco a um elemento estável (o foco anterior sumiu com o card)
@@ -476,13 +515,23 @@ function bindAlternativeRemoveEvents() {
 
 bindAlternativeRemoveEvents();
 
-// Renumera data-position de todos os cards conforme a ordem atual do DOM.
-// Usado pelas setas, pelo drag-and-drop e após exclusões (evita posições duplicadas).
+// Renumera data-position e o título "Questão N" de todos os cards conforme a
+// ordem atual do DOM, e desabilita as setas ↑↓ nas pontas (primeiro/último).
+// Usado pelas setas, pelo drag-and-drop, por exclusões e na carga inicial.
 export function renumberPositions() {
     const questionsContainer = document.getElementById('questions-container');
     if (!questionsContainer) return;
-    Array.from(questionsContainer.children).forEach((question, index) => {
+    const cards = Array.from(questionsContainer.children);
+    cards.forEach((question, index) => {
         question.dataset.position = index;
+        const titulo = question.querySelector('.card-title');
+        if (titulo) titulo.textContent = `Questão ${index + 1}`;
+    });
+    cards.forEach((card, index) => {
+        const btnUp = card.querySelector('.btn-move-up');
+        const btnDown = card.querySelector('.btn-move-down');
+        if (btnUp) btnUp.disabled = index === 0;
+        if (btnDown) btnDown.disabled = index === cards.length - 1;
     });
 }
 
@@ -501,7 +550,7 @@ export function moveQuestion(questionId, direction) {
     // Calcular nova posição
     const newPosition = direction === 'up' ? currentPosition - 1 : currentPosition + 1;
 
-    // Verificar se a nova posição é válida
+    // Verificar se a nova posição é válida (bordas ficam com a seta desabilitada)
     if (newPosition < 0 || newPosition >= questions.length) {
         return;
     }
@@ -514,7 +563,17 @@ export function moveQuestion(questionId, direction) {
     questionsContainer.innerHTML = '';
     questions.forEach(question => questionsContainer.appendChild(question));
 
-    // Atualizar a posição dos dados no DOM
+    // Atualizar a posição dos dados no DOM (títulos + estado das setas)
     renumberPositions();
+
+    // Mantém o foco na ação que o usuário acabou de acionar (ou na seta
+    // restante, se a anterior virou disabled por a carta chegar numa ponta)
+    let botaoFoco = questionCard.querySelector(`.btn-move-${direction}`);
+    if (!botaoFoco || botaoFoco.disabled) {
+        botaoFoco = questionCard.querySelector('.btn-move-up:not([disabled]), .btn-move-down:not([disabled])')
+            || questionCard.querySelector('.question-body');
+    }
+    botaoFoco?.focus();
+    anunciarSr(`Questão ${newPosition + 1}, posição ${newPosition + 1}`);
 }
 

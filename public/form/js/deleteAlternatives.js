@@ -1,5 +1,6 @@
 import { mostrarMensagem } from '../../js/geraNotificacao.js';
 import { fetchDeleteAlternatives } from './fetch.js';
+import { confirmarAcao } from '../../js/components/confirmarAcao.js';
 
 export function deleteAlternatives() {
     document.addEventListener('click', function (event) {
@@ -24,32 +25,47 @@ export function deleteAlternatives() {
             }
 
             const inputText = inputAlternativa.value.trim();
-            if (!inputText) {
-                removeAlternativeElement(alternativeContainer);
-                return;
-            }
+            const questionCard = alternativeContainer.closest('.question-card');
 
-            const questionBody = alternativeContainer
-                .closest('.card')
-                .querySelector('.form-group .question-body').value;
-        
-            const alternativeGroup = {
-                id: inputAlternativa.dataset.idoption,
-                text: inputText,
-                body: questionBody,
-            };
-            fetchDeleteAlternatives(alternativeGroup)
-                .then(() => {
-                    mostrarMensagem('Alternativa Excluída com sucesso!','success',5);
-                    removeAlternativeElement(alternativeContainer);
-                })
-                .catch((error) => {
-                    console.error('Error deleting alternative:', error);
-                });
+            confirmarAcao(
+                'Remover alternativa',
+                inputText
+                    ? `A alternativa "${inputText}" será removida. Deseja continuar?`
+                    : 'Deseja remover esta alternativa?'
+            ).then((ok) => {
+                if (!ok) return;
+
+                if (!inputText) {
+                    removeAlternativeElement(alternativeContainer, questionCard);
+                    return;
+                }
+
+                const questionBody = alternativeContainer
+                    .closest('.card')
+                    .querySelector('.form-group .question-body').value;
+
+                const alternativeGroup = {
+                    id: inputAlternativa.dataset.idoption,
+                    text: inputText,
+                    body: questionBody,
+                };
+                fetchDeleteAlternatives(alternativeGroup)
+                    .then(() => {
+                        mostrarMensagem('Alternativa Excluída com sucesso!','success',5);
+                        removeAlternativeElement(alternativeContainer, questionCard);
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting alternative:', error);
+                    });
+            });
         }
     });
 }
 
-function removeAlternativeElement(alternativeContainer) {
+function removeAlternativeElement(alternativeContainer, questionCard) {
     alternativeContainer.remove();
+    // Devolve o foco a um elemento estável do card (o X removido sumiu com o foco)
+    const alvo = questionCard?.querySelector('.add-alternative-btn')
+        || questionCard?.querySelector('.question-body');
+    alvo?.focus();
 }

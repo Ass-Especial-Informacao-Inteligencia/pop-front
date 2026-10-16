@@ -52,10 +52,10 @@ export function addQuestion() {
   questionCard.innerHTML = `
   <div class="card-body" id="${questionId}">
     <div class="d-flex justify-content-between align-items-center">
-      <h5 class="card-title">Nova Questão</h5>
+      <h2 class="card-title">Nova Questão</h2>
       <div>
-        <button type="button" class="btn btn-light btn-move-up">↑</button>
-        <button type="button" class="btn btn-light btn-move-down">↓</button>
+<button type="button" class="btn btn-light btn-move-up" aria-label="Mover questão para cima">↑</button>
+                <button type="button" class="btn btn-light btn-move-down" aria-label="Mover questão para baixo">↓</button>
       </div>
     </div>
     <div class="form-group">
@@ -80,6 +80,7 @@ export function addQuestion() {
   document.getElementById('questions-container').appendChild(questionCard);
   initCustomSelect(questionCard.querySelector('select.question-type-select'));
   bindQuestionCardEvents(questionCard, questionId);
+  renumberPositions(); // numera o título e ajusta as setas ↑↓
   // Conteúdo inserido dinamicamente: anuncia para leitores de tela e move o foco
   // para o campo da questão nova (o browser já rola até ela).
   const posicaoNova = document.getElementById('questions-container').children.length;
@@ -103,10 +104,10 @@ function displayFormQuestionsFromFetch(questions) {
         questionCard.innerHTML = `
           <div class="card-body" id="${questionId}" data-question-id="${question.id}">
               <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title">Questão ${index + 1}</h5>
+                <h2 class="card-title">Questão ${index + 1}</h2>
                 <div>
-                  <button type="button" class="btn btn-light btn-move-up">↑</button>
-                  <button type="button" class="btn btn-light btn-move-down">↓</button>
+                  <button type="button" class="btn btn-light btn-move-up" aria-label="Mover questão para cima">↑</button>
+                  <button type="button" class="btn btn-light btn-move-down" aria-label="Mover questão para baixo">↓</button>
                 </div>
               </div>
               <div class="form-group">
@@ -137,7 +138,7 @@ function displayFormQuestionsFromFetch(questions) {
         if (question.type === 'Multipla Escolha' || question.type === 'Unica Escolha' || question.type === 'Unica Escolha-Bairro' || question.type === 'Unica Escolha-Ubs' || question.type === 'Unica Escolha-Setor') {
             const addAlternativeButton = document.createElement('button');
             addAlternativeButton.type = 'button';
-            addAlternativeButton.classList.add('btn', 'btn-secondary', 'mt-2', 'mb-2');
+            addAlternativeButton.classList.add('btn', 'btn-secondary', 'add-alternative-btn', 'mt-2', 'mb-2');
             addAlternativeButton.innerText = 'Adicionar Alternativa';
             addAlternativeButton.onclick = () => addAlternative(questionId, question.type);
             document.getElementById(`${questionId}-alternatives`).appendChild(addAlternativeButton);
@@ -149,16 +150,18 @@ function displayFormQuestionsFromFetch(questions) {
                 alternativeContainer.classList.add('input-group', 'mb-2');
   
                 alternativeContainer.innerHTML = `
-                  <input type="${question.type === 'Multipla Escolha' ? 'checkbox' : 'radio'}" name="${questionId}-alternatives" id="${alternativeIdGerado}" class="mr-2">
-                  <input type="text" data-idoption="${alternativeId}" class="form-control question-alternatives alternative-input" placeholder="Digite a alternativa" value="${option.text}">
+                  <input type="${question.type === 'Multipla Escolha' ? 'checkbox' : 'radio'}" name="${questionId}-alternatives" id="${alternativeIdGerado}" class="mr-2" aria-label="Selecionar alternativa">
+                  <label class="sr-only" for="${alternativeIdGerado}-text">Texto da alternativa</label>
+                  <input type="text" id="${alternativeIdGerado}-text" data-idoption="${alternativeId}" class="form-control question-alternatives alternative-input" placeholder="Digite a alternativa" value="${option.text}">
                   <div class="input-group-append">
-                      <button type="button" class="btn btn-danger btn-remove-alternative-fetch" data-alternative-id="${alternativeIdGerado}">X</button>
+                      <button type="button" class="btn btn-danger btn-remove-alternative-fetch" data-alternative-id="${alternativeIdGerado}" aria-label="Remover alternativa">X</button>
                   </div>
               `;
                 document.getElementById(`${questionId}-alternatives`).appendChild(alternativeContainer);
             });
         }
     });
+    renumberPositions(); // numera títulos e deixa as setas ↑↓ desabilitadas nas pontas
 }
 
 // carrega perguntas já cadastradas
