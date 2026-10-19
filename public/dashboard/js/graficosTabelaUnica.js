@@ -1,12 +1,14 @@
 import { getRandomColor } from './handlerDashboardActions.js';
 import { formData } from '../mainDashBoardHandler.js';
 import { getOptions } from './graficoTabelaCruzada.js';
+import { anunciarSr } from '../../js/geraNotificacao.js';
 
 let currentPage = 1;
+let timerAnuncioUnica = null;
 
-function getBarChartColor() {
-    const colorInput = document.getElementById('color-for-porcent-bars');
-    return colorInput.value || '#212121';
+// Volta pra página 1 quando o usuário troca de questão: sem isso a página antiga podia não existir na nova questão (ex.: sair de uma com 30 alternativas pra uma com 5) e a tabela renderizava só a linha "Outros"
+export function resetarPaginaUnica() {
+    currentPage = 1;
 }
 
 export function getFilteredOptions(formData, questionId) {
@@ -30,6 +32,13 @@ export function generateSingleQuestionVisualizations(formData, questionId) {
     const answers = formData.Answers[questionId] || [];
     const rowsPerPage = 10;
     const tableContainer = document.getElementById('singleQuestionTable');
+
+    // Nomeia os gráficos com a questão atual (leitor de tela lê no foco do canvas)
+    const nomeQuestao = formData.Questions.find((q) => `${q.id}` === `${questionId}`)?.body;
+    if (nomeQuestao) {
+        document.getElementById('singleQuestionChart').setAttribute('aria-label', `Gráfico de barras da questão ${nomeQuestao}`);
+        document.getElementById('singleQuestionPieChart').setAttribute('aria-label', `Gráfico de pizza da questão ${nomeQuestao}`);
+    }
 
     // Garante que answers é um array
     const totalAnswers = Array.isArray(answers)
@@ -74,15 +83,23 @@ export function generateSingleQuestionVisualizations(formData, questionId) {
         const tableHeaders = ['Alternativas', 'Porcentagem'];
         tableHeaders.forEach((headerText) => {
             const th = document.createElement('th');
+            th.scope = 'col';
             th.textContent = headerText;
             tableHeaderRow.appendChild(th);
         });
 
         pageRows.forEach((rowData) => {
             const tr = table.insertRow();
-            rowData.forEach((cellData) => {
-                const td = tr.insertCell();
-                td.textContent = cellData;
+            rowData.forEach((cellData, cellIndex) => {
+                if (cellIndex === 0) {
+                    const th = document.createElement('th');
+                    th.scope = 'row';
+                    th.textContent = cellData;
+                    tr.appendChild(th);
+                } else {
+                    const td = tr.insertCell();
+                    td.textContent = cellData;
+                }
             });
         });
 
@@ -90,15 +107,27 @@ export function generateSingleQuestionVisualizations(formData, questionId) {
 
         const pagination = document.createElement('div');
         pagination.className = 'pagination';
+        pagination.setAttribute('role', 'navigation');
+        pagination.setAttribute('aria-label', 'Paginação da tabela da questão única');
+        pagination.tabIndex = -1;
         
         const totalPages = Math.ceil(tableRows.length / rowsPerPage);
+        // Leva o foco de volta pra paginação e anuncia a página (o clique destrói o botão antigo)
+        const irParaPagina = (novaPagina) => {
+            renderTablePage(novaPagina);
+            const novaPaginacao = tableContainer.querySelector('.pagination');
+            if (novaPaginacao) novaPaginacao.focus();
+            anunciarSr(`Página ${novaPagina} de ${totalPages}`);
+        };
         for (let i = 1; i <= totalPages; i++) {
             const pageButton = document.createElement('button');
             pageButton.textContent = i;
+            pageButton.setAttribute('aria-label', `Página ${i}`);
             if (i === page) {
                 pageButton.disabled = true;
+                pageButton.setAttribute('aria-current', 'page');
             }
-            pageButton.onclick = () => renderTablePage(i);
+            pageButton.onclick = () => irParaPagina(i);
             pagination.appendChild(pageButton);
         }
 
@@ -124,16 +153,11 @@ export function generateSingleQuestionBarChart(tableRows = []) {
         chartContainer.chartInstance.destroy();
     }
 
-    // Função para escapar caracteres especiais
-    function escapeSelector(selector) {
-        return selector.replace(/([!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, '\\$1');
-    }
-
-    // Pega cores específicas para cada alternativa
+    // Pega cores específicas para cada alternativa (match exato por dataset, como no gráfico de pizza)
+    const colorPickers = document.querySelectorAll('#single-question-color-pickers input[type="color"]');
     const colors = tableRows.map((row) => {
-        const escapedOption = escapeSelector(row[0]); // Escapa o texto da opção
-        const colorPicker = document.querySelector(
-            `#single-question-color-picker-${escapedOption}`
+        const colorPicker = Array.from(colorPickers).find(
+            (picker) => picker.dataset.optionId === row[0]
         );
         return colorPicker ? colorPicker.value : getRandomColor(); // Usa uma cor aleatória caso o seletor não esteja presente
     });
@@ -251,12 +275,14 @@ export function generateSingleQuestionColorPickers(formData, questionId) {
         colorPickerInput.style.marginRight = '5px';
         colorPickerInput.style.padding = '0px';
         colorPickerInput.value = getRandomColor(); 
-        colorPickerInput.id = `single-question-color-picker-${option}`;
+        // id seguro (o texto da opção pode ter espaço/acento, que é inválido em id)
+        colorPickerInput.id = `single-question-color-picker-${questionId}-${optionIndex}`;
         colorPickerInput.dataset.optionId = option;
         colorPickerInput.dataset.questionId = questionId;
 
         const label = document.createElement('label');
         label.textContent = `Cor para ${option} `;
+        label.htmlFor = colorPickerInput.id;
 
         const container = document.createElement('div');
         container.appendChild(colorPickerInput);
@@ -264,10 +290,10 @@ export function generateSingleQuestionColorPickers(formData, questionId) {
 
         colorPickersContainer.appendChild(container);
 
-        // atualiza as cores no grafico de pizza
+        // atualiza as cores no grafico de pizza (silencioso: só repinta o gráfico)
         colorPickerInput.addEventListener('change', (e) => {
             
-            updateSingleQuestionVisualizations(questionId);
+            updateSingleQuestionVisualizations(questionId, true);
         });
     });
 }
@@ -301,6 +327,11 @@ export function generateOptionFilters(formData, questionId) {
     });
 }
 
-export function updateSingleQuestionVisualizations(questionId) {
+// silencioso=true pula o anúncio (usado em mudança de cor, que só repinta o gráfico)
+export function updateSingleQuestionVisualizations(questionId, silencioso = false) {
     generateSingleQuestionVisualizations(formData, questionId);
+    if (!silencioso) {
+        clearTimeout(timerAnuncioUnica);
+        timerAnuncioUnica = setTimeout(() => anunciarSr('Tabela e gráfico atualizados'), 500);
+    }
 }

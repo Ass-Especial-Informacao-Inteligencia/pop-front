@@ -1,9 +1,9 @@
 import { getUserData } from '../../js/api.js';
 import { ativarFocusLoop } from '../../js/focusLoop.js';
 
-// Abas com uma parada só (roving tabindex, padrão ARIA de tablist): o Tab para na aba ativa e segue reto para o conteúdo embaixo; ←/→/Home/End percorrem as abas visíveis com volta nas pontas e ativam a de destino. O .click() dispara exatamente os mesmos handlers de um clique de mouse (navtab + data-api do Bootstrap), então a ativação não muda. Fora do teclado (mouse/Enter/programático) a aba clicada vira a nova parada.
-export function ativarTabTeclado() {
-    const tablist = document.getElementById('myTabs');
+// Abas com uma parada só (roving tabindex, padrão ARIA de tablist): o Tab para na aba ativa e segue reto para o conteúdo embaixo; ←/→/Home/End percorrem as abas visíveis com volta nas pontas e ativam a de destino. O .click() dispara exatamente os mesmos handlers de um clique de mouse (navtab + data-api do Bootstrap), então a ativação não muda. Fora do teclado (mouse/Enter/programático) a aba clicada vira a nova parada. Aceita seletor ou elemento (padrão: #myTabs da home admin) para reaproveitar em outros tablists, como os do dashboard.
+export function ativarTabTeclado(alvo = '#myTabs') {
+    const tablist = typeof alvo === 'string' ? document.querySelector(alvo) : alvo;
     if (!tablist) return;
 
     const marcarRoving = aba => {

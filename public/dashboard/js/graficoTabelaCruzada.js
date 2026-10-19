@@ -1,7 +1,9 @@
 import { getRandomColor } from './handlerDashboardActions.js';
 import { formData } from '../mainDashBoardHandler.js';
+import { anunciarSr } from '../../js/geraNotificacao.js';
 
 let colorPickers = {};
+let timerAnuncio = null;
 
 export function generateColorPickers(formData, yField) {
     if (yField && yField.value !== '') {
@@ -19,11 +21,13 @@ export function generateColorPickers(formData, yField) {
             colorPickerInput.style.marginRight = '5px';
             colorPickerInput.style.padding = "0px";
             colorPickerInput.value = getRandomColor(); // Set a random color initially
+            colorPickerInput.id = `color-picker-cruzada-${yField}-${optionIndex}`;
             colorPickerInput.dataset.optionId = option;
             colorPickerInput.dataset.questionId = yField;
 
             const label = document.createElement('label');
             label.textContent = `Cor para ${option}`;
+            label.htmlFor = colorPickerInput.id;
             label.style.fontSize = '0.85em';
             const container = document.createElement('div');
             container.appendChild(colorPickerInput);
@@ -35,7 +39,7 @@ export function generateColorPickers(formData, yField) {
             colorPickers[option] = colorPickerInput;
            
             colorPickerInput.addEventListener('change', () => {
-                updateVisualizations();
+                updateVisualizations(true);
             });
         });
     }
@@ -137,43 +141,60 @@ export function generatePivotTable(formData, xField, yField, dataOption) {
             let headerRow = table.insertRow();
             tableHeaders.forEach((headerText) => {
                 let th = document.createElement('th');
+                th.scope = 'col';
                 th.textContent = headerText;
                 headerRow.appendChild(th);
             });
 
-            // Linhas da tabela
+            // Linhas da tabela (1ª célula é o cabeçalho da linha, para navegação por tabela)
             for (let i = start; i < end; i++) {
                 let rowData = tableRows[i];
                 let tr = table.insertRow();
-                rowData.forEach((cellData) => {
-                    let td = tr.insertCell();
-                    td.textContent = cellData;
+                rowData.forEach((cellData, cellIndex) => {
+                    if (cellIndex === 0) {
+                        const th = document.createElement('th');
+                        th.scope = 'row';
+                        th.textContent = cellData;
+                        tr.appendChild(th);
+                    } else {
+                        let td = tr.insertCell();
+                        td.textContent = cellData;
+                    }
                 });
             }
 
             // Adicionar controles de paginação
             let pagination = document.createElement('div');
             pagination.className = 'pagination';
+            pagination.setAttribute('role', 'navigation');
+            pagination.setAttribute('aria-label', 'Paginação da tabela cruzada');
+            pagination.tabIndex = -1;
+
+            // Leva o foco de volta pra paginação e anuncia a página (o clique destrói o botão antigo)
+            const irParaPagina = (novaPagina) => {
+                currentPage = novaPagina;
+                renderTable(currentPage);
+                const novaPaginacao = pivotTable.querySelector('.pagination');
+                if (novaPaginacao) novaPaginacao.focus();
+                anunciarSr(`Página ${currentPage} de ${totalPages}`);
+            };
 
             if (currentPage > 1) {
                 let prev = document.createElement('button');
                 prev.textContent = 'Anterior';
-                prev.onclick = () => {
-                    currentPage--;
-                    renderTable(currentPage);
-                };
+                prev.setAttribute('aria-label', 'Página anterior');
+                prev.onclick = () => irParaPagina(currentPage - 1);
                 pagination.appendChild(prev);
             }
 
             for (let i = 1; i <= totalPages; i++) {
                 let pageButton = document.createElement('button');
                 pageButton.textContent = i;
-                pageButton.onclick = () => {
-                    currentPage = i;
-                    renderTable(currentPage);
-                };
+                pageButton.setAttribute('aria-label', `Página ${i}`);
+                pageButton.onclick = () => irParaPagina(i);
                 if (i === currentPage) {
                     pageButton.disabled = true;
+                    pageButton.setAttribute('aria-current', 'page');
                 }
                 pagination.appendChild(pageButton);
             }
@@ -181,10 +202,8 @@ export function generatePivotTable(formData, xField, yField, dataOption) {
             if (currentPage < totalPages) {
                 let next = document.createElement('button');
                 next.textContent = 'Proximo';
-                next.onclick = () => {
-                    currentPage++;
-                    renderTable(currentPage);
-                };
+                next.setAttribute('aria-label', 'Próxima página');
+                next.onclick = () => irParaPagina(currentPage + 1);
                 pagination.appendChild(next);
             }
 
@@ -204,6 +223,14 @@ export function generateCrossedBarChart(formData, xField, yField, dataOption) {
 
         const newChart = document.createElement('canvas');
         newChart.id = 'chart';
+        // O canvas é recriado a cada renderização: reaplica o nome acessível com as questões atuais (sem isso o role/aria-label do HTML se perderia)
+        const rotuloDe = (campo) =>
+            formData.Questions.find((q) => `${q.id}` === `${campo}`)?.body || 'questão selecionada';
+        newChart.setAttribute('role', 'img');
+        newChart.setAttribute(
+            'aria-label',
+            `Gráfico de barras cruzando ${rotuloDe(xField)} por ${rotuloDe(yField)}`
+        );
         chartParent.appendChild(newChart);
 
         const ctx = newChart.getContext('2d');
@@ -327,13 +354,17 @@ export function generateCrossedBarChart(formData, xField, yField, dataOption) {
     }
 }
 
-// Função para atualizar a exibição da tabela cruzada ou gráfico
-export function updateVisualizations() {
+// Função para atualizar a exibição da tabela cruzada ou gráfico. silencioso=true pula o anúncio (usado em mudança de cor, que só repinta o gráfico)
+export function updateVisualizations(silencioso = false) {
     const xField = selectX.value;
     const yField = selectY.value;
     const dataOpt = dataOption.value;
     generatePivotTable(formData, xField, yField, dataOpt);
     generateCrossedBarChart(formData, xField, yField, dataOpt);
+    if (!silencioso) {
+        clearTimeout(timerAnuncio);
+        timerAnuncio = setTimeout(() => anunciarSr('Tabela e gráfico atualizados'), 500);
+    }
 } 
 
 // funções auxiliares

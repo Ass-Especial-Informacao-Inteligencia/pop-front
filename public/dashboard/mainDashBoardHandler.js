@@ -10,6 +10,8 @@ import { renderThemeToggle } from '../js/components/themeToggle.js';
 import { renderFooter } from '../js/components/footer.js';
 import { renderProfileModal } from '../js/components/profileModal.js';
 import { renderNavbar } from '../js/components/navbar.js';
+import { ativarTabTeclado } from '../admin/js/navtab.js';
+import { ativarFocusLoop } from '../js/focusLoop.js';
 
 // Injeta navbar
 document.getElementById('navbarPlaceholder').innerHTML = renderNavbar({
@@ -24,6 +26,25 @@ document.getElementById('navbarPlaceholder').innerHTML = renderNavbar({
 document.getElementById('sharedComponents').innerHTML =
     renderThemeToggle() + renderFooter('./') + renderLoadingScreen();
 document.getElementById('perfilModalPlaceholder').innerHTML = renderProfileModal({ isAdmin: true });
+
+// Abas do dashboard em padrão ARIA (roving tabindex + ←/→/Home/End), reaproveitando o mesmo comportamento da home admin
+ativarTabTeclado('#myTab');
+ativarTabTeclado('#graphicsTab');
+
+// Loop de Tab espelhando a home admin: barra de abas (parada única, na aba ativa) → conteúdo → download → gráficos/tabelas → × do aviso, se aparecer → volta pra barra. Escopo é o #conteudo inteiro porque o dashboard tem 2 grupos de abas com o select de download intercalado (diferente da home, onde barra+conteúdo bastam). Navbar, footer e themeToggle ficam fora (alcançáveis na entrada, com mouse/F6).
+ativarFocusLoop(['#conteudo', '#container-alertas']);
+
+// Tooltips dos ícones de ajuda: inicializa (antes nenhum .tooltip() era chamado, o texto só aparecia no hover nativo) e espelha cada explicação num sr-only — o ícone é aria-hidden, então sem isso o leitor de tela nunca ouve o texto.
+document.querySelectorAll('[data-toggle="tooltip"]').forEach((icone) => {
+    const texto = icone.getAttribute('title');
+    if (texto) {
+        const oculto = document.createElement('span');
+        oculto.className = 'sr-only';
+        oculto.textContent = texto;
+        icone.insertAdjacentElement('afterend', oculto);
+    }
+    window.jQuery(icone).tooltip();
+});
 
 // Faz logout
 const logoutAnchor = document.getElementById('logout-conta');

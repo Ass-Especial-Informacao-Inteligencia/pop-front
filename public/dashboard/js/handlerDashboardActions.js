@@ -5,6 +5,7 @@ import { GeraEventoDownloads } from './downloadChartAndGraphics.js';
 import {
     generateOptionFilters,
     generateSingleQuestionColorPickers,
+    resetarPaginaUnica,
     updateSingleQuestionVisualizations,
 } from './graficosTabelaUnica.js';
 import {
@@ -169,6 +170,7 @@ function populationSingleQuestionAndListeners() {
     document.getElementById('selectSingleQuestion').addEventListener('change', (e) => {
         const questionId = e.target.value;
         if (questionId !== '') {
+            resetarPaginaUnica();
             generateOptionFilters(formData, questionId);
             generateSingleQuestionColorPickers(formData, questionId);
             updateSingleQuestionVisualizations(questionId);
@@ -178,7 +180,8 @@ function populationSingleQuestionAndListeners() {
     document.getElementById('color-for-porcent-bars').addEventListener('change', () => {
         const questionId = document.getElementById('selectSingleQuestion').value;
         if (questionId !== '') {
-            updateSingleQuestionVisualizations(questionId);
+            // silencioso: mudança de cor só repinta o gráfico, não atualiza tabela
+            updateSingleQuestionVisualizations(questionId, true);
         }
     });
 }
