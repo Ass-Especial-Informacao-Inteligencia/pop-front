@@ -171,12 +171,13 @@ button {
 
 /* Botão secundário (Página Anterior/Próxima Página) */
 .btn-secondary {
-    background-color: var(--text-muted);
-    color: var(--surface);
+    background-color: var(--surface-muted);
+    color: var(--text);
 }
 
 .btn-secondary:hover {
     background-color: var(--text);
+    color: var(--surface);
 }
 
 @media (max-width: 768px) {
