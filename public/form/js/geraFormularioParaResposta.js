@@ -10,63 +10,58 @@ document.getElementById('btn-novas-respostas')?.addEventListener('click', () => 
     window.location.reload();
 });
 
-// Função para criar um input com autocomplete
-function criarAutocompleteInput(bairros, index, liberaAcesso) {
-    const divAutocomplete = document.createElement('div');
-    divAutocomplete.classList.add('autocomplete');
+// Select nativo para questões com muitas opções (no lugar do antigo autocomplete, que só funcionava com mouse): teclado, leitor de tela e validação vêm de graça
+function criarSelectInput(opcoes, index, liberaAcesso) {
+    const select = document.createElement('select');
+    select.classList.add('form-control');
+    select.setAttribute('id', `pergunta${index + 1}`);
+    select.setAttribute('required', true);
+    select.disabled = !liberaAcesso;
 
-    const input = document.createElement('input');
-    input.setAttribute('type', 'text');
-    input.setAttribute('id', `pergunta${index + 1}`);
-    input.classList.add('form-control');
-    input.setAttribute('placeholder', 'Digite o nome do bairro');
-    input.setAttribute('autocomplete', 'off');
-    input.setAttribute('required', true);
-    input.disabled = !liberaAcesso;
+    const placeholder = new Option('Selecione uma opção', '');
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    select.add(placeholder);
 
-    const divSugestoes = document.createElement('div');
-    divSugestoes.classList.add('autocomplete-items');
-
-    input.addEventListener('input', function () {
-        const valorDigitado = this.value.toLowerCase();
-        divSugestoes.innerHTML = ''; // Limpa sugestões anteriores
-        if (valorDigitado) {
-            const bairrosFiltrados = bairros.filter(bairro => bairro.toLowerCase().includes(valorDigitado));
-            bairrosFiltrados.forEach(bairro => {
-                const itemSugestao = document.createElement('div');
-                itemSugestao.classList.add('autocomplete-item-clickable'); // Classe para estilizar o clique
-                itemSugestao.textContent = bairro;
-                itemSugestao.addEventListener('click', function () {
-                    input.value = bairro; // Preenche o campo com o bairro selecionado
-                    divSugestoes.innerHTML = ''; // Limpa as sugestões
-                });
-                divSugestoes.appendChild(itemSugestao);
-            });
-        }
+    opcoes.forEach(opcao => {
+        select.add(new Option(opcao, opcao));
     });
 
-    divAutocomplete.appendChild(input);
-    divAutocomplete.appendChild(divSugestoes);
-
-    return divAutocomplete;
+    return select;
 }
 
 function criarFormulario(perguntas,liberaAcesso) {
     const container = document.getElementById('formulario-container');
     
     const form = document.createElement('form');
-    form.classList.add('was-validated');
 
     perguntas.forEach((pergunta, index) => {
         const divPergunta = document.createElement('div');
         divPergunta.classList.add('form-group');
+        divPergunta.setAttribute('data-type', `${pergunta.type}`);
+        divPergunta.setAttribute('data-id', `${pergunta.id}`);
 
-        const label = document.createElement('label');
-        label.setAttribute('for', `pergunta${index + 1}`);
-        label.setAttribute('data-type', `${pergunta.type}`);
-        label.setAttribute('data-id', `${pergunta.id}`);
-        label.textContent = (index+1)+ ") " + pergunta.body;
-        divPergunta.appendChild(label);
+        // Enunciado vira h2 (navegação por headings); em questão de grupo o h2 também nomeia o role=group, então não há label de questão — some o for pendurado
+        // Subtipos legados (ex.: Unica Escolha-Bairro) contam como única escolha normal no render
+        const ehMultipla = pergunta.type === 'Multipla Escolha';
+        const ehUnica = pergunta.type?.startsWith('Unica Escolha');
+        const ehGrupo = ehMultipla || (ehUnica && pergunta.Options.length <= 9);
+        const enunciado = document.createElement('h2');
+        enunciado.classList.add('pergunta-enunciado');
+        enunciado.setAttribute('id', `pergunta${index + 1}-enunciado`);
+        enunciado.textContent = (index + 1) + ") " + pergunta.body;
+
+        if (ehGrupo) {
+            divPergunta.setAttribute('role', 'group');
+            divPergunta.setAttribute('aria-labelledby', `pergunta${index + 1}-enunciado`);
+            divPergunta.appendChild(enunciado);
+        } else {
+            const label = document.createElement('label');
+            label.setAttribute('for', `pergunta${index + 1}`);
+            label.textContent = enunciado.textContent;
+            enunciado.appendChild(label);
+            divPergunta.appendChild(enunciado);
+        }
 
         if (pergunta.type === 'Resposta Curta') {
             const input = document.createElement('input');
@@ -80,7 +75,7 @@ function criarFormulario(perguntas,liberaAcesso) {
                 this.value.trim() === '' ? this.setCustomValidity('Por favor, preencha este campo.') : this.setCustomValidity('');
             });
             divPergunta.appendChild(input);
-        } else if (pergunta.type === 'Multipla Escolha') {
+        } else if (ehMultipla) {
             pergunta.Options.forEach((opcao, i) => {
                 const divCheck = document.createElement('div');
                 divCheck.classList.add('form-check');
@@ -128,11 +123,11 @@ function criarFormulario(perguntas,liberaAcesso) {
                 divCheck.appendChild(label);
                 divPergunta.appendChild(divCheck);
             });
-        } else if (pergunta.type === 'Unica Escolha') {
+        } else if (ehUnica) {
             if (pergunta.Options.length > 9) {
-                // Utiliza a função de autocomplete ao invés de select
-                const autocompleteInput = criarAutocompleteInput(pergunta.Options.map(op => op.text), index, liberaAcesso);
-                divPergunta.appendChild(autocompleteInput);
+                // Select nativo para listas grandes (antes era autocomplete só de mouse)
+                const selectInput = criarSelectInput(pergunta.Options.map(op => op.text), index, liberaAcesso);
+                divPergunta.appendChild(selectInput);
             } else {
                 pergunta.Options.forEach((opcao, i) => {
                     const divCheck = document.createElement('div');
@@ -231,6 +226,7 @@ async function fetchFullForm() {
         
     } catch (error) {
         console.error('Error fetching forms:', error);
+        mostrarMensagem('Erro ao carregar o formulário!', 'danger', 7);
         throw error;
     }
 }

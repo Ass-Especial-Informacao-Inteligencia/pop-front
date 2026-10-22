@@ -55,8 +55,8 @@
   box-shadow: var(--shadow-md);
 }
 
-/* ── Question label ── */
-#formulario-container label[data-type] {
+/* ── Question heading (h2 por questão; em tipo de grupo é texto puro) ── */
+#formulario-container .pergunta-enunciado {
   font-weight: 600;
   font-size: var(--font-size-base, 1rem);
   color: var(--text, #333);
@@ -64,9 +64,9 @@
   margin-bottom: var(--space-sm, 8px);
 }
 
-#formulario-container label[data-type]::before {
-  color: var(--color-primary, #0d7377);
-  font-weight: 700;
+#formulario-container .pergunta-enunciado label {
+  display: block;
+  margin-bottom: 0;
 }
 
 /* ── Remove hr separators ── */
@@ -142,17 +142,10 @@
   padding: 14px 28px;
 }
 
-/* ── Autocomplete items ── */
-.autocomplete-item-clickable {
-  padding: 10px;
-  cursor: pointer;
-  background-color: var(--surface, #fff);
-  border-bottom: 1px solid var(--border, #dee2e6);
-}
-
-.autocomplete-item-clickable:hover {
-  background-color: var(--bg-body, #e0f1f8);
-  color: var(--color-primary, #0d7377);
+/* ── Campo não preenchido (marcação da validação no envio) ── */
+#formulario-container .form-group.campo-nao-preenchido {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
 }
 
 /* ── Form title ── */

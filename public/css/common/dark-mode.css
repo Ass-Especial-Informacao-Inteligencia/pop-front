@@ -253,16 +253,6 @@
   background-color: var(--surface-dark);
 }
 
-/* ── Autocomplete ── */
-.dark-mode .autocomplete-item-clickable {
-  background-color: var(--surface-dark);
-  color: var(--text-dark);
-}
-
-.dark-mode .autocomplete-item-clickable:hover {
-  background-color: var(--surface-dark-alt);
-}
-
 /* ── Suggestions box ── */
 .dark-mode .custom-suggestion {
   background-color: var(--surface-dark);
@@ -301,7 +291,7 @@
   border-color: var(--border-dark);
 }
 
-.dark-mode #formulario-container label[data-type] {
+.dark-mode #formulario-container .pergunta-enunciado {
   color: var(--text-dark);
 }
 
@@ -316,4 +306,36 @@
 .dark-mode #formulario .d-flex.justify-content-end {
   background-color: var(--surface-dark);
   border-color: var(--border-dark);
+}
+
+/* ── Foco no escuro: branco (o teal do token tem contraste baixo sobre o fundo escuro) ── */
+.dark-mode *:focus-visible {
+  outline-color: #ffffff;
+}
+
+.dark-mode .form-control:focus,
+.dark-mode .form-check-input:focus {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+}
+
+/* mainForm usa seletor com ID — este bloco precisa dele pra vencer a cascata */
+.dark-mode #formulario-container .form-control:focus {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+}
+
+/* ── Botões secundários dos cards (cog, nova aba, footer): brancos no escuro com ícone escuro ── */
+.dark-mode .card .btn-secondary {
+  background-color: #ffffff;
+  border-color: #ffffff;
+  color: #212529;
+}
+
+.dark-mode .card .btn-secondary:hover,
+.dark-mode .card .btn-secondary:focus,
+.dark-mode .card .btn-secondary:active {
+  background-color: #e9ecef;
+  border-color: #e9ecef;
+  color: #212529;
 }

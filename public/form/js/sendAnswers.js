@@ -1,5 +1,5 @@
 import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
-import { mostrarMensagem } from '../../js/geraNotificacao.js';
+import { mostrarMensagem, anunciarSr } from '../../js/geraNotificacao.js';
 
 export async function capturarRespostas(ev) {
     ev.preventDefault();
@@ -12,20 +12,21 @@ export async function capturarRespostas(ev) {
     let allFieldsValid = true;
 
     questionsGroup.forEach((questionContainer, index) => {
+        questionContainer.classList.remove('campo-nao-preenchido'); // limpa a marca da tentativa anterior
         if (index === 9) {
             numCaseRemoveCountForForm++;
         }
-        const questionLabel = questionContainer.querySelector('label');
-       
-        const questionId = questionLabel.dataset.id;
+        
+        const questionId = questionContainer.dataset.id;
         
         const inputsCheckbox = questionContainer.querySelectorAll(
             'input[type="checkbox"]:checked'
         );
     
-        let questionType = questionLabel.dataset.type;
+        let questionType = questionContainer.dataset.type;
     
-        if (questionType === 'Unica Escolha-Bairro' || questionType === 'Unica Escolha-Ubs' || questionType === 'Unica Escolha-Setor') {
+        // Subtipos legados (Unica Escolha-Bairro/Ubs/Setor) são enviados como o tipo base
+        if (questionType?.startsWith('Unica Escolha') && questionType !== 'Unica Escolha') {
             questionType = 'Unica Escolha';
         }
     
@@ -44,7 +45,13 @@ export async function capturarRespostas(ev) {
                 const selectInput =
                     questionContainer.querySelector('select');
                 if (selectInput) {
-                    answer.push(selectInput.options[selectInput.selectedIndex].text.trim());
+                    // value '' = opção placeholder selecionada = questão sem resposta
+                    if (selectInput.value !== '') {
+                        answer.push(selectInput.options[selectInput.selectedIndex].text.trim());
+                    } else {
+                        allFieldsValid = false;
+                        questionContainer.classList.add('campo-nao-preenchido');
+                    }
                 } else {
                     const inputRadio = questionContainer.querySelector(
                         'input[type="radio"]:checked'
@@ -71,11 +78,13 @@ export async function capturarRespostas(ev) {
 
     // Se algum campo não estiver preenchido, não fazemos o fetch
     if (!allFieldsValid) {
+        // was-validated só agora (no carregamento deixaria toda questão vazia vermelha) + foco no 1º campo faltante
+        btnSubmitForOpenModal.form?.classList.add('was-validated');
+        document.querySelector(
+            '#formulario-container .campo-nao-preenchido input:not([disabled]), #formulario-container .campo-nao-preenchido select:not([disabled])'
+        )?.focus();
         mostrarMensagem("Existem campos não preenchidos!","danger",5);
         return;
-    } else {
-        btnSubmitForOpenModal.dataset.toggle = "modal";
-        btnSubmitForOpenModal.dataset.target = "#confirmacaoModal";
     }
 
     const title = getCookie('form');
@@ -86,8 +95,11 @@ export async function capturarRespostas(ev) {
         if (!response.ok) {
             throw new Error('Erro ao salvar respostas');
         }
-        const data = await response.json();
+        // Modal só depois do servidor confirmar (antes abria otimista no clique e mostrava "salvo" mesmo em erro)
+        window.jQuery('#confirmacaoModal').modal('show');
+        anunciarSr('Respostas salvas com sucesso');
     } catch (error) {
         console.error('Erro ao salvar respostas:', error);
+        mostrarMensagem('Erro ao salvar respostas!', 'danger', 7);
     }
 }

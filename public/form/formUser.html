@@ -4,12 +4,11 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Visualização do Formulário</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet"/>
         <link rel="stylesheet" href="./css/mainForm.css" />
         <link rel="icon" type="image/x-icon" href="../src/BRASAO-PREFEITURA-DE-FERRAZ.png"/>
         <!-- icones import -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
-
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet"/>
     </head>
     <body>
         
@@ -24,7 +23,7 @@
 
         <div class="container mt-5">
             <div class="jumbotron">
-                <h1 id="form-title">Titulo Formulário</h1>
+                <h1 id="form-title">Carregando formulário…</h1>
                 <p id="form-description">descrição:</p>
             </div>
         </div>
@@ -58,6 +57,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- Região viva para anúncios do leitor de tela -->
+        <div id="sr-live" role="status" aria-live="polite"></div>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>

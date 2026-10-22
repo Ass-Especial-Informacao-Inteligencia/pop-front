@@ -30,10 +30,13 @@ fillUpModalsInfo();
 // Faz logout
 const logoutAnchor = document.getElementById('logout-conta');
 logoutAnchor.addEventListener('click', logout);
+// Enter não deve dar submit acidental (ex.: dentro de inputs do formulário), mas precisa continuar ativando botões/links focados — mesmo filtro do formAdmin/formUser (indexForm.js)
 document.addEventListener('keypress', function(event) {
-    if (event.keyCode === 13) {
-      event.preventDefault();
-    }
+    if (event.key !== 'Enter') return;
+    const alvo = event.target;
+    if (alvo instanceof HTMLTextAreaElement) return;
+    if (alvo instanceof Element && alvo.closest('button, a, [role="button"]')) return;
+    event.preventDefault();
 });
 
 loadingScreen();
