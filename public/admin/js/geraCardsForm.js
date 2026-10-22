@@ -24,6 +24,16 @@ function bindOpenAnswersPage() {
     });
 }
 
+// Escapa HTML antes de interpolar em atributos/texto dos cards (título/descrição vêm do backend).
+function escapeHtml(text) {
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 export function createCardLayout(container, data, user, status = 'active') {
     const cardContainer = document.getElementById(container);
     cardContainer.innerHTML = '';
@@ -37,27 +47,29 @@ export function createCardLayout(container, data, user, status = 'active') {
 
     if (user.role === 'admin') {
         data.forEach((card) => {
+            const title = escapeHtml(card.title);
+            const description = escapeHtml(card.description);
             cardContainer.innerHTML += `
                 <div class="card grid-item">
                     <div class="card-header" data-status="${status}"></div>
                     <div class="card-body" data-status="${card.active === true ? 'active' : 'disable'}">
-                        <h5 class="card-title">${card.title}</h5>
-                        <p class="card-text">${card.description}</p>
+                        <h5 class="card-title">${title}</h5>
+                        <p class="card-text">${description}</p>
                         <div class="btn-group" role="group" aria-label="Botões de Ação">
-                            <button data-route="${card.title}" class="redirect-btn btn btn-primary">Visualizar</button>
-                            <button class="config-btn btn btn-secondary" title="Configurações Avançadas"><i class="fas fa-cog" aria-hidden="true"></i></button>
+                            <button data-route="${title}" class="redirect-btn btn btn-primary">Visualizar</button>
+                            <button class="config-btn btn btn-secondary" title="Configurações Avançadas" aria-label="Configurações Avançadas — ${title}" aria-expanded="false" aria-controls="config-footer-${title.replace(/\s+/g, '-')}"><i class="fas fa-cog" aria-hidden="true"></i></button>
                         </div>
-                        <button class="open-new-tab-btn btn btn-secondary" title="Abrir em nova aba">
+                        <button class="open-new-tab-btn btn btn-secondary" title="Abrir em nova aba" aria-label="Abrir em nova aba — ${title}">
                             <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                         </button>
                     </div>
-                    <div class="card-footer p-1 d-none">
-                        ${status !== 'finished' ? `<button class="archive-btn btn btn-danger float-right" data-toggle="modal" data-target="#arquivarFormularioModal" data-form="${card.title}" data-active="${card.active}" data-state="${status}" title="Arquivar Formulário"><i class="fas fa-archive" aria-hidden="true"></i></button>` : ''}
+                    <div class="card-footer p-1 d-none" id="config-footer-${title.replace(/\s+/g, '-')}">
+                        ${status !== 'finished' ? `<button class="archive-btn btn btn-danger float-right" data-toggle="modal" data-target="#arquivarFormularioModal" data-form="${title}" data-active="${card.active}" data-state="${status}" title="Arquivar Formulário" aria-label="Arquivar Formulário — ${title}"><i class="fas fa-archive" aria-hidden="true"></i></button>` : ''}
                         <div class="float-left btn-group">
-                            <button class="permission-btn btn btn-secondary" data-toggle="modal" data-form="${card.title}" data-target="#accessModal" title="Gerenciar Acesso"><i class="fas fa-user-plus" aria-hidden="true"></i></button>
-                            <button class="clock-btn btn btn-secondary" data-toggle="modal" data-target="#agendarModal" data-form="${card.title}" title="Agendar Disponibilidade"><i class="fas fa-clock" aria-hidden="true"></i></button>
-                            <button class="chart-btn btn btn-primary" title="Dashboard" data-form="${card.title}"><i class="fas fa-chart-bar" aria-hidden="true"></i></button>
-                            <button class="response-btn btn btn-success" title="Cadastrar Resposta" data-form="${card.title}"><i class="fas fa-clipboard-list" aria-hidden="true"></i></button>
+                            <button class="permission-btn btn btn-secondary" data-toggle="modal" data-form="${title}" data-target="#accessModal" title="Gerenciar Acesso" aria-label="Gerenciar Acesso — ${title}"><i class="fas fa-user-plus" aria-hidden="true"></i></button>
+                            <button class="clock-btn btn btn-secondary" data-toggle="modal" data-target="#agendarModal" data-form="${title}" title="Agendar Disponibilidade" aria-label="Agendar Disponibilidade — ${title}"><i class="fas fa-clock" aria-hidden="true"></i></button>
+                            <button class="chart-btn btn btn-primary" title="Dashboard" data-form="${title}" aria-label="Dashboard — ${title}"><i class="fas fa-chart-bar" aria-hidden="true"></i></button>
+                            <button class="response-btn btn btn-success" title="Cadastrar Resposta" data-form="${title}" aria-label="Cadastrar Resposta — ${title}"><i class="fas fa-clipboard-list" aria-hidden="true"></i></button>
                         </div>
                     </div>
                 </div>
@@ -69,13 +81,15 @@ export function createCardLayout(container, data, user, status = 'active') {
     }
 
     data.forEach((card) => {
+        const title = escapeHtml(card.title);
+        const description = escapeHtml(card.description);
         cardContainer.innerHTML += `
             <div class="card grid-item">
                 <div class="card-header" data-status="${status}"></div>
                 <div class="card-body" data-status="${card.active === true ? 'active' : 'disable'}">
-                    <h5 class="card-title">${card.title}</h5>
-                    <p class="card-text">${card.description}</p>
-                    <button data-route="${card.title}" class="redirect-btn btn btn-primary">Cadastrar Resposta</button>
+                    <h5 class="card-title">${title}</h5>
+                    <p class="card-text">${description}</p>
+                    <button data-route="${title}" class="redirect-btn btn btn-primary">Cadastrar Resposta</button>
                 </div>
             </div>
         `;
@@ -94,24 +108,26 @@ export function createCardDesactiveLayout(data, status = 'disabled') {
     cardContainer.classList.add('grid-container');
 
     data.forEach((card) => {
+        const title = escapeHtml(card.title);
+        const description = escapeHtml(card.description);
         cardContainer.innerHTML += `
             <div class="card grid-item">
                 <div class="card-header" data-status="${status}"></div>
                 <div class="card-body" data-status="${card.active === true ? 'active' : 'disable'}">
-                    <h5 class="card-title">${card.title}</h5>
-                    <p class="card-text">${card.description}</p>
+                    <h5 class="card-title">${title}</h5>
+                    <p class="card-text">${description}</p>
                     <div class="btn-group" role="group" aria-label="Botões de Ação">
-                        <button data-route="${card.title}" class="redirect-btn btn btn-primary">Visualizar</button>
-                        <button class="config-btn btn btn-secondary" title="Configurações Avançadas"><i class="fas fa-cog" aria-hidden="true"></i></button>
+                        <button data-route="${title}" class="redirect-btn btn btn-primary">Visualizar</button>
+                        <button class="config-btn btn btn-secondary" title="Configurações Avançadas" aria-label="Configurações Avançadas — ${title}" aria-expanded="false" aria-controls="config-footer-${title.replace(/\s+/g, '-')}"><i class="fas fa-cog" aria-hidden="true"></i></button>
                     </div>
                 </div>
-                <div class="card-footer p-1 d-none">
-                    <button class="archive-btn btn btn-danger float-right" data-toggle="modal" data-target="#arquivarFormularioModal" data-form="${card.title}" data-active="${card.active}" data-state="${status}" title="Arquivar Formulário"><i class="fas fa-archive" aria-hidden="true"></i></button>
+                <div class="card-footer p-1 d-none" id="config-footer-${title.replace(/\s+/g, '-')}">
+                    <button class="archive-btn btn btn-danger float-right" data-toggle="modal" data-target="#arquivarFormularioModal" data-form="${title}" data-active="${card.active}" data-state="${status}" title="Arquivar Formulário" aria-label="Arquivar Formulário — ${title}"><i class="fas fa-archive" aria-hidden="true"></i></button>
                     <div class="float-left btn-group">
-                        <button class="permission-btn btn btn-secondary" data-toggle="modal" data-form="${card.title}" data-target="#accessModal" title="Gerenciar Acesso"><i class="fas fa-user-plus" aria-hidden="true"></i></button>
-                        <button class="clock-btn btn btn-secondary" data-toggle="modal" data-target="#agendarModal" data-form="${card.title}" title="Agendar Disponibilidade"><i class="fas fa-clock" aria-hidden="true"></i></button>
-                        <button class="chart-btn btn btn-primary" title="Dashboard" data-form="${card.title}"><i class="fas fa-chart-bar" aria-hidden="true"></i></button>
-                        <button class="response-btn btn btn-success" title="Cadastrar Resposta" data-form="${card.title}"><i class="fas fa-clipboard-list" aria-hidden="true"></i></button>
+                        <button class="permission-btn btn btn-secondary" data-toggle="modal" data-form="${title}" data-target="#accessModal" title="Gerenciar Acesso" aria-label="Gerenciar Acesso — ${title}"><i class="fas fa-user-plus" aria-hidden="true"></i></button>
+                        <button class="clock-btn btn btn-secondary" data-toggle="modal" data-target="#agendarModal" data-form="${title}" title="Agendar Disponibilidade" aria-label="Agendar Disponibilidade — ${title}"><i class="fas fa-clock" aria-hidden="true"></i></button>
+                        <button class="chart-btn btn btn-primary" title="Dashboard" data-form="${title}" aria-label="Dashboard — ${title}"><i class="fas fa-chart-bar" aria-hidden="true"></i></button>
+                        <button class="response-btn btn btn-success" title="Cadastrar Resposta" data-form="${title}" aria-label="Cadastrar Resposta — ${title}"><i class="fas fa-clipboard-list" aria-hidden="true"></i></button>
                     </div>
                 </div>
             </div>

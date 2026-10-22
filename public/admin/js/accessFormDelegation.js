@@ -38,7 +38,8 @@ export function adicionarUsersComAcesso(users) {
                     listItem.dispatchEvent(
                         new CustomEvent('userRemoved', { detail: user })
                     );
-                }
+                },
+                `Remover ${user.name} do acesso ao formulário`
             );
             listItem.appendChild(removerBotao);
             usersWithAccessList.appendChild(listItem);
@@ -62,7 +63,8 @@ export function adicionarUsersComAcesso(users) {
                 listItem.dispatchEvent(
                     new CustomEvent('userRemoved', { detail: user })
                 );
-            }
+            },
+            `Remover ${user.name} do acesso ao formulário`
         );
         listItem.appendChild(removerBotao);
         usersWithAccessList.appendChild(listItem);
@@ -118,13 +120,15 @@ export function consultarUsersSemAcesso(
                         const index = selectedUsers.indexOf(users);
                         if (index !== -1) selectedUsers.splice(index, 1);
                         resultsList.appendChild(createUserListItem(user));
-                    }
+                    },
+                    `Remover ${user.name} da lista de seleção`
                 );
                 savedListItem.appendChild(removerBotao);
                 savedList.appendChild(savedListItem);
                 listItem.remove();
                 // Persistência: fetch em fetchDelegationForm.js (botão Salvar)
-            }
+            },
+            `Adicionar ${user.name} à lista de seleção`
         );
         listItem.appendChild(adicionarBotao);
         resultsList.appendChild(listItem);
@@ -154,12 +158,14 @@ export function consultarUsersSemAcesso(
                                 const index = selectedUsers.indexOf(user);
                                 if (index !== -1) selectedUsers.splice(index, 1);
                                 resultsList.appendChild(createUserListItem(user));
-                            }
+                            },
+                            `Remover ${user.name} da lista de seleção`
                         );
                         savedListItem.appendChild(removerBotao);
                         savedList.appendChild(savedListItem);
                         listItem.remove();
-                    }
+                    },
+                    `Adicionar ${user.name} à lista de seleção`
                 );
                 listItem.appendChild(adicionarBotao);
                 resultsList.appendChild(listItem);
@@ -186,12 +192,14 @@ export function consultarUsersSemAcesso(
                             const index = selectedUsers.indexOf(userRemoved);
                             if (index !== -1) selectedUsers.splice(index, 1);
                             resultsList.appendChild(createUserListItem(userRemoved));
-                        }
+                        },
+                        `Remover ${userRemoved.name} da lista de seleção`
                     );
                     savedListItem.appendChild(removerBotao);
                     savedList.appendChild(savedListItem);
                     listItem.remove();
-                }
+                },
+                `Adicionar ${userRemoved.name} à lista de seleção`
             );
             listItem.appendChild(adicionarBotao);
             resultsList.appendChild(listItem);
@@ -214,10 +222,11 @@ function createUserListItem(user) {
     return listItem;
 }
 
-function createButton(text, classNames, onClick) {
+function createButton(text, classNames, onClick, ariaLabel) {
     const button = document.createElement('button');
     button.type = 'button';
     button.textContent = text;
+    if (ariaLabel) button.setAttribute('aria-label', ariaLabel);
     button.addEventListener('click', onClick);
     (Array.isArray(classNames) ? classNames : [classNames]).forEach((c) =>
         button.classList.add(c)

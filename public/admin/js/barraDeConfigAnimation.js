@@ -9,6 +9,7 @@ export function animationConfigBarForm() {
     } else {
         cardFooter.classList.add('d-none');
     }
+    button.setAttribute('aria-expanded', !cardFooter.classList.contains('d-none'));
     });
 });
 }
