@@ -51,9 +51,17 @@
                 <table class="table table-striped">
                     <thead class="thead-light sticky-top">
                         <tr>
-                            <th scope="col" id="ordenar-nome">Nome</th>
+                            <th scope="col" aria-sort="none">
+                                <button type="button" class="btn btn-link p-0 text-dark" id="ordenar-nome">
+                                    Nome <i class="fas fa-sort ml-1" aria-hidden="true"></i>
+                                </button>
+                            </th>
                             <th scope="col">CPF</th>
-                            <th scope="col" id="ordenar-funcao">Função</th>
+                            <th scope="col" aria-sort="none">
+                                <button type="button" class="btn btn-link p-0 text-dark" id="ordenar-funcao">
+                                    Função <i class="fas fa-sort ml-1" aria-hidden="true"></i>
+                                </button>
+                            </th>
                             <th scope="col">E-mail</th>
                             <th scope="col">Ações</th>
                         </tr>
@@ -100,7 +108,7 @@
                                 <div class="form-group">
                                     <label for="email">E-mail</label>
                                     <input type="email" class="form-control" id="email" placeholder="Digite o E-mail" required>
-                                    <span id="emailErrorMessage"></span>
+                                    <span id="emailErrorMessage" class="text-danger" role="alert"></span>
 
                                 </div>
                             </div>
@@ -109,7 +117,7 @@
                                 <div class="form-group">
                                     <label for="cpf">CPF</label>
                                     <input type="text" class="form-control" id="cpf" placeholder="Digite o CPF sem pontuação." required>
-                                    <span id="cpfErrorMessage"></span>
+                                    <span id="cpfErrorMessage" class="text-danger" role="alert"></span>
                                 </div>
                             </div>
                         </div>
@@ -135,7 +143,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <span id="message"></span>
+                        <span id="message" class="text-danger" role="alert"></span>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         <button type="button" class="btn btn-primary" id="btnSalvarNovoUsuario">Cadastrar</button>
                     </div>

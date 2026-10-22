@@ -49,11 +49,14 @@ export async function signUp() {
                 spanEmailMessage.textContent = error.emailMessage;
                 eraseError(spanEmailMessage);
             }
+
+            // Fallback: outros formatos de erro do backend caem no #message genérico.
+            if (error.error) {
+                spanAdminMessage.textContent = error.error;
+                eraseError(spanAdminMessage);
+            }
         } else {
-            const data = await response.json();
-            spanAdminMessage.textContent = data.userCreatedMessage;
-            eraseError(spanAdminMessage);
-            // If successful, update user list
+            // Sucesso já anunciado pelo toast abaixo; #message fica só para erros.
             addUsersForList();
             mostrarMensagem('Usuário criado com sucesso.', 'success',5);
         }

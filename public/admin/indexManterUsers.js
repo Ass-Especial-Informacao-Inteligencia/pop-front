@@ -2,7 +2,6 @@ import { loadingScreen } from '../js/loadingScreen.js';
 import { logout } from '../js/api.js';
 import { addUsersForList } from './js/manterUser/geraTrUsuarios.js';
 import {
-    limparFiltrosListUser,
     orderPerNameUsers,
     orderPerRoleUsers,
 } from './js/manterUser/ordenarUsuarios.js';
@@ -53,7 +52,6 @@ validaFormUser();
 // listar usuários funções
 orderPerNameUsers();
 orderPerRoleUsers();
-limparFiltrosListUser();
 
 // barra de pesquisa para usuários
 pesquisarNaListaUsuarios();

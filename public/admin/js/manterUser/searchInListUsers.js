@@ -27,11 +27,4 @@ export function pesquisarNaListaUsuarios() {
             if (searchText === '') return;
             timerAnuncio = setTimeout(function() { anunciarResultado(visiveis); }, 500);
         });
-
-        $("#clearFilterButton").on("click", function() {
-            $("#searchInput").val("");
-            $("tbody tr").removeClass("hidden");
-            const live = document.getElementById('sr-live');
-            if (live) live.textContent = '';
-        });
 }
