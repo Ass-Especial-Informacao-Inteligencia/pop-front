@@ -2,6 +2,7 @@ import { mostrarMensagem } from '../../js/geraNotificacao.js';
 import { capturarRespostas } from './sendAnswers.js';
 import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
 import { ativarFocusLoop } from '../../js/focusLoop.js';
+import { criarCombobox } from '../../js/components/combobox.js';
 
 // Loop de Tab nestas telas (formUser/formResponseAdmin): só dentro do form — campos → Enviar/Cancelar → (× do aviso, se aparecer) → campos. Navbar fica fora (alcançável antes de entrar no form, ou com mouse/F6). Modais Bootstrap também ficam de fora, então o trap deles continua mandando enquanto abertos.
 ativarFocusLoop(['#formulario-container', '#container-alertas']);
@@ -9,26 +10,6 @@ ativarFocusLoop(['#formulario-container', '#container-alertas']);
 document.getElementById('btn-novas-respostas')?.addEventListener('click', () => {
     window.location.reload();
 });
-
-// Select nativo para questões com muitas opções (no lugar do antigo autocomplete, que só funcionava com mouse): teclado, leitor de tela e validação vêm de graça
-function criarSelectInput(opcoes, index, liberaAcesso) {
-    const select = document.createElement('select');
-    select.classList.add('form-control');
-    select.setAttribute('id', `pergunta${index + 1}`);
-    select.setAttribute('required', true);
-    select.disabled = !liberaAcesso;
-
-    const placeholder = new Option('Selecione uma opção', '');
-    placeholder.disabled = true;
-    placeholder.selected = true;
-    select.add(placeholder);
-
-    opcoes.forEach(opcao => {
-        select.add(new Option(opcao, opcao));
-    });
-
-    return select;
-}
 
 function criarFormulario(perguntas,liberaAcesso) {
     const container = document.getElementById('formulario-container');
@@ -49,16 +30,17 @@ function criarFormulario(perguntas,liberaAcesso) {
         const enunciado = document.createElement('h2');
         enunciado.classList.add('pergunta-enunciado');
         enunciado.setAttribute('id', `pergunta${index + 1}-enunciado`);
-        enunciado.textContent = (index + 1) + ") " + pergunta.body;
 
         if (ehGrupo) {
+            enunciado.textContent = (index + 1) + ") " + pergunta.body;
             divPergunta.setAttribute('role', 'group');
             divPergunta.setAttribute('aria-labelledby', `pergunta${index + 1}-enunciado`);
             divPergunta.appendChild(enunciado);
         } else {
+            // Texto vive só no label (for=#perguntaN rotula o campo de busca/resposta); o h2 só agrupa e segue contando pra navegação por headings
             const label = document.createElement('label');
             label.setAttribute('for', `pergunta${index + 1}`);
-            label.textContent = enunciado.textContent;
+            label.textContent = (index + 1) + ") " + pergunta.body;
             enunciado.appendChild(label);
             divPergunta.appendChild(enunciado);
         }
@@ -125,9 +107,12 @@ function criarFormulario(perguntas,liberaAcesso) {
             });
         } else if (ehUnica) {
             if (pergunta.Options.length > 9) {
-                // Select nativo para listas grandes (antes era autocomplete só de mouse)
-                const selectInput = criarSelectInput(pergunta.Options.map(op => op.text), index, liberaAcesso);
-                divPergunta.appendChild(selectInput);
+                // Combobox com filtro de texto (padrão APG) para listas grandes; o label com for=#perguntaN criado acima rotula o campo de busca
+                divPergunta.appendChild(criarCombobox({
+                    id: `pergunta${index + 1}`,
+                    opcoes: pergunta.Options.map(op => op.text),
+                    liberaAcesso
+                }));
             } else {
                 pergunta.Options.forEach((opcao, i) => {
                     const divCheck = document.createElement('div');

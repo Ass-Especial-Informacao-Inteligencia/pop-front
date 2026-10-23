@@ -37,32 +37,43 @@ export async function capturarRespostas(ev) {
                 answer.push(input.nextSibling.textContent.trim());
             });
         } else {
-            const inputText =
-                questionContainer.querySelector('input[type="text"]');
-            if (inputText && inputText.value.trim() !== '') {
-                answer.push(inputText.value.trim());
-            } else {
-                const selectInput =
-                    questionContainer.querySelector('select');
-                if (selectInput) {
-                    // value '' = opção placeholder selecionada = questão sem resposta
-                    if (selectInput.value !== '') {
-                        answer.push(selectInput.options[selectInput.selectedIndex].text.trim());
-                    } else {
-                        allFieldsValid = false;
-                        questionContainer.classList.add('campo-nao-preenchido');
-                    }
+            // Combobox (>9 opções): o valor vive no hidden [data-combobox-value]; o campo de busca é input[type=text], então este branch precisa vir antes do texto
+            const comboboxValue = questionContainer.querySelector('[data-combobox-value]');
+            if (comboboxValue) {
+                if (comboboxValue.value !== '') {
+                    answer.push(comboboxValue.value);
                 } else {
-                    const inputRadio = questionContainer.querySelector(
-                        'input[type="radio"]:checked'
-                    );
-                    if (inputRadio) {
-                        answer.push(inputRadio.nextSibling.textContent.trim());
+                    allFieldsValid = false;
+                    questionContainer.classList.add('campo-nao-preenchido');
+                }
+            } else {
+                const inputText =
+                    questionContainer.querySelector('input[type="text"]');
+                if (inputText && inputText.value.trim() !== '') {
+                    answer.push(inputText.value.trim());
+                } else {
+                    const selectInput =
+                        questionContainer.querySelector('select');
+                    if (selectInput) {
+                        // value '' = opção placeholder selecionada = questão sem resposta
+                        if (selectInput.value !== '') {
+                            answer.push(selectInput.options[selectInput.selectedIndex].text.trim());
+                        } else {
+                            allFieldsValid = false;
+                            questionContainer.classList.add('campo-nao-preenchido');
+                        }
                     } else {
-                        // Se nenhum tipo de input foi selecionado, marcamos como campo não preenchido
-                        allFieldsValid = false;
-                        // Adicionar classe ou outra lógica para indicar campo não preenchido visualmente
-                        questionContainer.classList.add('campo-nao-preenchido');
+                        const inputRadio = questionContainer.querySelector(
+                            'input[type="radio"]:checked'
+                        );
+                        if (inputRadio) {
+                            answer.push(inputRadio.nextSibling.textContent.trim());
+                        } else {
+                            // Se nenhum tipo de input foi selecionado, marcamos como campo não preenchido
+                            allFieldsValid = false;
+                            // Adicionar classe ou outra lógica para indicar campo não preenchido visualmente
+                            questionContainer.classList.add('campo-nao-preenchido');
+                        }
                     }
                 }
             }

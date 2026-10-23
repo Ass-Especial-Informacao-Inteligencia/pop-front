@@ -1,0 +1,79 @@
+/* ══════════════════════════════════════════════
+   POP — Combobox com filtro (substitui <select> nativo em listas grandes)
+   ══════════════════════════════════════════════ */
+
+.pop-combobox {
+  position: relative;
+  width: 100%;
+}
+
+.pop-combobox-list {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 250px;
+  overflow-y: auto;
+  background-color: var(--surface, #fff);
+  border: 1px solid var(--border, #ced4da);
+  border-top: none;
+  border-radius: 0 0 var(--radius-sm, 4px) var(--radius-sm, 4px);
+  z-index: 1000;
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.15));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pop-combobox.aberto .pop-combobox-list {
+  display: block;
+}
+
+.pop-combobox-option,
+.pop-combobox-list li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text, #495057);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 0.15s ease;
+}
+
+.pop-combobox-list li:hover {
+  background-color: var(--surface-muted, #f8f9fa);
+}
+
+/* Opção destacada pelo teclado (aria-activedescendant) */
+.pop-combobox-list li.ativo {
+  outline: 2px solid var(--color-primary, #0d7377);
+  outline-offset: -2px;
+  background-color: var(--surface-muted, #f8f9fa);
+}
+
+.pop-combobox-list li[aria-selected="true"] {
+  background-color: var(--color-primary, #0d7377);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── Dark mode ── */
+.dark-mode .pop-combobox-list {
+  background-color: var(--surface-dark, #2d2d2d);
+  border-color: var(--border-dark, #555);
+}
+
+.dark-mode .pop-combobox-list li {
+  color: var(--text-dark, #e0e0e0);
+}
+
+.dark-mode .pop-combobox-list li:hover {
+  background-color: var(--surface-muted-dark, #3a3a3a);
+}
+
+.dark-mode .pop-combobox-list li[aria-selected="true"] {
+  background-color: var(--color-primary, #0d7377);
+  color: #fff;
+}
