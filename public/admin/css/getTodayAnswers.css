@@ -122,9 +122,9 @@ h1 {
 }
 
 .answers-table th {
-    background-color: var(--text);
+    background-color: var(--surface-muted);
     font-weight: bold;
-    color: var(--surface);
+    color: var(--text);
     text-transform: uppercase;
 }
 
