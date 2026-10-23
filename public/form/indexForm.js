@@ -92,6 +92,7 @@ if (document.getElementById('questions-container')) {
 // Tabulação: dentro de #questions-container só repousa no enunciado (.question-body), nos inputs de texto das alternativas (.alternative-input), no custom select de tipo e no botão Adicionar Alternativa. Setas ↑↓, radios, X e Remover são pulados. Fora do container o comportamento é o padrão do navegador. Modal aberto => ignora (foco fica com o trap do Bootstrap).
 document.addEventListener('keydown', function(event) {
     if (event.key !== 'Tab') return;
+    if (event.ctrlKey || event.metaKey || event.altKey) return; // teclas modificadas (Ctrl+Tab de aba etc.) não são nossas
     if (event.defaultPrevented) return; // loop de Tab já interceptou
     if (document.querySelector('.modal.show')) return;
 
