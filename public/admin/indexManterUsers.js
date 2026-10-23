@@ -15,6 +15,7 @@ import { renderThemeToggle } from '../js/components/themeToggle.js';
 import { renderFooter } from '../js/components/footer.js';
 import { renderProfileModal } from '../js/components/profileModal.js';
 import { renderNavbar } from '../js/components/navbar.js';
+import { renderCookieBanner, iniciarCookieBanner } from '../js/components/cookieBanner.js';
 import { ativarFocusLoop } from '../js/focusLoop.js';
 
 // Injeta navbar
@@ -28,7 +29,8 @@ document.getElementById('navbarPlaceholder').innerHTML = renderNavbar({
 
 // Injeta componentes compartilhados
 document.getElementById('sharedComponents').innerHTML =
-    renderThemeToggle() + renderFooter('./') + renderLoadingScreen();
+    renderThemeToggle() + renderFooter('./') + renderLoadingScreen() + renderCookieBanner();
+iniciarCookieBanner();
 document.getElementById('perfilModalPlaceholder').innerHTML = renderProfileModal({ isAdmin: true });
 
 // Faz logout

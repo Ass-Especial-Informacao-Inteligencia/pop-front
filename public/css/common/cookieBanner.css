@@ -5,8 +5,9 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #333;
-  color: #fff;
+  background-color: var(--surface);
+  color: var(--text);
+  border-top: 1px solid var(--border);
   padding: 10px;
   text-align: center;
   z-index: 1000;
