@@ -19,7 +19,15 @@ export function initQuestionSortable() {
     draggable: '.question-card',
     handle: '.card-title', // arrasta pelo título — não conflita com inputs/botões do card
     animation: 150,
-    ghostClass: 'question-card-ghost',
+    // forceFallback: o clone que segue o cursor é um elemento real (fallbackClass) — CSS encolhe ele ao vivo.
+    // No drag nativo o que segue é snapshot no dragstart, imune a CSS.
+    forceFallback: true,
+    fallbackClass: 'question-card-dragging', // clone flutuante (barra compacta)
+    ghostClass: 'question-card-ghost', // slot tracejado na lista, de onde o card saiu
+    // Toque: segurar 200ms antes de arrastar (rolar a página não arrasta); mouse continua instantâneo
+    delay: 200,
+    delayOnTouchOnly: true,
+    touchStartThreshold: 5,
     // Auto-scroll: rola a página ao arrastar perto das bordas da tela
     scroll: true,
     scrollSensitivity: 60, // px da borda onde começa a rolar (padrão: 1)

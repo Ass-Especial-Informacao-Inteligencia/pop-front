@@ -222,13 +222,49 @@
   cursor: grab;
 }
 
+/* Grip sempre visível enquanto editável — pista de que o título arrasta (decorativo; a11y das setas ↑↓) */
+#questions-container:not(.sortable-disabled) .card-title::before {
+  content: '⠿';
+  margin-right: 0.4rem;
+  color: currentColor;
+  opacity: 0.5;
+}
+
 #questions-container:not(.sortable-disabled) .question-card:active {
   cursor: grabbing;
 }
 
+/* Slot na lista (ponto de queda): "solte aqui" com borda tracejada; outline não desloca layout */
 .question-card-ghost {
-  opacity: 0.4;
-  background-color: var(--surface, #e9ecef);
+  opacity: 1;
+  background: transparent;
+  outline: 2px dashed var(--color-primary, #0d7377);
+  outline-offset: -2px;
+  box-shadow: none;
+}
+
+/* Clone flutuante encolhe: só a linha do título = barra compacta no cursor.
+   height/width/opacity vêm fixos inline do Sortable (medidos antes de encolher) — !important bate o inline */
+.question-card-dragging {
+  height: auto !important;
+  width: auto !important;
+  opacity: 1 !important;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  cursor: grabbing;
+}
+
+.question-card-dragging .card-body {
+  padding: 0;
+}
+
+.question-card-dragging .card-body > *:not(:first-child) {
+  display: none !important;
+}
+
+.question-card-dragging .btn-move-up,
+.question-card-dragging .btn-move-down {
+  display: none !important;
 }
 
 /* ── Admin toolbar ── */
