@@ -43,6 +43,18 @@
             </div>
         </div>
         
+        <!-- Ordenação dos cards -->
+        <div class="container mt-4" id="sortBar">
+            <div class="sort-bar">
+                <label for="sortSelect" class="sort-label">Ordenar por:</label>
+                <select id="sortSelect" class="form-control sort-select">
+                    <option value="recentes" selected>Mais recentes</option>
+                    <option value="az">Título A–Z</option>
+                    <option value="za">Título Z–A</option>
+                </select>
+            </div>
+        </div>
+
         <!-- Seção de Cards | gerada no arquivo js geraCardsForm -->
         <div id="cardContainer" class="container mt-6 mb-5"></div>
 

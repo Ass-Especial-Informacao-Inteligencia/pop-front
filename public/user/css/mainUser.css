@@ -6,6 +6,7 @@
 @import url('../../css/common/loading.css');
 @import url('../../css/common/icons.css');
 @import url('../../css/common/cards.css');
+@import url('../../css/common/customSelect.css');
 
 /* ── Skeleton de loading da grade ── Cards cinza com shimmer enquanto /forms/active carrega; some quando os cards reais renderizam (aria-hidden no markup — decorativo). */
 .skeleton-card {
@@ -95,6 +96,25 @@ input[type="search"]::-webkit-search-decoration {
   text-align: center;
   padding: 40px 16px;
   color: var(--text-muted, #6c757d);
+}
+
+/* ── Ordenação dos cards ── select "Ordenar por" acima da grade */
+.sort-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.sort-label {
+  margin-bottom: 0;
+  color: var(--text-muted, #6c757d);
+  font-size: 0.9rem;
+}
+
+.sort-bar .custom-select-wrapper {
+  max-width: 200px;
 }
 
 /* ── Cards da grade ── card inteiro clicável, badge de prazo e entrada fade-up */

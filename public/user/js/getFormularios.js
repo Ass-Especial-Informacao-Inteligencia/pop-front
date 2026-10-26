@@ -1,5 +1,9 @@
 import { fetchActiveForms } from './fetchForms.js';
 import { createCardLayout } from './geraCardsForm.js';
+import { initCustomSelect } from '../../js/components/customSelect.js';
+
+// Ordem em que o back devolveu (updated_at DESC) — usada pelo critério "Mais recentes"
+let ordemOriginal = [];
 
 export async function displayForms(user, onRendered) {
     const container = document.getElementById('cardContainer');
@@ -7,11 +11,47 @@ export async function displayForms(user, onRendered) {
     try {
         const forms = await fetchActiveForms();
         createCardLayout('cardContainer', forms, user);
+        ordemOriginal = Array.from(container.querySelectorAll('.card.grid-item'));
+        reaplicarOrdenacao(container);
         onRendered?.();
     } catch (error) {
         console.error('Error displaying forms:', error);
         renderLoadError(container, () => displayForms(user, onRendered));
     }
+}
+
+export function initOrdenacao() {
+    const select = document.getElementById('sortSelect');
+    if (!select) return;
+    initCustomSelect(select);
+    select.addEventListener('change', () => ordenarCards(document.getElementById('cardContainer'), select.value));
+}
+
+// Reordena os nós existentes (append move sem recriar — busca, d-none e handlers sobrevivem)
+function ordenarCards(container, criterio) {
+    const cards = Array.from(container.querySelectorAll('.card.grid-item'));
+    if (cards.length === 0) return;
+
+    let ordenados;
+    if (criterio === 'az') {
+        ordenados = cards.sort((a, b) => tituloCard(a).localeCompare(tituloCard(b), 'pt-BR'));
+    } else if (criterio === 'za') {
+        ordenados = cards.sort((a, b) => tituloCard(b).localeCompare(tituloCard(a), 'pt-BR'));
+    } else {
+        const posicao = new Map(ordemOriginal.map((no, i) => [no, i]));
+        ordenados = cards.sort((a, b) => (posicao.get(a) ?? 0) - (posicao.get(b) ?? 0));
+    }
+    container.append(...ordenados);
+}
+
+function tituloCard(card) {
+    return card.querySelector('.card-title')?.textContent ?? '';
+}
+
+// Cards podem re-renderizar (retry) — mantém o critério escolhido, não volta pro padrão
+function reaplicarOrdenacao(container) {
+    const select = document.getElementById('sortSelect');
+    if (select && select.value !== 'recentes') ordenarCards(container, select.value);
 }
 
 // Esqueleto de loading no grid (some quando os cards reais renderizam)

@@ -1,7 +1,7 @@
 import { updateUserNav } from './js/modificaNavBar.js';
 import { fillUpModalsInfo } from '../js/userInfo.js';
 import { setupFormRedirect } from './js/formRedirect.js';
-import { displayForms } from './js/getFormularios.js';
+import { displayForms, initOrdenacao } from './js/getFormularios.js';
 import { getUserData, logout } from '../js/api.js';
 import { themeToggle } from '../js/temas.js';
 import { loadingScreen } from '../js/loadingScreen.js';
@@ -11,6 +11,7 @@ import { renderFooter } from '../js/components/footer.js';
 import { renderProfileModal } from '../js/components/profileModal.js';
 import { renderNavbar } from '../js/components/navbar.js';
 import { renderCookieBanner, iniciarCookieBanner } from '../js/components/cookieBanner.js';
+import { ativarFocusLoop } from '../js/focusLoop.js';
 
 // Guarda de auth na própria tela: sem sessão válida (mesmo após refresh-token) → login. Antes: acesso direto sem sessão crashava o module e deixava a página semi-vazia.
 let user;
@@ -43,6 +44,9 @@ logoutAnchor.addEventListener('click', logout);
 // Mudança de tema light|dark
 themeToggle();
 updateUserNav(user);
+initOrdenacao();
+// Loop de Tab: select de ordenação → cards (busca em × fica dentro da grade) → volta pra ordenação. Navbar/busca ficam fora (alcançáveis na entrada e com F6); card de erro com retry também entra por estar no #cardContainer.
+ativarFocusLoop(['#sortBar', '#cardContainer']);
 displayForms(user, () => setupFormRedirect(user));
 
 fillUpModalsInfo();
