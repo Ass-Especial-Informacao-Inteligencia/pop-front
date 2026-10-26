@@ -83,17 +83,27 @@ export function createCardLayout(container, data, user, status = 'active') {
     data.forEach((card) => {
         const title = escapeHtml(card.title);
         const description = escapeHtml(card.description);
+        const expiry = formatarCurta(card.expiry_date);
         cardContainer.innerHTML += `
             <div class="card grid-item">
                 <div class="card-header" data-status="${status}"></div>
                 <div class="card-body" data-status="${card.active === true ? 'active' : 'disable'}">
                     <h5 class="card-title">${title}</h5>
                     <p class="card-text">${description}</p>
+                    ${expiry ? `<p class="badge-disponibilidade">Disponível até ${expiry}</p>` : ''}
                     <button data-route="${title}" class="redirect-btn btn btn-primary">Cadastrar Resposta</button>
                 </div>
             </div>
         `;
     });
+}
+
+// DD/MM direto da string ISO (sem Date/timezone — evita off-by-one); null se não houver expiry
+function formatarCurta(iso) {
+    if (!iso) return null;
+    const [ano, mes, dia] = String(iso).split('T')[0].split('-');
+    if (!ano || !mes || !dia) return null;
+    return `${dia}/${mes}`;
 }
 
 export function createCardDesactiveLayout(data, status = 'disabled') {
