@@ -47,7 +47,7 @@ export function renderNavbar({ role = 'user', activeTab = 'home', logoPath = './
                 <form class="form-inline my-2 my-lg-0">
                     <div class="input-group">
                         <input
-                            class="form-control mr-sm-2 ui-autocomplete-input"
+                            class="form-control mr-sm-2"
                             type="search"
                             id="searchInput"
                             placeholder="${searchPlaceholder}"
