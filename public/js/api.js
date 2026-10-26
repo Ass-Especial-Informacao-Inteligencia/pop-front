@@ -70,8 +70,20 @@ export async function logout() {
 }
 
 // ── getUserData centralizado ──
-export async function getUserData() {
-    const res = await api.get('/userData');
-    if (!res.ok) throw new Error('Erro ao buscar dados do usuário');
-    return res.json();
+// Memoizado por página (MPA recarrega o módulo a cada navegação): a home do user chamava /userData 5× por load — agora é 1 request, sem risco de dado velho. Falha não memoiza, então um retry volta ao normal.
+let userDataPromise = null;
+export function getUserData() {
+    if (!userDataPromise) {
+        userDataPromise = api
+            .get('/userData')
+            .then((res) => {
+                if (!res.ok) throw new Error('Erro ao buscar dados do usuário');
+                return res.json();
+            })
+            .catch((error) => {
+                userDataPromise = null;
+                throw error;
+            });
+    }
+    return userDataPromise;
 }

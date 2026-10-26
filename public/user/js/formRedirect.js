@@ -1,16 +1,13 @@
-import { getUserData } from '../../js/api.js';
-const user = await getUserData();
-
-export function setupFormRedirect() {
+export function setupFormRedirect(user) {
     const links = document.querySelectorAll('.redirect-btn');
     links.forEach((link) => {
         link.addEventListener('click', () => {
             const route = link.getAttribute('data-route');
-            redirectFormPage(route);
+            redirectFormPage(route, user.role);
         });
     });
 }
 
-function redirectFormPage(route) {
-    location.href = user.role === 'admin' ? `/edit/${route}` : `/form/${route}`;
+function redirectFormPage(route, role) {
+    location.href = role === 'admin' ? `/edit/${route}` : `/form/${route}`;
 }

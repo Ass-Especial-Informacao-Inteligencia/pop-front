@@ -1,8 +1,4 @@
-import { getUserData } from '../../js/api.js';
-
-export async function updateUserNav() {
-    const user = await getUserData();
-
+export function updateUserNav(user) {
     const isAdmin = user.role === 'admin';
 
     if (isAdmin) {

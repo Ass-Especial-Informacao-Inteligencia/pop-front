@@ -7,3 +7,63 @@
 @import url('../../css/common/icons.css');
 @import url('../../css/common/cards.css');
 
+/* ── Skeleton de loading da grade ── Cards cinza com shimmer enquanto /forms/active carrega; some quando os cards reais renderizam (aria-hidden no markup — decorativo). */
+.skeleton-card {
+  pointer-events: none;
+}
+
+.skeleton-card .card-header {
+  background-color: var(--status-disabled, #adb5bd);
+}
+
+.skeleton-body-line,
+.skeleton-btn {
+  background: linear-gradient(
+    90deg,
+    var(--surface-muted, #f2f2f2) 25%,
+    #e6e6e6 37%,
+    var(--surface-muted, #f2f2f2) 63%
+  );
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+  border-radius: var(--radius-sm, 8px);
+}
+
+.skeleton-body-line {
+  height: 12px;
+  margin-bottom: 10px;
+}
+
+.skeleton-body-line.w-60 { width: 60%; }
+.skeleton-body-line.w-40 { width: 40%; }
+
+.skeleton-btn {
+  height: 32px;
+  width: 140px;
+  margin-top: 12px;
+}
+
+.dark-mode .skeleton-body-line,
+.dark-mode .skeleton-btn {
+  background: linear-gradient(
+    90deg,
+    var(--surface-muted-dark, #3a3a3a) 25%,
+    #4a4a4a 37%,
+    var(--surface-muted-dark, #3a3a3a) 63%
+  );
+  background-size: 400% 100%;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-body-line,
+  .skeleton-btn {
+    animation: none;
+    background: var(--surface-muted, #f2f2f2);
+  }
+}
+

@@ -12,7 +12,14 @@ import { renderProfileModal } from '../js/components/profileModal.js';
 import { renderNavbar } from '../js/components/navbar.js';
 import { renderCookieBanner, iniciarCookieBanner } from '../js/components/cookieBanner.js';
 
-const user = await getUserData();
+// Guarda de auth na própria tela: sem sessão válida (mesmo após refresh-token) → login. Antes: acesso direto sem sessão crashava o module e deixava a página semi-vazia.
+let user;
+try {
+    user = await getUserData();
+} catch {
+    window.location.replace('/sign/index.html');
+    throw new Error('Sessão inválida — redirecionando para o login');
+}
 
 // Injeta navbar
 document.getElementById('navbarPlaceholder').innerHTML = renderNavbar({
@@ -35,8 +42,8 @@ logoutAnchor.addEventListener('click', logout);
 
 // Mudança de tema light|dark
 themeToggle();
-updateUserNav();
-displayForms(user).then(() => setupFormRedirect());
+updateUserNav(user);
+displayForms(user, () => setupFormRedirect(user));
 
 fillUpModalsInfo();
 
