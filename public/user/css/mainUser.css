@@ -137,6 +137,100 @@ input[type="search"]::-webkit-search-decoration {
   color: var(--text-muted, #9aa4ad);
 }
 
+/* ── Selo "Respondido" ── card cujo form já tem resposta do usuário logado */
+.badge-respondido {
+  display: inline-block;
+  margin-bottom: 12px;
+  margin-right: 8px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm, 8px);
+  background: var(--color-success, #28a745);
+  color: #fff;
+  font-size: 0.8rem;
+}
+
+.dark-mode .badge-respondido {
+  background: var(--color-success, #218838);
+}
+
+/* ── Filtro de status ── Todos | Respondidos | Pendentes ao lado da ordenação */
+.filtro-status {
+  margin-right: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border, #dee2e6);
+  border-radius: var(--radius-lg, 20px);
+  background: var(--surface-muted, #f2f2f2);
+  box-shadow: none;
+}
+
+.filtro-status .btn {
+  min-height: 42px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-muted, #59636b);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.filtro-status .btn:hover {
+  background: rgba(13, 115, 119, 0.12);
+  color: var(--color-primary, #0d7377);
+}
+
+/* O rádio é invisível (position:absolute/opacity:0) — o foco de teclado acende no label */
+.filtro-status .btn:focus-within {
+  outline: 2px solid var(--color-primary, #0d7377);
+  outline-offset: 2px;
+}
+
+/* Botão atual: teal primário, cantos de ponta esquerda arredondados pelo container */
+.filtro-status .btn.active,
+.filtro-status .btn.active:hover {
+  background: var(--color-primary, #0d7377);
+  color: #fff;
+  box-shadow: none;
+}
+
+.filtro-status .btn:first-child {
+  border-top-left-radius: calc(var(--radius-lg, 20px) - 1px);
+  border-bottom-left-radius: calc(var(--radius-lg, 20px) - 1px);
+}
+
+.filtro-status .btn:last-child {
+  border-top-right-radius: calc(var(--radius-lg, 20px) - 1px);
+  border-bottom-right-radius: calc(var(--radius-lg, 20px) - 1px);
+}
+
+/* Fundo do segmento ainda visível atrás do rádio invisível não pode vazar por cima */
+.filtro-status .btn input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dark-mode .filtro-status {
+  border-color: var(--border-dark, #444);
+  background: var(--surface-dark-alt, #2a2a2a);
+}
+
+.dark-mode .filtro-status .btn {
+  color: var(--text-muted, #9aa4ad);
+}
+
+.dark-mode .filtro-status .btn:hover {
+  background: rgba(13, 115, 119, 0.24);
+  color: #fff;
+}
+
+.dark-mode .filtro-status .btn.active,
+.dark-mode .filtro-status .btn.active:hover {
+  background: var(--color-primary, #0d7377);
+  color: #fff;
+}
+
 @keyframes card-fade-up {
   from {
     opacity: 0;

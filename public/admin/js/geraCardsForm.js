@@ -34,7 +34,7 @@ function escapeHtml(text) {
         .replace(/'/g, '&#39;');
 }
 
-export function createCardLayout(container, data, user, status = 'active') {
+export function createCardLayout(container, data, user, status = 'active', respondidos = null) {
     const cardContainer = document.getElementById(container);
     cardContainer.innerHTML = '';
 
@@ -84,12 +84,15 @@ export function createCardLayout(container, data, user, status = 'active') {
         const title = escapeHtml(card.title);
         const description = escapeHtml(card.description);
         const expiry = formatarCurta(card.expiry_date);
+        // respondidos = Set de ids (vem do /forms/answered); o card marca data-respondido pra busca/filtro decidir a visibilidade
+        const respondido = respondidos?.has(card.id) === true;
         cardContainer.innerHTML += `
-            <div class="card grid-item">
+            <div class="card grid-item" data-form-id="${card.id}"${respondido ? ' data-respondido="true"' : ''}>
                 <div class="card-header" data-status="${status}"></div>
                 <div class="card-body" data-status="${card.active === true ? 'active' : 'disable'}">
                     <h5 class="card-title">${title}</h5>
                     <p class="card-text">${description}</p>
+                    ${respondido ? '<p class="badge-respondido"><i class="fas fa-check" aria-hidden="true"></i> Respondido</p>' : ''}
                     ${expiry ? `<p class="badge-disponibilidade">Disponível até ${expiry}</p>` : ''}
                     <button data-route="${title}" class="redirect-btn btn btn-primary">Cadastrar Resposta</button>
                 </div>

@@ -2,6 +2,7 @@ import { updateUserNav } from './js/modificaNavBar.js';
 import { fillUpModalsInfo } from '../js/userInfo.js';
 import { setupFormRedirect } from './js/formRedirect.js';
 import { displayForms, initOrdenacao } from './js/getFormularios.js';
+import { initFiltroStatus } from './js/filtroStatus.js';
 import { getUserData, logout } from '../js/api.js';
 import { themeToggle } from '../js/temas.js';
 import { loadingScreen } from '../js/loadingScreen.js';
@@ -45,7 +46,8 @@ logoutAnchor.addEventListener('click', logout);
 themeToggle();
 updateUserNav(user);
 initOrdenacao();
-// Loop de Tab: select de ordenação → cards (busca em × fica dentro da grade) → volta pra ordenação. Navbar/busca ficam fora (alcançáveis na entrada e com F6); card de erro com retry também entra por estar no #cardContainer.
+initFiltroStatus();
+// Loop de Tab: filtro de status + select de ordenação → cards (busca em × fica dentro da grade) → volta pra barra. Navbar/busca ficam fora (alcançáveis na entrada e com F6); card de erro com retry também entra por estar no #cardContainer.
 ativarFocusLoop(['#sortBar', '#cardContainer']);
 displayForms(user, () => setupFormRedirect(user));
 

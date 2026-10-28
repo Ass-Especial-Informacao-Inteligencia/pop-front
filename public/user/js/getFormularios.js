@@ -1,18 +1,26 @@
-import { fetchActiveForms } from './fetchForms.js';
+import { fetchActiveForms, fetchAnsweredForms } from './fetchForms.js';
 import { createCardLayout } from './geraCardsForm.js';
 import { initCustomSelect } from '../../js/components/customSelect.js';
+import { alternarFiltroStatus } from './filtroStatus.js';
 
 // Ordem em que o back devolveu (updated_at DESC) — usada pelo critério "Mais recentes"
 let ordemOriginal = [];
+// Ids dos forms que o usuário já respondeu; null = o /forms/answered falhou (a home degrada sem selo e sem filtro)
+let idsRespondidos = null;
 
 export async function displayForms(user, onRendered) {
     const container = document.getElementById('cardContainer');
     renderSkeleton(container);
     try {
-        const forms = await fetchActiveForms();
-        createCardLayout('cardContainer', forms, user);
+        // Histórico é opcional: só o /forms/active derruba a página; falha no /forms/answered degrada (sem selo, filtro some)
+        const [ativos, historico] = await Promise.allSettled([fetchActiveForms(), fetchAnsweredForms()]);
+        if (ativos.status === 'rejected') throw ativos.reason;
+        idsRespondidos = historico.status === 'fulfilled' ? new Set(historico.value.map((f) => f.id)) : null;
+        alternarFiltroStatus(idsRespondidos !== null);
+        createCardLayout('cardContainer', ativos.value, user, 'active', idsRespondidos);
         ordemOriginal = Array.from(container.querySelectorAll('.card.grid-item'));
         reaplicarOrdenacao(container);
+        reaplicarBuscaEFiltro();
         onRendered?.();
     } catch (error) {
         console.error('Error displaying forms:', error);
@@ -52,6 +60,13 @@ function tituloCard(card) {
 function reaplicarOrdenacao(container) {
     const select = document.getElementById('sortSelect');
     if (select && select.value !== 'recentes') ordenarCards(container, select.value);
+}
+
+// Retry re-renderiza os cards por baixo da busca/filtro ativos — reexecuta a regra de visibilidade senão tudo volta à mostra
+function reaplicarBuscaEFiltro() {
+    const input = document.getElementById('searchInput');
+    if (!input) return;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
 // Esqueleto de loading no grid (some quando os cards reais renderizam)

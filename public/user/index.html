@@ -42,9 +42,20 @@
             </div>
         </div>
         
-        <!-- Ordenação dos cards -->
+        <!-- Ordenação e filtro dos cards -->
         <div class="container mt-4" id="sortBar">
             <div class="sort-bar">
+                <div class="filtro-status btn-group btn-group-toggle" id="filtroStatus" data-toggle="buttons" role="group" aria-label="Filtrar formulários por situação">
+                    <label class="btn active">
+                        <input type="radio" name="filtroStatus" value="todos" checked autocomplete="off"> Todos
+                    </label>
+                    <label class="btn">
+                        <input type="radio" name="filtroStatus" value="respondidos" autocomplete="off"> Respondidos
+                    </label>
+                    <label class="btn">
+                        <input type="radio" name="filtroStatus" value="pendentes" autocomplete="off"> Pendentes
+                    </label>
+                </div>
                 <label for="sortSelect" class="sort-label">Ordenar por:</label>
                 <select id="sortSelect" class="form-control sort-select">
                     <option value="recentes" selected>Mais recentes</option>
