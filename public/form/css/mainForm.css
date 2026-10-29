@@ -267,14 +267,94 @@
   display: none !important;
 }
 
-/* ── Admin toolbar ── */
-#formulario .d-flex.justify-content-end {
+/* ── Admin toolbar: pílula flutuante (sticky no pé da viewport) ── */
+.form-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-md, 16px) 0;
+  margin-top: var(--space-lg, 24px);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.form-actions-pill {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm, 8px);
   background-color: var(--surface, #fff);
   border: 1px solid var(--border, #dee2e6);
-  border-radius: var(--radius-sm, 8px);
-  padding: var(--space-md, 16px);
-  box-shadow: var(--shadow-sm);
-  margin-top: var(--space-lg, 24px);
+  border-radius: 999px;
+  padding: 10px 12px;
+  box-shadow: var(--shadow-lg);
+  animation: pill-rise 0.28s ease-out;
+}
+
+/* Bootstrap .mr-2 tem !important; dentro da pílula o espaçamento vem do gap */
+.form-actions-pill .btn {
+  margin-right: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  border-radius: 999px;
+}
+
+/* Pesquisar fica oculto; o "⋯" expande revelando à esquerda */
+#btnRecycleQuestionForm {
+  display: none;
+}
+
+.form-actions.open #btnRecycleQuestionForm {
+  display: inline-flex;
+  animation: search-in 0.22s ease-out;
+}
+
+/* "⋯" vira um círculo (largura = altura) centralizando o ícone */
+.btn-expand-actions {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+  transition: transform 0.2s ease, background-color 0.15s ease;
+}
+
+.form-actions.open .btn-expand-actions {
+  transform: rotate(90deg);
+}
+
+@keyframes pill-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes search-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form-actions-pill,
+  .form-actions.open #btnRecycleQuestionForm,
+  .btn-expand-actions {
+    animation: none;
+    transition: none;
+  }
 }
 
 /* ── Contraste AA do "Salvar" (branco sobre #28a745 = 3.1:1; escurecido = 5.1:1) ── */

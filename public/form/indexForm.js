@@ -58,14 +58,22 @@ if (user.role === 'admin') {
             await captureAndSendQuestions();
         });
 
+    // Toggle do expand da pílula (formAdmin tem os elementos; formUser não — guard por segurança)
+    const btnExpandActions = document.getElementById('btnExpandActions');
+    const formActions = document.querySelector('.form-actions');
+    btnExpandActions?.addEventListener('click', () => {
+        const open = formActions.classList.toggle('open');
+        btnExpandActions.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
     deleteAlternatives();
     await deleteQuestion();
     changeTitleAndDescription();
     if (questionsRecycle.length >= 1) {
         await HandlerRecycleEvents();
     } else {
-        const btnRecycleQuestions = document.getElementById('btnRecycleQuestionForm');
-        btnRecycleQuestions.style.display = 'none';
+        document.getElementById('btnRecycleQuestionForm').style.display = 'none';
+        if (btnExpandActions) btnExpandActions.style.display = 'none';
     }
 }
 
