@@ -5,7 +5,7 @@ import { alternarFiltroStatus } from './filtroStatus.js';
 
 // Ordem em que o back devolveu (updated_at DESC) — usada pelo critério "Mais recentes"
 let ordemOriginal = [];
-// Ids dos forms que o usuário já respondeu; null = o /forms/answered falhou (a home degrada sem selo e sem filtro)
+// Total de entrevistas por formulário; null = histórico indisponível (sem selo e sem filtro).
 let idsRespondidos = null;
 
 export async function displayForms(user, onRendered) {
@@ -15,7 +15,7 @@ export async function displayForms(user, onRendered) {
         // Histórico é opcional: só o /forms/active derruba a página; falha no /forms/answered degrada (sem selo, filtro some)
         const [ativos, historico] = await Promise.allSettled([fetchActiveForms(), fetchAnsweredForms()]);
         if (ativos.status === 'rejected') throw ativos.reason;
-        idsRespondidos = historico.status === 'fulfilled' ? new Set(historico.value.map((f) => f.id)) : null;
+        idsRespondidos = historico.status === 'fulfilled' ? new Map(historico.value.map((f) => [f.id, Number(f.interview_count) || 1])) : null;
         alternarFiltroStatus(idsRespondidos !== null);
         createCardLayout('cardContainer', ativos.value, user, 'active', idsRespondidos);
         ordemOriginal = Array.from(container.querySelectorAll('.card.grid-item'));
