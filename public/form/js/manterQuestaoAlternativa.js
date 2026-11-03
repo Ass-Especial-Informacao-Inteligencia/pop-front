@@ -373,6 +373,7 @@ export function changeQuestionType(questionId) {
 }
 
 export function addAlternative(questionId, questionType) {
+    questionType = document.getElementById(`${questionId}-type`).value;
     const alternativeId = `${questionId}-alt-${Date.now()}`;
     const alternativesContainer = document.getElementById(`${questionId}-alternatives`);
     const alternativeContainer = document.createElement('div');
