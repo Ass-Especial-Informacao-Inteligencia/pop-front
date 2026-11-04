@@ -1,3 +1,5 @@
+import { anunciarSr } from '../../js/geraNotificacao.js';
+
 $(document).ready(function () {
     const containers = ['#cardContainer'];
     let timerAnuncio = null;
@@ -52,6 +54,8 @@ $(document).ready(function () {
     // Delegação: #searchInput é injetado depois pelo renderNavbar()
     $(document).on('input', '#searchInput', function () {
         const input = this;
+        clearTimeout(timerAnuncio);
+        anunciarSr('');
         garantirBotaoLimpar(input);
         const btnLimpar = document.querySelector('.search-clear-btn');
         if (btnLimpar) btnLimpar.classList.toggle('d-none', input.value === '');
@@ -84,16 +88,12 @@ $(document).ready(function () {
         else esconderVazio();
 
         // Anuncia o resultado na região viva (#sr-live) com debounce para não spamar o leitor de tela a cada tecla.
-        clearTimeout(timerAnuncio);
         timerAnuncio = setTimeout(function () {
-            const live = document.getElementById('sr-live');
-            if (!live) return;
             let msg;
             if (visiveis === 0) msg = 'Nenhum formulário encontrado';
             else if (visiveis === 1) msg = '1 formulário encontrado';
             else msg = visiveis + ' formulários encontrados';
-            live.textContent = '';
-            requestAnimationFrame(function () { live.textContent = msg; });
+            anunciarSr(msg);
         }, 500);
     });
 });
