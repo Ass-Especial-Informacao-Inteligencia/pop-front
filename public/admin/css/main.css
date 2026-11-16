@@ -31,6 +31,13 @@
 }
 
 /* ── Action buttons ── */
+.admin-card-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .btn-group .btn {
   transition: var(--transition-fast);
 }

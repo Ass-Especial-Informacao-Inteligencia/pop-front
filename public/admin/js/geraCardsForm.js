@@ -49,19 +49,26 @@ export function createCardLayout(container, data, user, status = 'active', respo
         data.forEach((card) => {
             const title = escapeHtml(card.title);
             const description = escapeHtml(card.description);
+            const totalEntrevistas = Number(card.interview_count);
+            const mostrarTotal = (status === 'active' || status === 'finished')
+                && card.interview_count != null
+                && Number.isSafeInteger(totalEntrevistas) && totalEntrevistas >= 0;
             cardContainer.innerHTML += `
                 <div class="card grid-item">
                     <div class="card-header" data-status="${status}"></div>
                     <div class="card-body" data-status="${card.active === true ? 'active' : 'disable'}">
                         <h5 class="card-title">${title}</h5>
                         <p class="card-text">${description}</p>
-                        <div class="btn-group" role="group" aria-label="Botões de Ação">
-                            <button data-route="${title}" class="redirect-btn btn btn-primary">Visualizar</button>
-                            <button class="config-btn btn btn-secondary" title="Configurações Avançadas" aria-label="Configurações Avançadas — ${title}" aria-expanded="false" aria-controls="config-footer-${title.replace(/\s+/g, '-')}"><i class="fas fa-cog" aria-hidden="true"></i></button>
+                        ${mostrarTotal ? `<p class="badge-respondido"><i class="fas fa-clipboard-list" aria-hidden="true"></i> ${totalEntrevistas} ${totalEntrevistas === 1 ? 'entrevista' : 'entrevistas'}</p>` : ''}
+                        <div class="admin-card-actions">
+                            <div class="btn-group" role="group" aria-label="Botões de Ação">
+                                <button data-route="${title}" class="redirect-btn btn btn-primary">Visualizar</button>
+                                <button class="config-btn btn btn-secondary" title="Configurações Avançadas" aria-label="Configurações Avançadas — ${title}" aria-expanded="false" aria-controls="config-footer-${title.replace(/\s+/g, '-')}"><i class="fas fa-cog" aria-hidden="true"></i></button>
+                            </div>
+                            <button class="open-new-tab-btn btn btn-secondary" title="Abrir em nova aba" aria-label="Abrir em nova aba — ${title}">
+                                <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                            </button>
                         </div>
-                        <button class="open-new-tab-btn btn btn-secondary" title="Abrir em nova aba" aria-label="Abrir em nova aba — ${title}">
-                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                        </button>
                     </div>
                     <div class="card-footer p-1 d-none" id="config-footer-${title.replace(/\s+/g, '-')}">
                         ${status !== 'finished' ? `<button class="archive-btn btn btn-danger float-right" data-toggle="modal" data-target="#arquivarFormularioModal" data-form="${title}" data-active="${card.active}" data-state="${status}" title="Arquivar Formulário" aria-label="Arquivar Formulário — ${title}"><i class="fas fa-archive" aria-hidden="true"></i></button>` : ''}
