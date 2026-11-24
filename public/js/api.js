@@ -43,8 +43,12 @@ async function request(method, url, body = null, _isRetry = false) {
     let res = await fetch(url, options);
 
     if (res.status === 401 && !_isRetry && url !== '/refresh-token') {
+        const refreshHeaders = {};
+        const csrf = getCsrfToken();
+        if (csrf) refreshHeaders['X-CSRF-Token'] = csrf;
         const retry = await fetch('/refresh-token', {
             method: 'POST',
+            headers: refreshHeaders,
             credentials: 'same-origin',
         });
         if (retry.ok) {
