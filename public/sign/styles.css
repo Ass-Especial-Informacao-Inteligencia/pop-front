@@ -22,6 +22,12 @@ body {
 	padding: 0;
 }
 
+/* O main precisa de largura própria porque os painéis internos usam posicionamento absoluto. */
+#conteudo {
+	width: var(--login-container-width);
+	max-width: calc(100% - 32px);
+}
+
 h1, h2.h1 {
 	font-weight: bold;
 	margin: 0;
@@ -257,13 +263,38 @@ input:focus {
 
 /* Media Queries */
 @media (max-width: 768px) {
+	/* A largura explícita impede o main de encolher quando os filhos usam largura percentual. */
+	body {
+		min-height: 100vh;
+		min-height: 100dvh;
+		height: auto;
+		padding: 24px 16px;
+	}
+
+	#conteudo {
+		width: 100%;
+		max-width: 480px;
+		flex-shrink: 0;
+	}
+
 	.container {
 		width: 100%;
-		min-height: var(--login-container-min-height-mobile);
+		min-height: 0;
+		padding: 0;
 	}
 
 	.overlay-container {
-		width: 0;
+		display: none;
+	}
+
+	/* O formulário define a altura do card e permite rolar a página em telas baixas ou com o teclado aberto. */
+	.sign-in-container {
+		position: relative;
+		height: auto;
+	}
+
+	#imagem-fundo-login {
+		position: fixed;
 	}
 
 	.overlay {
@@ -304,10 +335,18 @@ input:focus {
 	}
 
 	form {
-		padding: 0 var(--login-form-padding-mobile);
+		height: auto;
+		min-height: 420px;
+		padding: 32px clamp(16px, 5vw, 30px);
+	}
+
+	input {
+		font-size: 16px;
+		min-height: 44px;
 	}
 
 	button#signInButton	{
+		min-height: 44px;
 		padding: var(--login-button-padding-mobile);
 	}
 	
