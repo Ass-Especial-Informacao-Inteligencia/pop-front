@@ -34,6 +34,103 @@ function escapeHtml(text) {
         .replace(/'/g, '&#39;');
 }
 
+// Monta o selo e o detalhamento recebidos na listagem administrativa, sem novas consultas ao abrir o painel.
+function renderAdminInterviewBadge(card, container, status) {
+    const total = Number(card.interview_count);
+    if (!['active', 'finished'].includes(status) || card.interview_count == null
+        || !Number.isSafeInteger(total) || total < 0) return '';
+    const label = `${total} ${total === 1 ? 'entrevista' : 'entrevistas'}`;
+
+    // Mantém o selo simples quando o backend não fornece o detalhamento por entrevistador.
+    if (!Array.isArray(card.interviewer_counts)) {
+        return `<p class="badge-respondido"><i class="fas fa-clipboard-list" aria-hidden="true"></i> ${label}</p>`;
+    }
+    const panelId = escapeHtml(`${container}-interviews-${card.id}`);
+    const interviewers = card.interviewer_counts.filter((entry) =>
+        Number.isSafeInteger(Number(entry.interview_count)) && Number(entry.interview_count) > 0);
+    const rows = interviewers.map((entry) => `<li><span>${escapeHtml(entry.name)}</span><strong>${Number(entry.interview_count)}</strong></li>`).join('');
+
+    // Identificadores históricos compartilhados podem contar para mais de um usuário, mas só uma vez no total geral.
+    const overlap = interviewers.reduce((sum, entry) => sum + Number(entry.interview_count), 0) > total;
+    return `<div class="admin-interview-summary">
+        <button type="button" class="badge-respondido admin-interview-trigger" aria-expanded="false" aria-controls="${panelId}" aria-label="${label} — ver totais por entrevistador">
+            <i class="fas fa-clipboard-list" aria-hidden="true"></i> ${label}
+        </button>
+        <section id="${panelId}" class="admin-interview-panel" aria-label="Entrevistas por entrevistador" tabindex="0" hidden>
+            <h6>Entrevistas por entrevistador</h6>
+            <p class="admin-interview-period">Todo o período do formulário</p>
+            ${rows ? `<ul>${rows}</ul>` : '<p>Nenhuma entrevista registrada.</p>'}
+            ${overlap ? '<p class="admin-interview-period">Há entrevistas vinculadas a mais de um usuário no histórico; a soma individual pode superar o total.</p>' : ''}
+        </section>
+    </div>`;
+}
+
+let activeInterviewDetails = null;
+let interviewDetailsListenersBound = false;
+
+function bindInterviewDetails(container) {
+    // Descarta a referência ao painel anterior quando os cards são recriados por uma atualização da listagem.
+    if (activeInterviewDetails && !activeInterviewDetails.element.isConnected) {
+        activeInterviewDetails.close();
+    }
+
+    container.querySelectorAll('.admin-interview-summary').forEach((summary) => {
+        const trigger = summary.querySelector('.admin-interview-trigger');
+        const panel = summary.querySelector('.admin-interview-panel');
+        const card = summary.closest('.card');
+        let wasOpenOnPointerDown = false;
+        const close = () => {
+            panel.hidden = true;
+            trigger.setAttribute('aria-expanded', 'false');
+            card.classList.remove('interview-details-open');
+            if (activeInterviewDetails?.element === summary) activeInterviewDetails = null;
+        };
+        const show = () => {
+            if (!panel.hidden) return;
+            // Só um painel permanece aberto, mantendo a visibilidade e o estado acessível sincronizados.
+            activeInterviewDetails?.close();
+            panel.hidden = false;
+            trigger.setAttribute('aria-expanded', 'true');
+            card.classList.add('interview-details-open');
+            activeInterviewDetails = { element: summary, trigger, close };
+        };
+
+        summary.addEventListener('pointerenter', (event) => {
+            if (event.pointerType !== 'touch') show();
+        });
+
+        summary.addEventListener('pointerleave', () => {
+            // A saída do mouse não fecha o conteúdo enquanto o usuário navega nele pelo teclado.
+            if (!summary.contains(document.activeElement)) close();
+        });
+
+        summary.addEventListener('focusin', show);
+        summary.addEventListener('focusout', (event) => {
+            if (!summary.contains(event.relatedTarget)) close();
+        });
+        // Guarda o estado antes do foco automático do toque para o primeiro clique não fechar o painel recém-aberto.
+        trigger.addEventListener('pointerdown', () => { wasOpenOnPointerDown = !panel.hidden; });
+        trigger.addEventListener('click', (event) => {
+            if (event.detail === 0 || !wasOpenOnPointerDown) show();
+            else close();
+        });
+    });
+    // Os eventos globais são registrados uma única vez, mesmo ao carregar outras abas ou recriar os cards.
+    if (interviewDetailsListenersBound) return;
+    interviewDetailsListenersBound = true;
+    document.addEventListener('pointerdown', (event) => {
+        if (activeInterviewDetails && !activeInterviewDetails.element.contains(event.target)) {
+            activeInterviewDetails.close();
+        }
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape' || !activeInterviewDetails) return;
+        const details = activeInterviewDetails;
+        if (details.element.contains(document.activeElement)) details.trigger.focus();
+        details.close();
+    });
+}
+
 export function createCardLayout(container, data, user, status = 'active', respondidos = null) {
     const cardContainer = document.getElementById(container);
     cardContainer.innerHTML = '';
@@ -49,17 +146,13 @@ export function createCardLayout(container, data, user, status = 'active', respo
         data.forEach((card) => {
             const title = escapeHtml(card.title);
             const description = escapeHtml(card.description);
-            const totalEntrevistas = Number(card.interview_count);
-            const mostrarTotal = (status === 'active' || status === 'finished')
-                && card.interview_count != null
-                && Number.isSafeInteger(totalEntrevistas) && totalEntrevistas >= 0;
             cardContainer.innerHTML += `
                 <div class="card grid-item">
                     <div class="card-header" data-status="${status}"></div>
                     <div class="card-body" data-status="${card.active === true ? 'active' : 'disable'}">
                         <h5 class="card-title">${title}</h5>
                         <p class="card-text">${description}</p>
-                        ${mostrarTotal ? `<p class="badge-respondido"><i class="fas fa-clipboard-list" aria-hidden="true"></i> ${totalEntrevistas} ${totalEntrevistas === 1 ? 'entrevista' : 'entrevistas'}</p>` : ''}
+                        ${renderAdminInterviewBadge(card, container, status)}
                         <div class="admin-card-actions">
                             <div class="btn-group" role="group" aria-label="Botões de Ação">
                                 <button data-route="${title}" class="redirect-btn btn btn-primary">Visualizar</button>
@@ -84,6 +177,7 @@ export function createCardLayout(container, data, user, status = 'active', respo
         });
 
         bindOpenAnswersPage();
+        bindInterviewDetails(cardContainer);
         return;
     }
 

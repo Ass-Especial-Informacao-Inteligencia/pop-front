@@ -31,6 +31,86 @@
 }
 
 /* ── Action buttons ── */
+/* O selo ancora o painel sem alterar a organização dos botões do card. */
+.admin-interview-summary {
+  position: relative;
+  width: fit-content;
+  margin-bottom: 12px;
+}
+
+.admin-interview-summary .admin-interview-trigger {
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.admin-interview-trigger:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* Eleva o card aberto acima dos vizinhos para o painel não ficar encoberto. */
+.interview-details-open {
+  position: relative;
+  z-index: 20;
+}
+
+/* Limita a largura e permite rolar listas longas, mantendo o painel ligado ao selo durante a navegação. */
+.admin-interview-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  width: min(300px, calc(100vw - 64px));
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.admin-interview-panel h6 {
+  font-weight: 600;
+}
+
+.admin-interview-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-interview-panel li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 0;
+}
+
+.admin-interview-panel li span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.admin-interview-panel li strong {
+  flex-shrink: 0;
+}
+
+.admin-interview-period {
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+}
+
+.dark-mode .admin-interview-panel {
+  background: var(--surface-dark);
+  color: var(--text-dark);
+  border-color: var(--border-dark);
+}
+
 .admin-card-actions {
   display: flex;
   align-items: center;
