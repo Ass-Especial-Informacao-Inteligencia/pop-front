@@ -1,10 +1,13 @@
+import { appPath } from '../../js/appPath.js';
+
 export function setupDashboardRedirect() {
     const links = document.querySelectorAll('.chart-btn');
     links.forEach((link) => {
         link.addEventListener('click', () => {
             const route = link.getAttribute('data-form');
-            document.cookie = `form=${route}; path=/`;
-            window.location.href = `/dashboard`;
+            const secure = location.protocol === 'https:' ? '; Secure' : '';
+            document.cookie = `form=${encodeURIComponent(route)}; Path=${appPath()}; SameSite=Lax${secure}`;
+            window.location.href = appPath('/dashboard');
         });
     });
 }
@@ -14,8 +17,7 @@ export function setupResponseAdminRedirect() {
     links.forEach((link) => {
         link.addEventListener('click', () => {
             const route = link.getAttribute('data-form');
-            document.cookie = `form=${route}; path=/`;
-            window.location.href = `/adminResponse/${route}`;
+            window.location.href = appPath(`/adminResponse/${encodeURIComponent(route)}`);
         });
     });
 }

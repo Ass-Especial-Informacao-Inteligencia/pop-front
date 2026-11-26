@@ -1,3 +1,4 @@
+import { escapeHtml } from '../../js/escapeHtml.js';
 // Página "Respostas por Mês": busca /todayAnswers, agrupa por entrevistado
 // (rowspan na tabela) e pagina manualmente com currentPage + itemsPerPage.
 import { api } from '../../js/api.js'; // cliente API centralizado
@@ -116,18 +117,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (index === 0) {
                     row.innerHTML = `
                         <td rowspan="${group.length}">${interviewed}</td>
-                        <td>${answer.Question ? answer.Question.body : 'Desconhecida'}</td>
-                        <td><input type="text" id="answer-${interviewed}-${questionId}" value="${answer.answer}"></td>
-                        <td>${answer.User ? answer.User.name : 'Desconhecido'}</td>
+                        <td>${escapeHtml(answer.Question ? answer.Question.body : 'Desconhecida')}</td>
+                        <td><input type="text" id="answer-${interviewed}-${questionId}" value="${escapeHtml(answer.answer)}"></td>
+                        <td>${escapeHtml(answer.User ? answer.User.name : 'Desconhecido')}</td>
                         <td>${answer.form_id}</td>
                         <td>${new Date(answer.createdAt).toLocaleString()}</td>
                         <td><button class="save-btn" data-interviewed="${interviewed}" data-question="${questionId}" data-form="${answer.form_id}">Salvar</button></td>
                     `;
                 } else {
                     row.innerHTML = `
-                        <td>${answer.Question ? answer.Question.body : 'Desconhecida'}</td>
-                        <td><input type="text" id="answer-${interviewed}-${questionId}" value="${answer.answer}"></td>
-                        <td>${answer.User ? answer.User.name : 'Desconhecido'}</td>
+                        <td>${escapeHtml(answer.Question ? answer.Question.body : 'Desconhecida')}</td>
+                        <td><input type="text" id="answer-${interviewed}-${questionId}" value="${escapeHtml(answer.answer)}"></td>
+                        <td>${escapeHtml(answer.User ? answer.User.name : 'Desconhecido')}</td>
                         <td>${answer.form_id}</td>
                         <td>${new Date(answer.createdAt).toLocaleString()}</td>
                         <td><button class="save-btn" data-interviewed="${interviewed}" data-question="${questionId}" data-form="${answer.form_id}">Salvar</button></td>

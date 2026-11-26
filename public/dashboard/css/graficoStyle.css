@@ -1,49 +1,55 @@
-.controls {
-  margin-bottom: 20px;
-}
-
-.controls label {
-  margin-right: 10px;
-}
-
-.table-container {
+.dashboard-table-wrap {
+  max-width: 100%;
   overflow-x: auto;
+  border: 1px solid var(--dash-border);
+  border-radius: 7px;
 }
 
-table {
+.dashboard-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--dash-text);
+  font-size: 0.79rem;
+  font-variant-numeric: tabular-nums;
 }
 
-table th, table td {
-  border: 1px solid var(--border, #ddd);
-  padding: var(--space-sm, 8px);
-  text-align: center;
+.dashboard-table th,
+.dashboard-table td {
+  padding: 6px 9px;
+  border-bottom: 1px solid var(--dash-border);
+  text-align: right;
+  vertical-align: middle;
 }
 
-table th {
-  background-color: var(--surface-muted, #f2f2f2);
+.dashboard-table th:first-child { text-align: left; }
+.dashboard-table thead th { background-color: var(--dash-muted); color: var(--dash-secondary); }
+.dashboard-table tbody th { font-weight: 500; }
+.dashboard-table tbody tr:last-child > * { border-bottom: 0; }
+.dashboard-table tbody tr:nth-child(even) { background-color: var(--dash-muted); }
+.dashboard-table tbody tr:hover { background-color: var(--dash-active); }
+
+.dashboard-table-wide tr > :first-child {
+  position: sticky;
+  left: 0;
+  background: var(--dash-panel);
+  border-right: 1px solid var(--dash-border);
+  min-width: 120px;
+  max-width: 200px;
+  overflow-wrap: anywhere;
 }
 
-table td {
-  background-color: inherit;
+.dashboard-table-wide thead tr > :first-child { background: var(--dash-muted); }
+.dashboard-table-wide th:not(:first-child) { min-width: 80px; }
+
+.dashboard-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 7px;
+  margin-top: 8px;
+  color: var(--dash-secondary);
+  font-size: 0.75rem;
 }
 
-/* ── Pivot table: coluna de pergunta não estica ── */
-#pivotTable table td:first-child {
-  text-align: left;
-  word-break: break-word;
-  max-width: 250px;
-  white-space: normal;
-}
-
-#pivotTable table th:first-child {
-  text-align: left;
-  white-space: nowrap;
-}
-
-#pivotTable table th:not(:first-child),
-#pivotTable table td:not(:first-child) {
-  white-space: nowrap;
-  min-width: 80px;
-}
+.dashboard-pagination .btn { padding-inline: 8px; }

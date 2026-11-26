@@ -9,6 +9,31 @@ const path = require('path');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
+const router = express.Router();
+const basePath = (process.env.POP_BASE_PATH || '').replace(/\/$/, '');
+if (basePath && !/^\/[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*$/.test(basePath)) {
+    throw new Error('POP_BASE_PATH inválido.');
+}
+if (basePath) {
+    app.get(basePath, (req, res, next) => {
+        if (req.path === basePath) return res.redirect(308, basePath + '/');
+        next();
+    });
+}
+const cookiePath = basePath + '/';
+
+function redirectTo(res, path) {
+    res.redirect(basePath + path);
+}
+
+function redirectToForm(req, res, path) {
+    res.cookie('form', req.params.title, {
+        path: cookiePath,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production' && process.env.POP_COOKIE_SECURE !== 'false',
+    });
+    redirectTo(res, path);
+}
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.IP || '0.0.0.0';
 const BACKEND_URL = process.env.BACKEND_URL || 'http://127.0.0.1:3333';
@@ -18,45 +43,29 @@ const apiProxy = createProxyMiddleware({
     target: BACKEND_URL,
     changeOrigin: true,
     xfwd: false,
-    pathRewrite: (path, req) => req.originalUrl,
+    pathRewrite: (_path, req) => req.originalUrl.slice(basePath.length),
 });
 
-app.use(express.static(publicDir));
+router.use(express.static(publicDir));
 
-app.get('/', (req, res) => {
-    res.redirect('/sign/index.html');
-});
+router.get('/', (_req, res) => redirectTo(res, '/sign/index.html'));
 
-app.get('/home', (req, res) => {
-    res.redirect('/home.html');
-});
+router.get('/home', (_req, res) => redirectTo(res, '/home.html'));
 
-app.get('/managerUsers', (req, res) => {
-    res.redirect('/admin/manterUsers.html');
-});
+router.get('/managerUsers', (_req, res) => redirectTo(res, '/admin/manterUsers.html'));
 
-app.get('/dashboard', (req, res) => {
-    res.redirect('/dashboard/index.html');
-});
+router.get('/dashboard', (_req, res) => redirectTo(res, '/dashboard/index.html'));
 
-app.get('/form/:title', (req, res) => {
-    res.cookie('form', req.params.title, { path: '/', sameSite: 'lax' });
-    res.redirect('/form/formUser.html');
-});
+router.get('/form/:title', (req, res) => redirectToForm(req, res, '/form/formUser.html'));
 
-app.get('/edit/:title', (req, res) => {
-    res.cookie('form', req.params.title, { path: '/', sameSite: 'lax' });
-    res.redirect('/form/formAdmin.html');
-});
+router.get('/edit/:title', (req, res) => redirectToForm(req, res, '/form/formAdmin.html'));
 
-app.get('/adminResponse/:title', (req, res) => {
-    res.cookie('form', req.params.title, { path: '/', sameSite: 'lax' });
-    res.redirect('/form/formResponseAdmin.html');
-});
+router.get('/adminResponse/:title', (req, res) => redirectToForm(req, res, '/form/formResponseAdmin.html'));
 
-app.use(/^\/[^/]+\/get$/, apiProxy);
-app.use(
+router.use(/^\/[^/]+\/get$/, apiProxy);
+router.use(
     [
+        '/health',
         '/signup',
         '/signin',
         '/logout',
@@ -80,6 +89,8 @@ app.use(
     ],
     apiProxy
 );
+
+app.use(basePath || '/', router);
 
 app.listen(PORT, HOST, () => {
     console.log(`Frontend rodando em http://${HOST}:${PORT}`);

@@ -1,255 +1,198 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard de Respostas</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="./css/mainDashBoard.css">
-  <link
-            rel="icon"
-            type="image/x-icon"
-            href="./src/BRASAO-PREFEITURA-DE-FERRAZ.png"
-        />
-   <!-- icones import -->
-   <link
-   rel="stylesheet"
-   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de respostas · POP</title>
+    <link rel="icon" href="./src/BRASAO-PREFEITURA-DE-FERRAZ.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="./css/mainDashBoard.css">
 </head>
-<body>
-  
-        <!-- marca d'agua -->
-        <img src="./src/SloganFerraz.png" class="watermark" alt="">
-
-        <!-- Navbar (injetada via JS) -->
-        <div id="navbarPlaceholder"></div>
-
-        <!-- dashboard são geradas aqui -->
-        <main id="conteudo">
-        <div class="container-fluid mb-4 mt-5">
-        <div class="row mb-4">
-            <!-- Controles -->
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h1>Dashboard de Respostas</h1>
-                        <h5 class="card-title">Controles para análise dos dados do formulário <span class="tituloFormulario"></span></h5>
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="crosstab-tab" data-toggle="tab" href="#crosstab" role="tab" aria-controls="crosstab" aria-selected="true">Cruzamento de Questões</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="single-question-tab" data-toggle="tab" href="#single-question" role="tab" aria-controls="single-question" aria-selected="false">Questão Única</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active mt-3" id="crosstab" role="tabpanel" aria-labelledby="crosstab-tab">
-                                <!-- Cruzamento de Questões -->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="selectX">
-                                                <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione a questão que você deseja usar para as linhas do cruzamento! a quantidade maxima de linhas por gráfico é 10."></i>
-                                                Linhas:
-                                            </label>
-                                            <select id="selectX" class="form-control">
-                                                <option value="">Selecione..</option>
-                                                <!-- Opções dinâmicas serão geradas pelo JavaScript -->
-                                            </select>
-                                            <details class="m-3">
-                                                <summary class="mb-2">
-                                                    <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione as alternativas que você deseja visualizar no gráfico e tabela. para as linhas do cruzamento."></i>
-                                                    Escolher Alternativas
-                                                </summary>
-                                                <button class="btn btn-primary mb-2" id="toggleAlternativesBtnX">Desselecionar Todos</button>
-                                                <div id="option-pickers-x" class="scrollable-container" tabindex="0" role="region" aria-label="Opções das linhas">
-                                                    <!-- option pickers x will be generated dynamically by JavaScript -->
-                                                </div>
-                                            </details>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="selectY">
-                                                <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione a questão que você deseja usar para as colunas do cruzamento."></i>
-                                                Colunas:
-                                            </label>
-                                            <select id="selectY" class="form-control">
-                                                <option value="">Selecione..</option>
-                                                <!-- Opções dinâmicas serão geradas pelo JavaScript -->
-                                            </select>
-                                            <details class="m-3">
-                                                <summary class="mb-2">
-                                                    <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione as alternativas que você deseja visualizar no gráfico e tabela. para as colunas do cruzamento."></i>
-                                                    Escolher Alternativas
-                                                </summary>
-                                                <button class="btn btn-primary mb-2" id="toggleAlternativesBtnY">Desselecionar Todos</button>
-                                                <div id="option-pickers-y" class="scrollable-container" tabindex="0" role="region" aria-label="Opções das colunas">
-                                                    <!-- option pickers y will be generated dynamically by JavaScript -->
-                                                </div>
-                                            </details>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <details class="m-3">
-                                                <summary>
-                                                    <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione as cores que você deseja visualizar nas colunas do gráfico."></i>
-                                                    Personalizar Cores
-                                                </summary>
-                                                <div id="color-pickers" class="scrollable-container" tabindex="0" role="region" aria-label="Cores das colunas">
-                                                    <!-- Color pickers will be generated dynamically by JavaScript -->
-                                                </div>
-                                            </details>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="form-group">
-                                                <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione a unidade de medida que será usada para os dados do gráfico e tabela."></i>
-                                                <label for="dataOption">Dados:</label>
-                                                <select id="dataOption" class="form-control">
-                                                    <option value="percentage">Porcentagem</option>
-                                                    <option value="count">Quantidade</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade mt-3" id="single-question" role="tabpanel" aria-labelledby="single-question-tab">
-                                <!-- Questão Única -->
-                                <div class="form-group">
-                                    <label for="selectSingleQuestion">
-                                        <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione a questão que você deseja visualizar nos gráficos e na tabela."></i>
-                                        Questão:
-                                    </label>
-                                    <select id="selectSingleQuestion" class="form-control">
-                                        <option value="">Selecione..</option>
-                                        <!-- Options will be generated dynamically by JavaScript -->
-                                    </select>
-                                    <details class="m-3">
-                                        <summary class="mb-2">
-                                            <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione as alternativas que você deseja visualizar nos gráficos e na tabela."></i>
-                                            Escolher Alternativas
-                                        </summary>
-                                        <button class="btn btn-primary mb-2" id="toggleAlternativesBtnSingle">Des/selecionar Todos</button>
-                                        <div id="single-question-filter" class="scrollable-container" tabindex="0" role="region" aria-label="Alternativas da questão">
-                                            <!-- option pickers y will be generated dynamically by JavaScript -->
-                                        </div>
-                                    </details>
-                                </div>
-                                <details class="m-3">
-                                    <summary>
-                                        <i class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Selecione as cores do gráfico de pizza."></i>
-                                        Personalizar Cores
-                                    </summary>
-                                    <div><input type="color" id="color-for-porcent-bars" style="width: 40px; margin-bottom: 10px; margin-right: 5px; padding: 0px;"><label for="color-for-porcent-bars">Cor para Porcentagem</label></div>
-                                    <div id="single-question-color-pickers" class="scrollable-container" tabindex="0" role="region" aria-label="Cores do gráfico de pizza">
-
-                                    </div>
-                                </details>
-                            </div>
-                        </div>
-                        <!-- Baixar Resultados -->
-                        <div class="mt-4">
-                            <div class="form-row align-items-center">
-                                <div class="col-sm-9 mt-2">
-                                    <label class="sr-only" for="selectTableOrGraphicsDownload">Item para baixar</label>
-                                    <select id="selectTableOrGraphicsDownload" class="form-control">
-                                        <option value="">Selecione o item que deseja Baixar...</option>
-                                        <option value="arquivoExcel">Arquivo Excel</option>
-                                        <option value="chart">Gráfico de Cruzamento de Questões</option>
-                                        <option value="pivotTable">Tabela Cruzada</option>
-                                        <option value="singleQuestionChart">Gráfico de Pergunta Única</option>
-                                        <option value="singleQuestionTable">Tabela de Pergunta Única</option>
-                                        <option value="singleQuestionPieChart">Gráfico de Pizza de Pergunta Única</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-3 mt-2 text-right">
-                                    <button id="downloadButton" class="btn btn-success btn-block" aria-label="Baixar planilha"><i class="fas fa-download" aria-hidden="true"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div> 
-                </div> 
+<body class="dashboard-page">
+    <div id="navbarPlaceholder"></div>
+    <main id="conteudo" class="dashboard">
+        <header class="dashboard-heading">
+            <div class="dashboard-title">
+                <a class="dashboard-back" href="../home"><i class="fas fa-arrow-left" aria-hidden="true"></i> Formulários</a>
+                <h1>Painel de respostas</h1>
+                <p id="dashboard-form-title"></p>
             </div>
+            <div class="dashboard-export">
+                <label class="sr-only" for="selectTableOrGraphicsDownload">Formato de exportação</label>
+                <select id="selectTableOrGraphicsDownload" class="form-control">
+                    <option value="arquivoExcel">Planilha Excel</option>
+                    <option value="singleQuestionChart" data-analysis="single">Gráfico por questão</option>
+                    <option value="singleQuestionPieChart" data-analysis="single">Gráfico de composição</option>
+                    <option value="singleQuestionTable" data-analysis="single">Tabela por questão</option>
+                    <option value="chart" data-analysis="cross" hidden disabled>Gráfico cruzado</option>
+                    <option value="pivotTable" data-analysis="cross" hidden disabled>Tabela cruzada</option>
+                </select>
+                <button id="downloadButton" type="button" class="btn dashboard-primary" disabled>
+                    <i class="fas fa-download" aria-hidden="true"></i> Exportar
+                </button>
+                <div id="dashboard-theme"></div>
+            </div>
+        </header>
+
+        <div id="dashboard-status" class="dashboard-status" role="status" hidden>
+            <p id="dashboard-status-text"></p>
+            <button id="dashboard-retry" type="button" class="btn dashboard-secondary" hidden>Tentar novamente</button>
         </div>
 
-        <!-- Gráficos e Tabelas -->
-        <div class="row m-1">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="title-card">Gráficos e Tabelas</h5>
-                        <ul class="nav nav-tabs" id="graphicsTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="crosstab-graphics-tab" data-toggle="tab" href="#crosstab-graphics" role="tab" aria-controls="crosstab-graphics" aria-selected="true">Cruzamento de Questões</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="single-question-graphics-tab" data-toggle="tab" href="#single-question-graphics" role="tab" aria-controls="single-question-graphics" aria-selected="false">Questão Única</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="graphicsTabContent">
-                            <div class="tab-pane fade show active mt-3" id="crosstab-graphics" role="tabpanel" aria-labelledby="crosstab-graphics-tab">
-                                    <div>
-                                        <canvas id="chart" role="img" aria-label="Gráfico de barras do cruzamento de questões"></canvas>
-                                    </div>
-                                    <div class="scrollable-container-table table-responsive" tabindex="0" role="region" aria-label="Tabela de resultados">
-                                        <div id="pivotTable"></div>
-                                    </div>
-                            </div>
-                            <div class="tab-pane fade mt-3" id="single-question-graphics" role="tabpanel" aria-labelledby="single-question-graphics-tab">
-                                    <div class="single-question-container">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="single-question-chart-container">
-                                                    <canvas id="singleQuestionChart" role="img" aria-label="Gráfico de barras da questão única"></canvas>
-                                                </div>
+        <div id="dashboard-analysis" hidden>
+            <dl class="dashboard-metrics" aria-label="Resumo da análise">
+                <div><dt>Questões com respostas</dt><dd id="dashboard-question-count">–</dd></div>
+                <div id="dashboard-interview-metric"><dt>Entrevistas na análise</dt><dd id="dashboard-interview-count">–</dd></div>
+                <div><dt>Seleções registradas</dt><dd id="dashboard-selection-count">–</dd></div>
+            </dl>
+            <p id="dashboard-limit" class="dashboard-note" hidden></p>
+
+            <ul class="nav dashboard-tabs" id="myTab" role="tablist" aria-label="Tipo de análise">
+                <li role="presentation">
+                    <a class="nav-link active" id="single-question-tab" href="#single-question" role="tab" aria-controls="single-question" aria-selected="true">
+                        <i class="fas fa-chart-bar" aria-hidden="true"></i> Por questão
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a class="nav-link" id="crosstab-tab" href="#crosstab" role="tab" aria-controls="crosstab" aria-selected="false">
+                        <i class="fas fa-th" aria-hidden="true"></i> Cruzamento
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <section id="single-question" class="tab-pane active show" role="tabpanel" aria-labelledby="single-question-tab">
+                    <div class="dashboard-layout">
+                        <aside class="dashboard-panel dashboard-controls" aria-labelledby="single-controls-title">
+                            <h2 id="single-controls-title">Filtros</h2>
+                            <label for="selectSingleQuestion">Questão</label>
+                            <select id="selectSingleQuestion" class="form-control"></select>
+                            <details>
+                                <summary>Alternativas</summary>
+                                <button id="toggleAlternativesBtnSingle" type="button" class="btn dashboard-secondary">Desmarcar todas</button>
+                                <div id="single-question-filter" class="dashboard-options" role="group" aria-label="Alternativas da questão"></div>
+                            </details>
+                            <details>
+                                <summary>Cores</summary>
+                                <div id="single-question-color-pickers" class="dashboard-options" role="group" aria-label="Cores das alternativas"></div>
+                            </details>
+                        </aside>
+
+                        <div class="dashboard-results">
+                            <div id="single-empty" class="dashboard-panel dashboard-empty" role="status" hidden></div>
+                            <div id="single-results">
+                                <div class="dashboard-chart-grid">
+                                    <article class="dashboard-panel dashboard-plot-panel">
+                                        <div class="dashboard-panel-heading dashboard-action-heading">
+                                            <div>
+                                                <h2>Alternativas mais selecionadas</h2>
+                                                <p id="single-question-label"></p>
                                             </div>
+                                            <button type="button" class="btn dashboard-secondary dashboard-download-png" data-chart-download="singleQuestionChart" aria-label="Baixar gráfico de alternativas em PNG">
+                                                <i class="fas fa-download" aria-hidden="true"></i> PNG
+                                            </button>
                                         </div>
-                                        <div class="row mt-5">
-                                            <div class="col-md-6">
-                                                <div class="single-question-table-container table-responsive" tabindex="0" role="region" aria-label="Tabela da questão única">
-                                                    <div id="singleQuestionTable">
-                                                        <!-- Table will be generated dynamically by JavaScript -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="pie-chart-container">
-                                                    <canvas id="singleQuestionPieChart" role="img" aria-label="Gráfico de pizza da questão única"></canvas>
-                                                </div>
-                                            </div>
+                                        <div class="dashboard-chart">
+                                            <canvas id="singleQuestionChart" role="img" aria-label="Gráfico de barras por questão"></canvas>
                                         </div>
+                                    </article>
+                                    <article class="dashboard-panel dashboard-plot-panel">
+                                        <div class="dashboard-panel-heading dashboard-action-heading">
+                                            <h2>Composição das seleções</h2>
+                                            <button type="button" class="btn dashboard-secondary dashboard-download-png" data-chart-download="singleQuestionPieChart" aria-label="Baixar gráfico de composição em PNG">
+                                                <i class="fas fa-download" aria-hidden="true"></i> PNG
+                                            </button>
+                                        </div>
+                                        <div class="dashboard-chart dashboard-donut">
+                                            <canvas id="singleQuestionPieChart" role="img" aria-label="Composição das seleções"></canvas>
+                                        </div>
+                                    </article>
+                                </div>
+                                <article class="dashboard-panel dashboard-table-panel">
+                                    <div class="dashboard-panel-heading dashboard-action-heading">
+                                        <div>
+                                            <h2>Detalhamento</h2>
+                                            <p>Percentual sobre todas as seleções da questão.</p>
+                                        </div>
+                                        <button id="downloadSingleQuestionTable" type="button" class="btn dashboard-secondary dashboard-download-png" aria-label="Baixar tabela de detalhamento em PNG">
+                                            <i class="fas fa-download" aria-hidden="true"></i> PNG
+                                        </button>
                                     </div>
+                                    <div id="singleQuestionTable"></div>
+                                </article>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                <section id="crosstab" class="tab-pane" role="tabpanel" aria-labelledby="crosstab-tab">
+                    <div class="dashboard-layout">
+                        <aside class="dashboard-panel dashboard-controls" aria-labelledby="cross-controls-title">
+                            <h2 id="cross-controls-title">Filtros</h2>
+                            <label for="selectX">Linhas</label>
+                            <select id="selectX" class="form-control"></select>
+                            <label for="selectY">Colunas</label>
+                            <select id="selectY" class="form-control"></select>
+                            <label for="dataOption">Unidade</label>
+                            <select id="dataOption" class="form-control">
+                                <option value="percentage">Percentual por linha</option>
+                                <option value="count">Quantidade</option>
+                            </select>
+                            <details>
+                                <summary>Alternativas das linhas</summary>
+                                <button id="toggleAlternativesBtnX" type="button" class="btn dashboard-secondary">Desmarcar todas</button>
+                                <div id="option-pickers-x" class="dashboard-options" role="group" aria-label="Alternativas das linhas"></div>
+                            </details>
+                            <details>
+                                <summary>Alternativas das colunas</summary>
+                                <button id="toggleAlternativesBtnY" type="button" class="btn dashboard-secondary">Desmarcar todas</button>
+                                <div id="option-pickers-y" class="dashboard-options" role="group" aria-label="Alternativas das colunas"></div>
+                            </details>
+                            <details>
+                                <summary>Cores das colunas</summary>
+                                <div id="color-pickers" class="dashboard-options" role="group" aria-label="Cores das colunas"></div>
+                            </details>
+                        </aside>
+
+                        <div class="dashboard-results">
+                            <div id="cross-empty" class="dashboard-panel dashboard-empty" role="status" hidden></div>
+                            <div id="cross-results">
+                                <article class="dashboard-panel dashboard-plot-panel">
+                                    <div class="dashboard-panel-heading dashboard-action-heading">
+                                        <div>
+                                            <h2>Distribuição por alternativas</h2>
+                                            <p id="cross-summary"></p>
+                                        </div>
+                                        <button type="button" class="btn dashboard-secondary dashboard-download-png" data-chart-download="chart" aria-label="Baixar gráfico de cruzamento em PNG">
+                                            <i class="fas fa-download" aria-hidden="true"></i> PNG
+                                        </button>
+                                    </div>
+                                    <div class="dashboard-chart">
+                                        <canvas id="chart" role="img" aria-label="Gráfico de cruzamento de questões"></canvas>
+                                    </div>
+                                </article>
+                                <article class="dashboard-panel dashboard-table-panel">
+                                    <div class="dashboard-panel-heading"><h2>Tabela cruzada</h2><p id="cross-table-note"></p></div>
+                                    <div id="pivotTable"></div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
-        </div>
-        </main>
+    </main>
+    <div id="perfilModalPlaceholder"></div>
+    <div id="sharedComponents"></div>
+    <div id="sr-live" role="status"></div>
 
-
-        <!-- Componentes compartilhados (injetados via JS) -->
-        <div id="perfilModalPlaceholder"></div>
-        <div id="sharedComponents"></div>
-
-        <!-- Região viva: anúncio de atualização da tabela/gráfico (toast visível via base.css) -->
-        <div id="sr-live" role="status"></div>
-
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.17.4/dist/xlsx.full.min.js" defer></script>
-  <script src="./mainDashBoardHandler.js" type="module"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.6.1" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.17.4/dist/xlsx.full.min.js" defer></script>
+    <script src="./mainDashBoardHandler.js" type="module"></script>
 </body>
 </html>

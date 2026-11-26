@@ -1,3 +1,4 @@
+import { appPath } from '../../js/appPath.js';
 import { mostrarMensagem } from '../../js/geraNotificacao.js';
 import { capturarRespostas } from './sendAnswers.js';
 import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
@@ -175,7 +176,7 @@ function criarFormulario(perguntas,liberaAcesso) {
     botaoCancelar.textContent = 'Cancelar';
 
     botaoCancelar.addEventListener('click', function () {
-        window.location.href = '/home';
+        window.location.href = appPath('/home');
     });
 
     botoesContainer.appendChild(botaoEnviar);

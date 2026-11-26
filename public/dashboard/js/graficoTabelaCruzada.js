@@ -1,412 +1,133 @@
-import { getRandomColor } from './handlerDashboardActions.js';
-import { formData } from '../mainDashBoardHandler.js';
-import { anunciarSr } from '../../js/geraNotificacao.js';
+import { crossTabulation, formatNumber, formatPercentage, questionDistribution } from './dashboardData.js';
+import {
+    bindOptionToggle,
+    createOptionControls,
+    horizontalChartOptions,
+    optionColor,
+    otherColor,
+    renderChart,
+    renderTable,
+    selectedOptions,
+    updateOptionToggle,
+} from './dashboardView.js';
 
-let colorPickers = {};
-let timerAnuncio = null;
+export function setupCrosstab(questions, answers, interviewIds, onAvailability) {
+    const selectX = document.getElementById('selectX');
+    const selectY = document.getElementById('selectY');
+    const units = document.getElementById('dataOption');
+    const filtersX = document.getElementById('option-pickers-x');
+    const filtersY = document.getElementById('option-pickers-y');
+    const toggleX = document.getElementById('toggleAlternativesBtnX');
+    const toggleY = document.getElementById('toggleAlternativesBtnY');
+    const picker = document.getElementById('color-pickers');
+    const empty = document.getElementById('cross-empty');
+    const results = document.getElementById('cross-results');
+    const columns = questions.filter(({ type }) => type === 'Unica Escolha');
+    let colors;
+    let defaultColors;
 
-export function generateColorPickers(formData, yField) {
-    if (yField && yField.value !== '') {
-        const colorPickersContainer = document.getElementById('color-pickers');
-        colorPickersContainer.innerHTML = '';
-        const yOptions = formData.Questions.find(
-            (q) => `${q.id}` === `${yField}`
-        ).Options.map((obj) => obj.text);
-
-        yOptions.forEach((option, optionIndex) => {
-            const colorPickerInput = document.createElement('input');
-            colorPickerInput.type = 'color';
-            colorPickerInput.style.width = '40px';
-            colorPickerInput.style.marginBottom = '10px';
-            colorPickerInput.style.marginRight = '5px';
-            colorPickerInput.style.padding = "0px";
-            colorPickerInput.value = getRandomColor(); // Set a random color initially
-            colorPickerInput.id = `color-picker-cruzada-${yField}-${optionIndex}`;
-            colorPickerInput.dataset.optionId = option;
-            colorPickerInput.dataset.questionId = yField;
-
-            const label = document.createElement('label');
-            label.textContent = `Cor para ${option}`;
-            label.htmlFor = colorPickerInput.id;
-            label.style.fontSize = '0.85em';
-            const container = document.createElement('div');
-            container.appendChild(colorPickerInput);
-            container.appendChild(label);
-            
-
-            colorPickersContainer.appendChild(container);
-
-            colorPickers[option] = colorPickerInput;
-           
-            colorPickerInput.addEventListener('change', () => {
-                updateVisualizations(true);
-            });
-        });
+    function showResults(hasResults, message = '') {
+        results.hidden = !hasResults;
+        empty.hidden = hasResults;
+        empty.textContent = message;
+        onAvailability(hasResults);
     }
-}
 
-export function generatePivotTable(formData, xField, yField, dataOption) {
-    if (xField && yField && xField.value !== '' && yField.value !== '') {
-        const pivotTable = document.getElementById('pivotTable');
-        let xOptions = getOptions(formData, xField);
-        let yOptions = getOptions(formData, yField);
-        let xQuestionLabel = getQuestionLabel(formData, xField);
-        let yQuestionLabel = getQuestionLabel(formData, yField);
+    if (!interviewIds || !columns.length || questions.length < 2) {
+        for (const control of [selectX, selectY, units, toggleX, toggleY]) control.disabled = true;
+        showResults(false, !interviewIds
+            ? 'O cruzamento requer a identificação das entrevistas na base de análise.'
+            : 'O cruzamento precisa de duas questões com respostas, incluindo uma de escolha única.');
+        return () => {};
+    }
 
-        // Cabeçalho vazio para a primeira célula + opções do eixo Y
-        let tableHeaders = [`${xQuestionLabel} x ${yQuestionLabel}`].concat(yOptions);
-        tableHeaders.push('Total'); // Adicionar o cabeçalho para a coluna de total
+    for (const question of questions) selectX.add(new Option(question.body, question.id));
+    for (const question of columns) selectY.add(new Option(question.body, question.id));
+    const firstColumn = columns.find(({ id }) => String(id) !== selectX.value);
+    if (firstColumn) {
+        selectY.value = firstColumn.id;
+    } else {
+        selectX.value = questions.find(({ id }) => String(id) !== selectY.value).id;
+    }
 
-        let tableRows = [];
-        // Itera sobre cada opção em xOptions com seu índice correspondente
-        xOptions.forEach((xOption, xIndex) => {
-            // Cria uma nova linha para a tabela, começando com a opção x
-            let row = [xOption];
-            // Inicializa uma variável para armazenar o total de contagens
-            let total = 0;
+    function render() {
+        updateOptionToggle(toggleX, filtersX);
+        updateOptionToggle(toggleY, filtersY);
+        const x = selectX.value;
+        const y = selectY.value;
+        if (x === y) {
+            showResults(false, 'Escolha questões diferentes para linhas e colunas.');
+            return;
+        }
+        const rowLabels = selectedOptions(filtersX);
+        const columnLabels = selectedOptions(filtersY);
+        if (!rowLabels.length || !columnLabels.length) {
+            showResults(false, 'Marque pelo menos uma alternativa em cada questão.');
+            return;
+        }
+        const { rows, paired } = crossTabulation(answers[x], interviewIds[x] || [],
+            answers[y], interviewIds[y] || [], rowLabels, columnLabels);
+        const sum = (counts) => counts.reduce((total, count) => total + count, 0);
+        if (!paired || !rows.some(({ counts }) => sum(counts))) {
+            showResults(false, 'Nenhuma entrevista combina as alternativas selecionadas.');
+            return;
+        }
+        showResults(true);
+        const percentage = units.value === 'percentage';
+        const countValue = (count, base) => percentage ? (base ? 100 * count / base : 0) : count;
+        const valueText = (value) => percentage ? formatPercentage(value / 100) : formatNumber(value);
+        document.getElementById('cross-summary').textContent = formatNumber(paired) +
+            ' entrevistas responderam às duas questões.' +
+            (rows.filter(({ counts }) => sum(counts)).length > 8 ? ' O gráfico mostra as 8 alternativas de linha mais frequentes.' : '');
+        document.getElementById('cross-table-note').textContent = percentage
+            ? 'Cada percentual usa como base as entrevistas da linha que responderam às duas questões.'
+            : 'Contagens das alternativas selecionadas nas entrevistas que responderam às duas questões.';
+        renderTable(document.getElementById('pivotTable'), ['Alternativa', ...columnLabels, 'Total'],
+            rows.map(({ label, counts, base }) => [label, ...counts.map((count) => valueText(countValue(count, base))),
+                valueText(countValue(sum(counts), base))]),
+            { wide: true, description: 'Tabela cruzada com rolagem horizontal' });
 
-            // Itera sobre cada opção em yOptions com seu índice correspondente
-            yOptions.forEach((yOption, yIndex) => {
-                // Inicializa uma variável para contar as ocorrências
-                let count = 0;
-                // Itera sobre cada resposta no campo xField do formData
-                formData.Answers[xField].forEach((answer, index) => {
-                    // Verifica se a resposta contém xOption e se a resposta correspondente em yField contém yOption
-                    if (
-                        (Array.isArray(answer)
-                            ? answer.includes(xOption)  // Se a resposta for um array, verifica se contém xOption
-                            : answer === xOption) &&     // Se não for um array, compara diretamente
-                        (Array.isArray(formData.Answers[yField][index])
-                            ? formData.Answers[yField][index].includes(yOption)  // Se a resposta em yField for um array, verifica se contém yOption
-                            : formData.Answers[yField][index] === yOption)         // Se não for um array, compara diretamente
-                    ) {
-                        count++; // Incrementa o contador se ambas as condições forem verdadeiras
-                    }
-                });
-
-                // Inicializa a variável value com o valor de count
-                let value = count;
-                // Se a opção de dados for 'percentage', calcula a porcentagem
-                if (dataOption === 'percentage') {
-                    // Conta o número total de ocorrências de xOption no campo xField
-                    const xOptionCount = formData.Answers[xField].filter((a) =>
-                        Array.isArray(a) ? a.includes(xOption) : a === xOption
-                    ).length;
-                    // Se xOptionCount for maior que 0, calcula a porcentagem
-                    if (xOptionCount > 0) {
-                        value = `${((count / xOptionCount) * 100).toFixed(2)}%`;
-                    } else {
-                        value = '0.00%'; // Caso contrário, define como 0%
-                    }
-                }
-
-                // Adiciona o valor (ou porcentagem) à linha
-                row.push(value);
-                // Adiciona o valor de count ao total
-                total += count;
-            });
-
-            // Se a opção de dados for 'percentage', calcula a porcentagem total
-            if (dataOption === 'percentage') {
-                // Conta o número total de ocorrências de xOption no campo xField
-                const xOptionCount = formData.Answers[xField].filter((a) =>
-                    Array.isArray(a) ? a.includes(xOption) : a === xOption
-                ).length;
-                // Se xOptionCount for maior que 0, calcula a porcentagem total
-                if (xOptionCount > 0) {
-                    total = `${((total / xOptionCount) * 100).toFixed(2)}%`;
-                } else {
-                    total = '0.00%'; // Caso contrário, define como 0%
-                }
-            }
-
-            // Adiciona o total (ou porcentagem total) à linha
-            row.push(total);
-            // Adiciona a linha completa à lista de linhas da tabela
-            tableRows.push(row);
-        });
-
-        const rowsPerPage = 15;
-        let currentPage = 1;
-        const totalPages = Math.ceil(tableRows.length / rowsPerPage);
-
-        function renderTable(page) {
-            pivotTable.innerHTML = '';
-            let start = (page - 1) * rowsPerPage;
-            let end = Math.min(start + rowsPerPage, tableRows.length);
-            let table = document.createElement('table');
-            table.className = 'table table-bordered';
-
-            // Cabeçalho da tabela
-            let headerRow = table.insertRow();
-            tableHeaders.forEach((headerText) => {
-                let th = document.createElement('th');
-                th.scope = 'col';
-                th.textContent = headerText;
-                headerRow.appendChild(th);
-            });
-
-            // Linhas da tabela (1ª célula é o cabeçalho da linha, para navegação por tabela)
-            for (let i = start; i < end; i++) {
-                let rowData = tableRows[i];
-                let tr = table.insertRow();
-                rowData.forEach((cellData, cellIndex) => {
-                    if (cellIndex === 0) {
-                        const th = document.createElement('th');
-                        th.scope = 'row';
-                        th.textContent = cellData;
-                        tr.appendChild(th);
-                    } else {
-                        let td = tr.insertCell();
-                        td.textContent = cellData;
-                    }
-                });
-            }
-
-            // Adicionar controles de paginação
-            let pagination = document.createElement('div');
-            pagination.className = 'pagination';
-            pagination.setAttribute('role', 'navigation');
-            pagination.setAttribute('aria-label', 'Paginação da tabela cruzada');
-            pagination.tabIndex = -1;
-
-            // Leva o foco de volta pra paginação e anuncia a página (o clique destrói o botão antigo)
-            const irParaPagina = (novaPagina) => {
-                currentPage = novaPagina;
-                renderTable(currentPage);
-                const novaPaginacao = pivotTable.querySelector('.pagination');
-                if (novaPaginacao) novaPaginacao.focus();
-                anunciarSr(`Página ${currentPage} de ${totalPages}`);
-            };
-
-            if (currentPage > 1) {
-                let prev = document.createElement('button');
-                prev.textContent = 'Anterior';
-                prev.setAttribute('aria-label', 'Página anterior');
-                prev.onclick = () => irParaPagina(currentPage - 1);
-                pagination.appendChild(prev);
-            }
-
-            for (let i = 1; i <= totalPages; i++) {
-                let pageButton = document.createElement('button');
-                pageButton.textContent = i;
-                pageButton.setAttribute('aria-label', `Página ${i}`);
-                pageButton.onclick = () => irParaPagina(i);
-                if (i === currentPage) {
-                    pageButton.disabled = true;
-                    pageButton.setAttribute('aria-current', 'page');
-                }
-                pagination.appendChild(pageButton);
-            }
-
-            if (currentPage < totalPages) {
-                let next = document.createElement('button');
-                next.textContent = 'Proximo';
-                next.setAttribute('aria-label', 'Próxima página');
-                next.onclick = () => irParaPagina(currentPage + 1);
-                pagination.appendChild(next);
-            }
-
-            pivotTable.appendChild(table);
-            pivotTable.appendChild(pagination);
+        const visibleRows = rows.filter(({ counts }) => sum(counts))
+            .sort((left, right) => sum(right.counts) - sum(left.counts)).slice(0, 8);
+        const rankedColumns = columnLabels.map((label, index) => ({
+            label, index, total: visibleRows.reduce((total, row) => total + row.counts[index], 0),
+        })).filter(({ total }) => total > 0).sort((left, right) => right.total - left.total);
+        const leading = rankedColumns.slice(0, 5);
+        const extra = rankedColumns.slice(5);
+        const style = { borderRadius: 3, maxBarThickness: 23 };
+        const datasets = leading.map(({ label, index }) => ({
+            ...style, label, backgroundColor: colors.get(label) || defaultColors.get(label),
+            data: visibleRows.map(({ counts, base }) => countValue(counts[index], base)),
+        }));
+        if (extra.length) {
+            datasets.push({ ...style, label: 'Demais colunas', backgroundColor: otherColor,
+                data: visibleRows.map(({ counts, base }) => countValue(sum(extra.map(({ index }) => counts[index])), base)) });
         }
 
-        renderTable(currentPage);
+        renderChart('chart', {
+            type: 'bar', data: { labels: visibleRows.map(({ label }) => label), datasets },
+            options: horizontalChartOptions({ percentage, stacked: true, legend: true, formatValue: valueText }),
+        }, Math.max(173, 79 + visibleRows.length * 24), 'Cruzamento entre ' +
+            selectX.selectedOptions[0].text + ' e ' + selectY.selectedOptions[0].text);
     }
-}
 
-// Função para gerar o gráfico de barras cruzado
-export function generateCrossedBarChart(formData, xField, yField, dataOption) {
-    if (xField && yField && xField.value !== '' && yField.value !== '') {
-        const chartParent = document.getElementById('chart').parentElement;
-        document.getElementById('chart').remove();
-
-        const newChart = document.createElement('canvas');
-        newChart.id = 'chart';
-        // O canvas é recriado a cada renderização: reaplica o nome acessível com as questões atuais (sem isso o role/aria-label do HTML se perderia)
-        const rotuloDe = (campo) =>
-            formData.Questions.find((q) => `${q.id}` === `${campo}`)?.body || 'questão selecionada';
-        newChart.setAttribute('role', 'img');
-        newChart.setAttribute(
-            'aria-label',
-            `Gráfico de barras cruzando ${rotuloDe(xField)} por ${rotuloDe(yField)}`
-        );
-        chartParent.appendChild(newChart);
-
-        const ctx = newChart.getContext('2d');
-
-        if (Object.keys(colorPickers).length === 0) {
-            generateColorPickers(formData, yField);
+    function updateFilters(source, target, includeColors) {
+        const question = questions.find(({ id }) => String(id) === source.value);
+        const labels = questionDistribution(question, answers[question.id]).rows.map(({ label }) => label);
+        createOptionControls(target, labels, { type: 'checkbox', onChange: render });
+        if (includeColors) {
+            colors = new Map();
+            defaultColors = new Map(labels.map((label, index) => [label, optionColor(index)]));
+            createOptionControls(picker, labels, { type: 'color', colors, onChange: render });
         }
-
-        let labels = getOptions(formData, xField);
-        const maxLabels = 15;
-
-        if (labels.length > maxLabels) {
-            labels = labels.slice(0, maxLabels);
-        }
-
-        let optionsChart = {
-            indexAxis: 'y',
-            layout: {
-                padding: {
-                    left: 10,
-                    right: 20,
-                },
-            },
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    grid: {
-                        display: false,
-                    },
-                },
-                y: {
-                    grid: {
-                        display: false,
-                    },
-                },
-            },
-        };
-        // desculpa quem pegar isso mas infelizmente esta extremamente complexo
-        // Cria um array de datasets com base nas opções de yField e nas labels
-        const datasets = getOptions(formData, yField).map((yOption, yIndex) => {
-            // Para cada opção de yField, cria um array de dados
-            const data = labels.map((xOption) => {
-                // Conta o número de respostas que correspondem a xOption e yOption
-                const count = countAnswers(
-                    formData,
-                    xField,
-                    xOption,
-                    yField,
-                    yOption
-                );
-                
-                // Verifica se o dataOption é 'percentage'
-                if (dataOption === 'percentage') {
-                    // Calcula o total de respostas para xOption
-                    const total = formData.Answers[xField].filter((a) =>
-                        // Se a resposta for um array, verifica se xOption está incluído; caso contrário, compara diretamente
-                        Array.isArray(a) ? a.includes(xOption) : a === xOption
-                    ).length;
-                    
-                    // Define opções de gráfico para exibir percentuais no eixo x
-                    optionsChart = {
-                        indexAxis: 'y',
-                        layout: {
-                            padding: {
-                                left: 10,
-                                right: 20,
-                            },
-                        },
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                min: 0,
-                                max: 100,
-                                ticks: {
-                                    stepSize: 10,
-                                },
-                                grid: {
-                                    display: false,
-                                },
-                            },
-                            y: {
-                                grid: {
-                                    display: false,
-                                },
-                            },
-                        },
-                    };
-                    
-                    // Calcula o percentual de count em relação ao total
-                    return (count / total) * 100;
-                } else {
-                    // Se não for para calcular percentual, retorna o count diretamente
-                    return count;
-                }
-            });
-
-            // Obtém a cor correspondente à opção de yField
-            const selectedColor = colorPickers[yOption].value;
-            
-            // Retorna um objeto de dataset com o rótulo, os dados, e as cores configuradas
-            return {
-                label: yOption,
-                data: data,
-                backgroundColor: selectedColor,
-                borderColor: selectedColor,
-                borderWidth: 1,
-                borderRadius: 6,
-                barThickness: 28,
-            };
-        });
-
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: datasets,
-            },
-            options: optionsChart,
-        });
     }
-}
 
-// Função para atualizar a exibição da tabela cruzada ou gráfico. silencioso=true pula o anúncio (usado em mudança de cor, que só repinta o gráfico)
-export function updateVisualizations(silencioso = false) {
-    const xField = selectX.value;
-    const yField = selectY.value;
-    const dataOpt = dataOption.value;
-    generatePivotTable(formData, xField, yField, dataOpt);
-    generateCrossedBarChart(formData, xField, yField, dataOpt);
-    if (!silencioso) {
-        clearTimeout(timerAnuncio);
-        timerAnuncio = setTimeout(() => anunciarSr('Tabela e gráfico atualizados'), 500);
-    }
-} 
-
-// funções auxiliares
-
-// Função para obter as opções de um campo
-export function getOptions(formData, fieldId) {
-    const question = formData.Questions.find((q) => `${q.id}` === `${fieldId}`);
-
-    if (!question) return [];
-
-    return question.Options
-        .filter((obj) => obj.select === true || obj.select === undefined) // Filtra opções onde select é true ou não está presente
-        .map((obj) => obj.text); // Mapeia e retorna somente o texto das opções filtradas
-}
-
-// Função para contar as respostas que correspondem a uma opção
-function countAnswers(formData, xField, xOption, yField, yOption) {
-    let count = 0;
-    formData.Answers[xField].forEach((answer, index) => {
-        if (Array.isArray(answer)) {
-            if (
-                answer.includes(xOption) &&
-                (Array.isArray(formData.Answers[yField][index])
-                    ? formData.Answers[yField][index].includes(yOption)
-                    : formData.Answers[yField][index] === yOption)
-            ) {
-                count++;
-            }
-        } else {
-            if (
-                answer === xOption &&
-                (Array.isArray(formData.Answers[yField][index])
-                    ? formData.Answers[yField][index].includes(yOption)
-                    : formData.Answers[yField][index] === yOption)
-            ) {
-                count++;
-            }
-        }
-    });
-    return count;
-}
-// Função para obter o rótulo de uma pergunta
-function getQuestionLabel(formData, fieldId) {
-    return formData.Questions.find((q) => `${q.id}` === `${fieldId}`).body;
+    selectX.addEventListener('change', () => { updateFilters(selectX, filtersX, false); render(); });
+    selectY.addEventListener('change', () => { updateFilters(selectY, filtersY, true); render(); });
+    units.addEventListener('change', render);
+    bindOptionToggle(toggleX, filtersX, render);
+    bindOptionToggle(toggleY, filtersY, render);
+    updateFilters(selectX, filtersX, false);
+    updateFilters(selectY, filtersY, true);
+    return render;
 }

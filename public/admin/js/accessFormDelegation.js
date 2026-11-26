@@ -1,3 +1,4 @@
+import { escapeHtml } from '../../js/escapeHtml.js';
 import { getUserData } from '../../js/api.js';
 const userLogged = await getUserData();
 
@@ -211,13 +212,13 @@ function createUserListItem(user) {
     const listItem = document.createElement('li');
     listItem.classList.add('list-group-item', 'd-flex', 'flex-column', 'flex-md-row', 'justify-content-between', 'align-items-start');
     listItem.innerHTML = `
-        <span class="role">${user.role}</span>
-        <span class="username">${user.name}</span>
-        <span class="CPF" data-cpf="${user.cpf}">${user.cpf.replace(
+        <span class="role">${escapeHtml(user.role)}</span>
+        <span class="username">${escapeHtml(user.name)}</span>
+        <span class="CPF" data-cpf="${escapeHtml(user.cpf)}">${escapeHtml(user.cpf.replace(
         /(\d{3})(\d{3})(\d{3})(\d{2})/,
         '$1.$2.$3-$4'
-    )}</span>
-        <span class="email">${user.email}</span>
+    ))}</span>
+        <span class="email">${escapeHtml(user.email)}</span>
     `;
     return listItem;
 }

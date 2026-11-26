@@ -1,62 +1,60 @@
-// ── Cookie helper ──
+import { appPath } from './appPath.js';
+
 export function getCookie(name) {
-    const nameEQ = name + '=';
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(';');
-
-    for (let i = 0; i < cookieArray.length; i++) {
-        let cookie = cookieArray[i];
-        while (cookie.charAt(0) === ' ') {
-            cookie = cookie.substring(1);
-        }
-        if (cookie.indexOf(nameEQ) === 0) {
-            return cookie.substring(nameEQ.length, cookie.length);
-        }
+    const prefix = name + '=';
+    const entry = document.cookie.split(';').map((cookie) => cookie.trim())
+        .find((cookie) => cookie.startsWith(prefix));
+    if (!entry) return null;
+    const value = entry.slice(prefix.length);
+    try {
+        return decodeURIComponent(value);
+    } catch {
+        return value;
     }
-    return null;
 }
 
-// ── CSRF token ──
-// O cookie contém "token|hash"; o header X-CSRF-Token espera só o token.
-function getCsrfToken() {
-    const cookie = getCookie('csrfToken');
-    if (!cookie) return null;
-    return cookie.split('|')[0];
-}
-
-// ── Request wrapper ──
-async function request(method, url, body = null, _isRetry = false) {
+function send(method, url, body) {
     const headers = { 'Content-Type': 'application/json' };
-
     if (['POST', 'PUT', 'DELETE'].includes(method)) {
-        const csrf = getCsrfToken();
-        if (csrf) headers['X-CSRF-Token'] = csrf;
+        const csrfToken = getCookie('csrfToken')?.split('|')[0];
+        if (csrfToken) headers['X-CSRF-Token'] = csrfToken;
     }
 
-    const options = {
+    return fetch(appPath(url), {
         method,
         headers,
         credentials: 'same-origin',
-    };
-    if (body) options.body = JSON.stringify(body);
+        body: body == null ? undefined : JSON.stringify(body),
+    });
+}
 
-    let res = await fetch(url, options);
+const authEndpoints = new Set(['/signin', '/signup', '/refresh-token']);
+let refreshInFlight;
+let sessionVersion = 0;
 
-    if (res.status === 401 && !_isRetry && url !== '/refresh-token') {
-        const refreshHeaders = {};
-        const csrf = getCsrfToken();
-        if (csrf) refreshHeaders['X-CSRF-Token'] = csrf;
-        const retry = await fetch('/refresh-token', {
-            method: 'POST',
-            headers: refreshHeaders,
-            credentials: 'same-origin',
-        });
-        if (retry.ok) {
-            res = await fetch(url, options);
-        }
+function refreshSession() {
+    if (!refreshInFlight) {
+        refreshInFlight = send('POST', '/refresh-token')
+            .then((response) => {
+                if (response.ok) sessionVersion += 1;
+                return response.ok;
+            })
+            .finally(() => { refreshInFlight = undefined; });
+    }
+    return refreshInFlight;
+}
+
+async function request(method, url, body) {
+    const sentVersion = sessionVersion;
+    const response = await send(method, url, body);
+    if (response.status !== 401 || authEndpoints.has(url)) {
+        return response;
     }
 
-    return res;
+    if (sentVersion !== sessionVersion || await refreshSession()) {
+        return send(method, url, body);
+    }
+    return response;
 }
 
 // ── API pública ──
@@ -70,7 +68,7 @@ export const api = {
 // ── Logout centralizado ──
 export async function logout() {
     await api.post('/logout');
-    window.location.href = '/';
+    window.location.href = appPath();
 }
 
 // ── getUserData centralizado ──

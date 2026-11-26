@@ -1,10 +1,12 @@
+import { appPath } from '../appPath.js';
+
 export function renderNavbar({ role = 'user', activeTab = 'home', logoPath = './src/', showSearch = false, searchPlaceholder = '' } = {}) {
     const isAdmin = role === 'admin';
 
     return `
         <!-- Cabeçalho de navegação -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-            <a class="navbar-brand" href="/home" aria-label="POP — Página inicial">
+            <a class="navbar-brand" href="${appPath('/home')}" aria-label="POP — Página inicial">
                 <img
                     src="${logoPath}BRASAO-PREFEITURA-DE-FERRAZ.png"
                     width="30"
@@ -29,14 +31,14 @@ export function renderNavbar({ role = 'user', activeTab = 'home', logoPath = './
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item${activeTab === 'home' ? ' active' : ''}">
-                        <a class="nav-link" href="/home">Home${activeTab === 'home' ? ' <span class="sr-only">(current)</span>' : ''}</a>
+                        <a class="nav-link" href="${appPath('/home')}">Home${activeTab === 'home' ? ' <span class="sr-only">(current)</span>' : ''}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" data-toggle="modal" data-target="#perfilModal">Perfil</a>
                     </li>
                     ${isAdmin ? `
                     <li class="nav-item${activeTab === 'usuarios' ? ' active' : ''}">
-                        <a class="nav-link" href="/managerUsers">Usuários${activeTab === 'usuarios' ? ' <span class="sr-only">(current)</span>' : ''}</a>
+                        <a class="nav-link" href="${appPath('/managerUsers')}">Usuários${activeTab === 'usuarios' ? ' <span class="sr-only">(current)</span>' : ''}</a>
                     </li>` : ''}
                     <li class="nav-item">
                         <a class="nav-link" id="logout-conta" href="#">Sair</a>

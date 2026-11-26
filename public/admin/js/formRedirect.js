@@ -1,3 +1,4 @@
+import { appPath } from '../../js/appPath.js';
 import { getUserData } from '../../js/api.js';
 const user = await getUserData();
 
@@ -6,16 +7,12 @@ export function setupFormRedirect() {
     links.forEach((link) => {
         link.addEventListener('click', () => {
             const route = link.getAttribute('data-route');
-            setFormCookie(route);
             redirectFormPage(route);
         });
     });
 }
 
 function redirectFormPage(route) {
-    location.href = user.role === 'admin' ? `/edit/${route}` : `/form/${route}`;
-}
-
-function setFormCookie(route) {
-    document.cookie = `form=${route}; path=/`;
+    const formPath = user.role === 'admin' ? '/edit/' : '/form/';
+    location.href = appPath(formPath + encodeURIComponent(route));
 }

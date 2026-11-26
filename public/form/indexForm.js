@@ -1,3 +1,4 @@
+import { appPath } from '../js/appPath.js';
 import { themeToggle } from '../js/temas.js';
 import { addQuestion, fetchFormQuestions } from './js/manterFormulario.js';
 import { captureAndSendQuestions } from './js/sendQuestions.js';
@@ -141,7 +142,7 @@ loadingScreen();
 (function () {
     window.onpageshow = function (event) {
         if (event.persisted) {
-            window.location.href = '/home';
+            window.location.href = appPath('/home');
         }
     };
 })();

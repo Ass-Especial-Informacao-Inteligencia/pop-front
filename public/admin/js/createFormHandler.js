@@ -1,3 +1,4 @@
+import { appPath } from '../../js/appPath.js';
 import { animationConfigBarForm } from './barraDeConfigAnimation.js';
 import { btnVerificaDisponibilidade } from './botaoVerificarDisponibilidade.js';
 import {
@@ -78,6 +79,5 @@ export function createForm() {
 
 function openFormCreated() {
     const title = document.getElementById('title').value.trim();
-    document.cookie = `form=${title}; path=/`; // Set a cookie with the form title
-    window.location.href = `/edit/${encodeURIComponent(title)}`; // Redirect to edit page for the newly created form
+    window.location.href = appPath(`/edit/${encodeURIComponent(title)}`);
 }

@@ -1,5 +1,5 @@
 import { mostrarMensagem } from '../../../js/geraNotificacao.js';
-import { getCookie, api } from '../../../js/api.js'; // cliente API centralizado
+import { api } from '../../../js/api.js'; // cliente API centralizado
 import { addUsersForList } from './geraTrUsuarios.js';
 
 // Função para capturar os valores dos atributos data das células da linha
@@ -19,7 +19,6 @@ export function handleEditarClick() {
     const linha = this.closest('tr'); // Encontra a linha pai do botão clicado
     
     const valores = capturarValoresLinha(linha);
-    document.cookie = `editCPF=${valores.cpf}; SameSite=None; Secure`;
     // Preencher os campos do modal com os valores capturados
     document.getElementById('editarCPF').value = valores.cpf;
     document.getElementById('editarNome').value = valores.name;
@@ -36,7 +35,7 @@ export function handleEditarClick() {
         }
     }
 
-    editUser(valores);
+    editUser(valores.cpf);
 }
 
 export function deleteButton() {
@@ -77,7 +76,7 @@ function deleteUser(valores) {
     });
 }
 
-function editUser() {
+function editUser(oldCPF) {
     const btnSalvarEdicao = document.querySelector('#btnSalvarEdicao');
 
     // Remover todos os event listeners do botão #btnSalvarEdicao
@@ -86,7 +85,6 @@ function editUser() {
 
     // Adicionar novo event listener
     clonedElement.addEventListener('click', async () => {
-        const oldCPF = getCookie('editCPF');
         const name = document.getElementById('editarNome').value;
         const cpf = document.getElementById('editarCPF').value;
         const email = document.getElementById('editarEmail').value;
@@ -121,7 +119,6 @@ function editUser() {
                     return;
                 }
             }
-            document.cookie = `editCPF=${cpf}; SameSite=None; Secure`;
             addUsersForList();
             mostrarMensagem('Usuário editado com sucesso.', 'success', 5);
         } catch (error) {

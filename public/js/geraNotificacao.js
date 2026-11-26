@@ -16,11 +16,12 @@ export function mostrarMensagem(msg, type, timeInSeconds) {
     alerta.className = `alert alert-${type} alert-dismissible fade show`;
     alerta.setAttribute('role', 'alert');
     alerta.innerHTML = `
-        ${msg}
         <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
             <span aria-hidden="true">&times;</span>
         </button>
     `;
+
+    alerta.prepend(document.createTextNode(msg));
 
     let container = document.getElementById('container-alertas');
     if (!container) {
