@@ -22,6 +22,8 @@ export function setupCrosstab(questions, answers, interviewIds, onAvailability) 
     const picker = document.getElementById('color-pickers');
     const empty = document.getElementById('cross-empty');
     const results = document.getElementById('cross-results');
+    const heading = document.getElementById('cross-question-heading');
+    heading.hidden = true;
     const columns = questions.filter(({ type }) => type === 'Unica Escolha');
     let colors;
     let defaultColors;
@@ -55,6 +57,10 @@ export function setupCrosstab(questions, answers, interviewIds, onAvailability) 
         updateOptionToggle(toggleY, filtersY);
         const x = selectX.value;
         const y = selectY.value;
+        // Identifica as questões antes das validações para manter o contexto visível mesmo sem resultados.
+        document.getElementById('cross-row-question').textContent = questions.find(({ id }) => String(id) === x).body;
+        document.getElementById('cross-column-question').textContent = questions.find(({ id }) => String(id) === y).body;
+        heading.hidden = false;
         if (x === y) {
             showResults(false, 'Escolha questões diferentes para linhas e colunas.');
             return;
@@ -104,11 +110,26 @@ export function setupCrosstab(questions, answers, interviewIds, onAvailability) 
                 data: visibleRows.map(({ counts, base }) => countValue(sum(extra.map(({ index }) => counts[index])), base)) });
         }
 
+        // Reproduz no PNG o agrupamento das colunas do gráfico, inclusive a soma de "Demais colunas".
+        const columnGroups = leading.map(({ index }) => [index]);
+        if (extra.length) columnGroups.push(extra.map(({ index }) => index));
+
         renderChart('chart', {
             type: 'bar', data: { labels: visibleRows.map(({ label }) => label), datasets },
             options: horizontalChartOptions({ percentage, stacked: true, legend: true, formatValue: valueText }),
         }, Math.max(173, 79 + visibleRows.length * 24), 'Cruzamento entre ' +
-            selectX.selectedOptions[0].text + ' e ' + selectY.selectedOptions[0].text);
+            selectX.selectedOptions[0].text + ' e ' + selectY.selectedOptions[0].text, {
+                title: 'Cruzamento de questões — ' + (percentage ? 'percentual por linha' : 'quantidade'),
+                questions: ['Linhas: ' + selectX.selectedOptions[0].text, 'Colunas: ' + selectY.selectedOptions[0].text],
+                base: `Base: ${formatNumber(paired)} ${paired === 1 ? 'entrevista' : 'entrevistas'} com resposta às duas questões.`,
+                columns: ['Alternativa da linha', ...datasets.map(({ label }) => label), 'Base da linha'],
+                // Cada célula exporta quantidade e percentual sobre a base da própria linha, não sobre o total geral.
+                rows: visibleRows.map((row) => [row.label, ...columnGroups.map((indices) => {
+                    const count = sum(indices.map((index) => row.counts[index]));
+                    return `${formatNumber(count)} · ${formatPercentage(row.base ? count / row.base : 0)}`;
+                }), formatNumber(row.base)]),
+                note: 'Filtros atuais; até 8 linhas e 5 colunas mais frequentes, com demais colunas agrupadas. Cada célula informa quantidade e percentual sobre a base da linha.',
+            });
     }
 
     function updateFilters(source, target, includeColors) {
