@@ -136,13 +136,23 @@ export function chartLabel(value, maxLength) {
     return value.length > maxLength ? value.slice(0, maxLength - 1) + '…' : value;
 }
 
-export function renderChart(id, configuration, height, label) {
+// Associa o contexto numérico à instância exibida; o WeakMap não mantém gráficos destruídos vivos na memória.
+const chartExportDetails = new WeakMap();
+
+// Recupera enunciados, base e valores correspondentes aos filtros usados na última renderização.
+export function getChartExportDetails(chart) {
+    return chartExportDetails.get(chart);
+}
+
+// Recria o gráfico e associa os dados de exportação sem acrescentar informações ao canvas visível.
+export function renderChart(id, configuration, height, label, exportDetails) {
     const canvas = document.getElementById(id);
     canvas.setAttribute('aria-label', label);
     canvas.parentElement.style.setProperty('--chart-height', height + 'px');
     if (!window.Chart) return;
     Chart.getChart(canvas)?.destroy();
-    new Chart(canvas, configuration);
+    const chart = new Chart(canvas, configuration);
+    chartExportDetails.set(chart, exportDetails);
 }
 
 export function horizontalChartOptions({ percentage, stacked = false, legend = false, formatValue }) {

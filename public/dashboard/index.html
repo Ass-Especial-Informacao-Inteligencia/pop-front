@@ -80,6 +80,8 @@
                         </aside>
 
                         <div class="dashboard-results">
+                            <!-- O enunciado fica fora do bloco ocultável para continuar visível quando os filtros não retornam resultados. -->
+                            <h2 id="single-question-label" class="dashboard-question-title" aria-live="polite"></h2>
                             <div id="single-empty" class="dashboard-panel dashboard-empty" role="status" hidden></div>
                             <div id="single-results">
                                 <div class="dashboard-chart-grid">
@@ -87,7 +89,6 @@
                                         <div class="dashboard-panel-heading dashboard-action-heading">
                                             <div>
                                                 <h2>Alternativas mais selecionadas</h2>
-                                                <p id="single-question-label"></p>
                                             </div>
                                             <button type="button" class="btn dashboard-secondary dashboard-download-png" data-chart-download="singleQuestionChart" aria-label="Baixar gráfico de alternativas em PNG">
                                                 <i class="fas fa-download" aria-hidden="true"></i> PNG
@@ -156,6 +157,12 @@
                         </aside>
 
                         <div class="dashboard-results">
+                            <!-- Identifica as duas questões selecionadas sem depender dos rótulos abreviados dos filtros e dos eixos. -->
+                            <header id="cross-question-heading" class="dashboard-cross-heading" aria-live="polite" hidden>
+                                <h2 class="dashboard-question-title">Cruzamento de questões</h2>
+                                <p><strong>Linhas:</strong> <span id="cross-row-question"></span></p>
+                                <p><strong>Colunas:</strong> <span id="cross-column-question"></span></p>
+                            </header>
                             <div id="cross-empty" class="dashboard-panel dashboard-empty" role="status" hidden></div>
                             <div id="cross-results">
                                 <article class="dashboard-panel dashboard-plot-panel">

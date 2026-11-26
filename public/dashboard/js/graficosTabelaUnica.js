@@ -29,6 +29,8 @@ export function setupSingleQuestion(questions, answers, onAvailability) {
 
     function render() {
         const question = questions.find(({ id }) => String(id) === select.value);
+        // Identifica a questão de todos os resultados, inclusive quando os filtros deixam a visualização vazia.
+        document.getElementById('single-question-label').textContent = question.body;
         const chosen = new Set(selectedOptions(filter));
         const rows = distribution.rows.filter(({ label }) => chosen.has(label))
             .sort((first, second) => second.count - first.count);
@@ -43,8 +45,20 @@ export function setupSingleQuestion(questions, answers, onAvailability) {
 
         const colorFor = (label) => colors.get(label) || defaultColors.get(label);
         const percent = (count) => formatPercentage(count / distribution.total);
-        document.getElementById('single-question-label').textContent = question.body;
         const bars = ranked.slice(0, 8);
+        // A base acompanha o denominador real dos percentuais, sem confundir seleções múltiplas com entrevistas.
+        const singleAnswerBase = question.type === 'Unica Escolha'
+            && answers[question.id].every((answer) => typeof answer === 'string' && answer.trim())
+            && distribution.total === answers[question.id].length;
+        const baseUnit = singleAnswerBase
+            ? (distribution.total === 1 ? 'entrevista com resposta à questão' : 'entrevistas com resposta à questão')
+            : (distribution.total === 1 ? 'seleção da questão' : 'seleções da questão');
+        // Os filtros reduzem as alternativas exibidas, mas não mudam o denominador dos percentuais.
+        const exportDetails = {
+            questions: ['Questão: ' + question.body],
+            base: `Base de cálculo: ${formatNumber(distribution.total)} ${baseUnit}.`,
+            columns: ['Alternativa', 'Quantidade', 'Percentual'],
+        };
 
         renderChart('singleQuestionChart', {
             type: 'bar',
@@ -61,9 +75,17 @@ export function setupSingleQuestion(questions, answers, onAvailability) {
                 percentage: true,
                 formatValue: (value) => formatPercentage(value / 100),
             }),
-        }, Math.max(162, 55 + bars.length * 24), 'Alternativas mais selecionadas em ' + question.body);
+        }, Math.max(162, 55 + bars.length * 24), 'Alternativas mais selecionadas em ' + question.body, {
+            ...exportDetails,
+            title: 'Alternativas mais selecionadas',
+            rows: bars.map(({ label, count }) => [label, formatNumber(count), percent(count)]),
+            colors: bars.map(({ label }) => colorFor(label)),
+            barLabels: bars.map(({ count }) => `${formatNumber(count)} · ${percent(count)}`),
+            note: 'Filtros atuais; até 8 alternativas mais frequentes. Os percentuais usam a base completa da questão.',
+        });
 
         const slices = ranked.slice(0, 4);
+        // Mantém a composição da base completa: alternativas ocultas, não selecionadas ou fora das quatro primeiras entram no restante.
         const remaining = distribution.total - slices.reduce((sum, row) => sum + row.count, 0);
         const labels = slices.map(({ label }) => label);
         const counts = slices.map(({ count }) => count);
@@ -96,7 +118,13 @@ export function setupSingleQuestion(questions, answers, onAvailability) {
                     tooltip: { callbacks: { label: ({ label, raw }) => label + ': ' + percent(raw) } },
                 },
             },
-        }, Math.max(162, 65 + bars.length * 24), 'Composição das seleções em ' + question.body);
+        }, Math.max(162, 65 + bars.length * 24), 'Composição das seleções em ' + question.body, {
+            ...exportDetails,
+            title: 'Composição das seleções',
+            rows: labels.map((label, index) => [label, formatNumber(counts[index]), percent(counts[index])]),
+            colors: sliceColors,
+            note: 'Até 4 alternativas selecionadas mais frequentes; demais seleções da base agrupadas, inclusive as fora do filtro.',
+        });
 
         renderTable(table, ['Alternativa', 'Seleções', '% da base'],
             rows.map(({ label, count }) => [label, formatNumber(count), percent(count)]), {});

@@ -206,6 +206,25 @@
 
 .dashboard-controls h2 { margin-bottom: 8px; }
 
+/* Os enunciados completos podem quebrar em várias linhas sem ampliar a largura dos resultados no mobile. */
+.dashboard .dashboard-question-title {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin: 0 0 11px;
+  overflow-wrap: anywhere;
+}
+
+/* Mantém o título e as questões de linhas e colunas separados dos painéis de resultados. */
+.dashboard-cross-heading { margin-bottom: 11px; }
+
+.dashboard-cross-heading .dashboard-question-title { margin-bottom: 6px; }
+
+.dashboard-cross-heading p {
+  margin: 0;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
 .dashboard-controls > label {
   display: block;
   margin: 8px 0 3px;
