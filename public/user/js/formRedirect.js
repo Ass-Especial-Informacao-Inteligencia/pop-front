@@ -1,3 +1,4 @@
+import { appPath } from '../../js/appPath.js';
 export function setupFormRedirect(user) {
     const cards = document.querySelectorAll('#cardContainer .card');
     cards.forEach((card) => {
@@ -15,5 +16,6 @@ export function setupFormRedirect(user) {
 }
 
 function redirectFormPage(route, role) {
-    location.href = role === 'admin' ? `/edit/${route}` : `/form/${route}`;
+    const formPath = role === 'admin' ? '/edit/' : '/form/';
+    location.href = appPath(formPath + encodeURIComponent(route));
 }

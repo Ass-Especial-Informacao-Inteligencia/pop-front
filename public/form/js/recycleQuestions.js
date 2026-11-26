@@ -1,3 +1,4 @@
+import { escapeHtml } from '../../js/escapeHtml.js';
 import { questionsRecycle } from '../indexForm.js';
 import { getCookie, api } from '../../js/api.js';
 import { mostrarMensagem, anunciarSr } from '../../js/geraNotificacao.js';
@@ -40,7 +41,7 @@ function renderQuestionsRecycle(questions) {
             div.innerHTML = `
                 <div class="search-result-item">
                     <input type="radio" name="question-select" value="${question.id}" id="question-${question.id}" />
-                    <label for="question-${question.id}">${question.body}</label>
+                    <label for="question-${question.id}">${escapeHtml(question.body)}</label>
                 </div>
             `;
             searchResults.appendChild(div);
@@ -79,7 +80,7 @@ function addQuestionFromModal(question) {
                 <div class="input-group mb-2">
                     <input type="${question.type === 'Multipla Escolha' ? 'checkbox' : 'radio'}" name="${questionId}-alternatives" id="${alternativeId}" class="mr-2" aria-label="Selecionar alternativa">
                     <label class="sr-only" for="${alternativeId}-text">Texto da alternativa</label>
-                    <input type="text" id="${alternativeId}-text" class="form-control question-alternatives alternative-input" value="${option.text}" placeholder="Digite a alternativa">
+                    <input type="text" id="${alternativeId}-text" class="form-control question-alternatives alternative-input" value="${escapeHtml(option.text)}" placeholder="Digite a alternativa">
                     <div class="input-group-append">
                         <button type="button" class="btn btn-danger btn-remove-alternative" data-alternative-id="${alternativeId}" aria-label="Remover alternativa">X</button>
                     </div>
@@ -99,7 +100,7 @@ function addQuestionFromModal(question) {
             </div>
             <div class="form-group">
                 <label for="${questionId}-text">Texto da Questão</label>
-                <input type="text" class="form-control question-body" id="${questionId}-text" value="${question.body}" placeholder="Digite o texto da questão">
+                <input type="text" class="form-control question-body" id="${questionId}-text" value="${escapeHtml(question.body)}" placeholder="Digite o texto da questão">
             </div>
             <div class="form-group">
                 <label for="${questionId}-type">Tipo de Questão</label>

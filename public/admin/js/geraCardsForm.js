@@ -1,3 +1,6 @@
+import { escapeHtml } from '../../js/escapeHtml.js';
+import { appPath } from '../../js/appPath.js';
+
 // Gera os cards de formulário nas abas (ativos/desativados/agendados/finalizados).
 // Contrato DOM com outros módulos: .card com data-status, .archive-btn,
 // .open-new-tab-btn e .form-redirect — consumidos por querySelector em
@@ -19,19 +22,9 @@ function buildEmptyState() {
 function bindOpenAnswersPage() {
     document.querySelectorAll('.open-new-tab-btn').forEach((btn) => {
         btn.addEventListener('click', () => {
-            window.open('/admin/getTodayAnswers.html', '_blank');
+            window.open(appPath('/admin/getTodayAnswers.html'), '_blank', 'noopener');
         });
     });
-}
-
-// Escapa HTML antes de interpolar em atributos/texto dos cards (título/descrição vêm do backend).
-function escapeHtml(text) {
-    return String(text)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
 }
 
 export function createCardLayout(container, data, user, status = 'active', respondidos = null) {

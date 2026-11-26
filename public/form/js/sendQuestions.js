@@ -1,3 +1,4 @@
+import { appPath } from '../../js/appPath.js';
 import { getCookie, api } from '../../js/api.js'; // cliente API centralizado
 import { mostrarMensagem } from '../../js/geraNotificacao.js';
 
@@ -59,7 +60,7 @@ export async function captureAndSendQuestions() {
         await response.json();
         mostrarMensagem('Questões enviadas com sucesso!', 'success', 5);
         // 4s (não 500ms): dá tempo de ler o aviso antes de sair da página (mín. AA percebido)
-        setTimeout(() => { location.href = '/home'; }, 4000);
+        setTimeout(() => { location.href = appPath('/home'); }, 4000);
     } catch (error) {
         console.error('Erro ao enviar as questões:', error);
         mostrarMensagem(`Erro ao enviar as questões: ${error.message}`, 'danger', 5);

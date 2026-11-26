@@ -1,10 +1,12 @@
+import { appPath } from '../appPath.js';
+
 export function renderProfileModal({ isAdmin = false } = {}) {
     const footer = isAdmin
         ? `<div class="text-center mt-3">
                 <button
                     type="button"
                     class="btn btn-primary ml-2"
-                    data-nav-href="/managerUsers"
+                    data-nav-href="${appPath('/managerUsers')}"
                 >
                     Editar Informações
                 </button>

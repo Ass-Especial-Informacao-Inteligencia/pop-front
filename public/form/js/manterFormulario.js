@@ -1,3 +1,4 @@
+import { escapeHtml } from '../../js/escapeHtml.js';
 import { mostrarMensagem, anunciarSr } from "../../js/geraNotificacao.js";
 import { api } from '../../js/api.js';
 import { initCustomSelect } from '../../js/components/customSelect.js';
@@ -120,7 +121,7 @@ function displayFormQuestionsFromFetch(questions) {
               </div>
               <div class="form-group">
                   <label for="${questionId}-text">Texto da Questão</label>
-                  <input type="text" class="form-control question-body" id="${questionId}-text" placeholder="Digite o texto da questão" value="${question.body}" required>
+                  <input type="text" class="form-control question-body" id="${questionId}-text" placeholder="Digite o texto da questão" value="${escapeHtml(question.body)}" required>
               </div>
               <div class="form-group">
                   <label for="${questionId}-type">Tipo de Questão</label>
@@ -160,7 +161,7 @@ function displayFormQuestionsFromFetch(questions) {
                 alternativeContainer.innerHTML = `
                   <input type="${question.type === 'Multipla Escolha' ? 'checkbox' : 'radio'}" name="${questionId}-alternatives" id="${alternativeIdGerado}" class="mr-2" aria-label="Selecionar alternativa">
                   <label class="sr-only" for="${alternativeIdGerado}-text">Texto da alternativa</label>
-                  <input type="text" id="${alternativeIdGerado}-text" data-idoption="${alternativeId}" class="form-control question-alternatives alternative-input" placeholder="Digite a alternativa" value="${option.text}">
+                  <input type="text" id="${alternativeIdGerado}-text" data-idoption="${alternativeId}" class="form-control question-alternatives alternative-input" placeholder="Digite a alternativa" value="${escapeHtml(option.text)}">
                   <div class="input-group-append">
                       <button type="button" class="btn btn-danger btn-remove-alternative-fetch" data-alternative-id="${alternativeIdGerado}" aria-label="Remover alternativa">X</button>
                   </div>

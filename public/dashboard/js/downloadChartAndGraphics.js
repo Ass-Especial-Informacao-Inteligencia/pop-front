@@ -2,35 +2,36 @@ import { mostrarMensagem } from "../../js/geraNotificacao.js";
 import { fetchResponsesForForm } from "./fetchAnswersForForm.js";
 import { jsonToSheet } from "./geraArquivoExcel.js";
 import { getCookie } from "../../js/api.js";
+import { chartTextColors, expandTableForExport } from "./dashboardView.js";
 
-function downloadChart() {
-    const chartCanvas = document.getElementById('chart');
-    downloadCanvas(chartCanvas, 'grafico_cruzado.png');
+const chartFiles = new Map([
+    ['chart', 'grafico_cruzado.png'],
+    ['singleQuestionChart', 'grafico_pergunta_unica.png'],
+    ['singleQuestionPieChart', 'grafico_pizza_pergunta_unica.png'],
+]);
+
+function downloadChart(chartId) {
+    downloadCanvas(document.getElementById(chartId), chartFiles.get(chartId));
 }
 
 function downloadPivotTable() {
-    const table = document.getElementById('pivotTable');
+    const table = document.querySelector('#pivotTable table');
     downloadTable(table, 'tabela_cruzada.png');
 }
 
-function downloadSingleQuestionChart() {
-    const chartCanvas = document.getElementById('singleQuestionChart');
-    downloadCanvas(chartCanvas, 'grafico_pergunta_unica.png');
-}
-
 function downloadSingleQuestionTable() {
-    const table = document.getElementById('singleQuestionTable');
-    downloadTable(table, 'tabela_pergunta_unica.png');
-}
-
-function downloadSingleQuestionPieChart() {
-    const chartCanvas = document.getElementById('singleQuestionPieChart');
-    downloadCanvas(chartCanvas, 'grafico_pizza_pergunta_unica.png');
+    const table = document.querySelector('#singleQuestionTable table');
+    downloadTable(table, 'tabela_pergunta_unica.png', {
+        scale: 1,
+        onclone(_document, clonedTable) {
+            expandTableForExport(table, clonedTable);
+        },
+    });
 }
 
 // Função genérica para baixar gráficos (canvas)
 function downloadCanvas(canvas, filename) {
-    if (!canvas || canvas.width === 0 || canvas.height === 0) {
+    if (!canvas || !window.Chart?.getChart(canvas) || !canvas.width || !canvas.height) {
         mostrarMensagem('Nenhum gráfico para baixar. Gere a visualização primeiro.', 'danger', 3);
         return;
     }
@@ -39,8 +40,7 @@ function downloadCanvas(canvas, filename) {
     cloneCanvas.height = canvas.height;
     const cloneCtx = cloneCanvas.getContext('2d');
 
-    // Adicionar um fundo branco ao clone
-    cloneCtx.fillStyle = '#ffffff'; // Cor branca
+    cloneCtx.fillStyle = chartTextColors().background;
     cloneCtx.fillRect(0, 0, cloneCanvas.width, cloneCanvas.height);
 
     // Desenhar o conteúdo do canvas original no clone
@@ -62,12 +62,12 @@ function downloadCanvas(canvas, filename) {
 }
 
 // Função para baixar tabelas (usando html2canvas)
-function downloadTable(table, filename) {
+function downloadTable(table, filename, options = {}) {
     if (!table || table.children.length === 0) {
         mostrarMensagem('Nenhuma tabela para baixar. Gere a visualização primeiro.', 'danger', 3);
         return;
     }
-    html2canvas(table).then(canvas => {
+    html2canvas(table, { backgroundColor: chartTextColors().background, ...options }).then(canvas => {
         canvas.toBlob(function(blob) {
             if (!blob) {
                 mostrarMensagem('Erro ao gerar a imagem da tabela.', 'danger', 3);
@@ -86,6 +86,10 @@ function downloadTable(table, filename) {
 }
 
 export function GeraEventoDownloads() {
+    document.querySelectorAll('[data-chart-download]').forEach((button) => {
+        button.addEventListener('click', () => downloadChart(button.dataset.chartDownload));
+    });
+    document.getElementById('downloadSingleQuestionTable').addEventListener('click', downloadSingleQuestionTable);
     document.getElementById('downloadButton').addEventListener('click', function() {
         // Pegar o valor selecionado no <select>
         const selectedOption = document.getElementById('selectTableOrGraphicsDownload').value;
@@ -93,22 +97,18 @@ export function GeraEventoDownloads() {
         // Determinar qual elemento deve ser baixado com base na seleção
         switch (selectedOption) {
             case 'chart':
-                downloadChart();
+            case 'singleQuestionChart':
+            case 'singleQuestionPieChart':
+                downloadChart(selectedOption);
                 break;
             case 'pivotTable':
                 downloadPivotTable();
                 break;
-            case 'singleQuestionChart':
-                downloadSingleQuestionChart();
-                break;
             case 'singleQuestionTable':
                 downloadSingleQuestionTable();
                 break;
-            case 'singleQuestionPieChart':
-                downloadSingleQuestionPieChart();
-                break;
             case 'arquivoExcel':
-                downloadExcel(); 
+                downloadExcel(this);
                 break;
             default:
                 mostrarMensagem('Por favor, selecione uma opção válida!','danger',3);
@@ -116,7 +116,16 @@ export function GeraEventoDownloads() {
     });
 }
 
-async function downloadExcel() {
-    const dataDownloadExcel = await fetchResponsesForForm(getCookie('form'));
-    jsonToSheet(dataDownloadExcel);
+async function downloadExcel(button) {
+    button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
+    try {
+        const answers = await fetchResponsesForForm(getCookie('form'));
+        jsonToSheet(answers);
+    } catch (error) {
+        mostrarMensagem(error.message || 'Erro ao exportar a planilha.', 'danger', 5);
+    } finally {
+        button.disabled = false;
+        button.removeAttribute('aria-busy');
+    }
 }

@@ -1,3 +1,4 @@
+import { appPath } from '../js/appPath.js';
 import { themeToggle } from '../js/temas.js';
 import { logout } from '../js/api.js';
 import { fillUpModalsInfo } from '../js/userInfo.js';
@@ -46,7 +47,7 @@ loadingScreen();
 (function () {
     window.onpageshow = function (event) {
         if (event.persisted) {
-            window.location.href = '/home';
+            window.location.href = appPath('/home');
         }
     };
 })();

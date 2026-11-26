@@ -1,3 +1,4 @@
+import { appPath } from '../../js/appPath.js';
 import { mostrarMensagem } from '../../js/geraNotificacao.js';
 import { checkEmptyFields } from './checkEmptyFields.js';
 import { api } from '../../js/api.js'; // cliente API centralizado
@@ -26,7 +27,7 @@ async function signIn(ev) {
         }
 
         await response.json();
-        window.location.href = '/home';
+        window.location.href = appPath('/home');
     } catch (error) {
         console.error('Error:', error.message);
         mostrarMensagem('Erro no servidor. Tente novamente mais tarde.', 'danger', 5);

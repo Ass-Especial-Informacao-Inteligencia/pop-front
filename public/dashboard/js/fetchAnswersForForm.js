@@ -3,69 +3,27 @@
 import { api } from '../../js/api.js'; // cliente API centralizado
 
 export async function fetchResponsesForForm(title) {
-    const url = `/dashboard/${title}/responses`;
-    const timeout = 10 * 60 * 1000;
+    const url = `/dashboard/${encodeURIComponent(title)}/responses`;
+    const pageSize = 1000;
+    const answers = [];
+    let total;
 
-    // Busca respostas do formulário com timeout de 10 minutos
-    const fetchWithTimeout = (url, options, timeout) => {
-        return Promise.race([
-            api.get(url),
-            new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('Request timed out')), timeout)
-            )
-        ]);
-    };
-
-    try {
-        const response = await fetchWithTimeout(url, {}, timeout);
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch form responses');
+    do {
+        const response = await api.get(`${url}?limit=${pageSize}&offset=${answers.length}`);
+        if (!response.ok) throw new Error('Erro ao carregar as respostas para exportação.');
+        const page = await response.json();
+        total ??= Number(response.headers.get('X-Total-Count') ?? page.length);
+        if (!page.length && answers.length < total) {
+            throw new Error('As respostas mudaram durante a exportação. Tente novamente.');
         }
+        answers.push(...page);
+    } while (answers.length < total);
 
-        const form = await response.json();
-        return form;
-    } catch (error) {
-        if (error.message === 'Request timed out') {
-            console.error('A requisição demorou muito para responder.');
-        } else {
-            console.error('Error fetching form responses:', error);
-        }
-        throw error;
-    }
+    return answers.slice(0, total);
 }
 
-
 export async function fetchResponsesForFormGraphics(title) {
-    
-    const url = `/dashboard/${encodeURIComponent(title)}/graphics`;
-    const timeout = 10*60*1000;
-
-    // Busca dados gráficos com timeout de 10 minutos
-    const fetchWithTimeout = (url, options, timeout) => {
-        return Promise.race([
-            api.get(url),
-            new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('Request timed out')), timeout)
-            )
-        ]);
-    };
-
-    try {
-        const response = await fetchWithTimeout(url, {}, timeout);
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch deactivated forms');
-        }
-
-        const form = await response.json();
-        return form;
-    } catch (error) {
-        if (error.message === 'Request timed out') {
-            console.error('A requisição demorou muito para responder.');
-        } else {
-            console.error('Error fetching deactivated forms:', error);
-        }
-        throw error;
-    }
+    const response = await api.get('/dashboard/' + encodeURIComponent(title) + '/graphics');
+    if (!response.ok) throw new Error('Erro ao carregar os dados do dashboard.');
+    return response.json();
 }

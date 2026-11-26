@@ -1,3 +1,4 @@
+import { appPath } from '../js/appPath.js';
 import { updateUserNav } from './js/modificaNavBar.js';
 import { fillUpModalsInfo } from '../js/userInfo.js';
 import { setupFormRedirect } from './js/formRedirect.js';
@@ -19,7 +20,7 @@ let user;
 try {
     user = await getUserData();
 } catch {
-    window.location.replace('/sign/index.html');
+    window.location.replace(appPath('/sign/index.html'));
     throw new Error('Sessão inválida — redirecionando para o login');
 }
 

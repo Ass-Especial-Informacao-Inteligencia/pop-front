@@ -1,3 +1,4 @@
+import { appPath } from '../../js/appPath.js';
 import { fetchFormUpdate } from '../js/fetch.js';
 
 export function changeTitleAndDescription() {
@@ -26,6 +27,6 @@ export function changeTitleAndDescription() {
         };
 
         await fetchFormUpdate(params);
-        window.location.href = `/edit/${encodeURIComponent(newTitle)}`;
+        window.location.href = appPath(`/edit/${encodeURIComponent(newTitle)}`);
     });
 }
